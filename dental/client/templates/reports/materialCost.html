@@ -1,103 +1,91 @@
 <!--Generate-->
 <template name="dental_materialCostReportGen">
-  {{#if data}} {{#with data}}
-  <!--Title-->
-  <table class="report-title">
-    <tr>
-      <td>
-        <img src="/seng_ratha/logo.jpg">
-      </td>
-      <td>
-        <div class="header-style">
-          <span class="report-company-name" style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span>
-          <br>
-          <span class="report-company-name">{{title.company.enName}}</span>
-          <br>
-          <u>ចំណាយសម្ភារៈ (Material Cost)</u>
-          <br>
-          <!-- {{title.company.khAddress}}, {{title.company.telephone}} -->
+    {{#if data}}
+        {{#with data}}
+            <!--Title-->
+            <table class="report-title">
+                <tr>
+                    <td>
+                        <img src="/seng_ratha/Logo_converted.jpg">
+                    </td>
+                    <td>
+                      <span class="report-company-name"
+                            style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                      <span class="report-company-name">{{title.company.enName}}</span><br>
+                      <u>ចំណាយសម្ភារៈ (Material Cost)</u><br>
+                      {{title.company.khAddress}}, {{title.company.telephone}}
+                    </td>
+                </tr>
+            </table>
+
+            <!--Header-->
+            <div style="width: 100%">
+                {{#with header}}
+                    <div style="width: 50%; padding-top: 12px; float: left;">
+                        <ul class="list-unstyled">
+                            <li><strong>លេខកូដគ្រូពេទ្យ : </strong> {{doctorId}}</li>
+                            <li><strong>ឈ្មោះ  : </strong>{{_doctor.name}}</li>
+                            <li><strong>ភេទ : </strong> {{_doctor.gender}}</li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%; padding-top: 12px; float: left;">
+                        <ul class="list-unstyled">
+                            <li><strong>លេខកូដ :</strong> {{_id}}</li>
+                            <li><strong>កាលបរិច្ឆេទ : </strong> {{materialCostDate}}</li>
+                            <li><strong>អាត្រាប្តូរប្រាក់ :</strong> {{exchange}}</li>
+                        </ul>
+                    </div>
+                {{/with}}
+            </div>
+
+            <!--Content-->
+            <table class="report-content">
+                <thead class="report-content-header">
+                <tr>
+                    <th>ល.រ</th>
+                    <th>បរិយាយ</th>
+                    <th>ចំនួន</th>
+                    <th>តម្លៃ</th>
+                    <th>ទឹកប្រាក់</th>
+                </tr>
+                </thead>
+
+                <tbody class="report-content-body">
+                {{#each content}}
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{itemName}}</td>
+                        <td>{{qty}}</td>
+                        <td>{{price}}</td>
+                        <td>{{amount}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+
+            <!--Footer-->
+            <div style="width: 50%; float: right; margin-top: 20px">
+                {{#with footer}}
+                    <ul class="list-unstyled text-right">
+                        <li>
+                            <strong>ទឹកប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+                        </li>
+                        <li><strong>ទឹកប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+                        </li>
+                        <li><strong>ទឹកប្រាក់នៅសល់់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+                        </li>
+                    </ul>
+                {{/with}}
+            </div>
+        {{/with}}
+
+        <!--Sign-->
+        <div style="width: 40%; text-align: center; float: right; clear: both">
+            <strong>រៀបចំដោយ</strong>
+            <br><br><br><br><br><br><br>
+            __________________<br>
         </div>
-      </td>
-    </tr>
-  </table>
-
-  <!--Header-->
-  <div style="width: 100%">
-    {{#with header}}
-    <div style="width: 50%; padding-top: 12px; float: left;">
-      <ul class="list-unstyled">
-        <li>
-          <strong>Doctor ID :</strong> {{doctorId}}</li>
-        <li>
-          <strong>Name :</strong>{{_doctor.name}}</li>
-        <li>
-          <strong>Gender :</strong> {{_doctor.gender}}</li>
-      </ul>
-    </div>
-    <div style="width: 50%; padding-top: 12px; float: left;">
-      <ul class="list-unstyled">
-        <li>
-          <strong>Material Cost ID :</strong> {{_id}}</li>
-        <li>
-          <strong>Material Cost Date :</strong> {{materialCostDate}}</li>
-        <li>
-          <strong>Exchange :</strong> {{exchange}}</li>
-      </ul>
-    </div>
-    {{/with}}
-  </div>
-
-  <!--Content-->
-  <table class="report-content">
-    <thead class="report-content-header">
-      <tr>
-        <th>N<sup>o</sup></th>
-        <th>Items</th>
-        <th>Qty</th>
-        <th>Price</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-
-    <tbody class="report-content-body">
-      {{#each content}}
-      <tr  class="td-custom">
-        <td class="index-style">{{index}}</td>
-        <td class="items-style">{{itemName}}</td>
-        <td class="qty-style">{{qty}}</td>
-        <td>{{price}}</td>
-        <td>{{amount}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-
-  <!--Sign-->
-  <div style="width: 50%; float: left; margin-top: 20px">
-    <strong>Prepared By :</strong> __________________ 
-  </div>
-
-  <!--Footer-->
-  <div style="width: 50%; float: right; margin-top: 20px">
-    {{#with footer}}
-    <ul class="list-unstyled text-right">
-      <li>
-        <strong>Total (USD) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
-      </li>
-      <li>
-        <strong>Total (KHR) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
-      </li>
-      <li>
-        <strong>Total (THB) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
-      </li>
-    </ul>
-    {{/with}}
-  </div>
-
-  <!--Note-->
-  <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-    <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
-  </div>
-
-  {{/with}} {{else}} {{> loading}} {{/if}}
+    {{else}}
+        {{> loading}}
+    {{/if}}
 </template>
