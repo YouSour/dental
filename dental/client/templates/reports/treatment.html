@@ -24,15 +24,14 @@
             <table class="report-title" style="width:719px;">
                 <tr>
                     <td>
-                        <img src="/seng_ratha/logo.jpg">
+                        <img src="/seng_ratha/Logo_converted.jpg">
                     </td>
                     <td>
-                      <div class="header-style">
                       <span class="report-company-name"
                             style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
                       <span class="report-company-name">{{title.company.enName}}</span><br>
                       ព័ត៌មានលំអិត (Patient's Record)<br>
-                    </div>
+                      {{title.company.khAddress}}, {{title.company.telephone}}
                     </td>
                 </tr>
             </table>
@@ -41,17 +40,17 @@
                 {{#with header}}
                     <div style="width: 50%; padding-top: 12px; float: left;">
                         <ul class="list-unstyled">
-                            <li><strong>Patient ID :</strong> {{patientId}}</li>
-                            <li><strong>Name :</strong> {{_patient.name}}</li>
-                            <li><strong>Gender :</strong> {{_patient.gender}}</li>
-                            <li><strong>Age :</strong> {{_patient.age}}</li>
+                            <li><strong>លេខកូដអ្នកជំងឺ :</strong> {{patientId}}</li>
+                            <li><strong>ឈ្មោះ :</strong> {{_patient.name}}</li>
+                            <li><strong>ភេទ :</strong> {{_patient.gender}}</li>
+                            <li><strong>អាយុ :</strong> {{_patient.age}}</li>
                         </ul>
                     </div>
                     <div style="width: 50%; padding-top: 12px; float: right;">
                         <ul class="list-unstyled">
-                            <li><strong>Register ID :</strong> {{_id}}</li>
-                            <li><strong>Register Date :</strong> {{registerDate}}</li>
-                            <li><strong>Description :</strong> {{des}}</li>
+                            <li><strong>លេខកូដចុះឈ្មោះ : </strong> {{_id}}</li>
+                            <li><strong>កាលបរិច្ឆេទចុះឈ្មោះ : </strong> {{registerDate}}</li>
+                            <li><strong>ពិពណ៌នា :</strong> {{des}}</li>
                         </ul>
                     </div>
                 {{/with}}
@@ -61,39 +60,32 @@
             <table class="report-content">
                 <thead class="report-content-header">
                 <tr>
-                    <th>N<sup>o</sup></th>
-                    <th>Treatment Date</th>
-                    <th>Description</th>
-                    <th>Doctor</th>
+                    <th>ល.រ</th>
+                    <th>កាលបរិច្ឆេទព្យាបាល</th>
+                    <th>ពិពណ៌នា</th>
+                    <th>គ្រូពេទ្យ</th>
                 </tr>
                 </thead>
 
                 <tbody class="report-content-body">
                 {{#each content}}
-                    <tr class="td-custom">
-                        <td class="index-style">{{index}}</td>
-                        <td class="treatment-date-style">{{treatmentDate}}</td>
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{treatmentDate}}</td>
                         <td>{{des}}</td>
-                        <td class="doctor-style">{{_doctor.name}}</td>
+                        <td>{{_doctor.name}}</td>
                     </tr>
                 {{/each}}
                 </tbody>
             </table>
-
-            <!--Sign-->
-            <div style="width: 30%; float: left; margin-top: 20px;">
-              <strong>Prepared By :</strong> __________________
-            </div>
-
-            <div style="width: 70%; float: right; margin-top: 20px; text-align:right;">
-                <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
-            </div>
-
-            <!--Note-->
-            <!-- <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-              <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
-            </div> -->
         {{/with}}
+
+        <!--Sign-->
+        <div style="width: 40%; text-align: center; padding-top: 12px; float: right">
+            <strong>រៀបចំដោយ</strong>
+            <br><br><br><br><br><br><br>
+            __________________<br>
+        </div>
     {{else}}
         {{> loading}}
     {{/if}}

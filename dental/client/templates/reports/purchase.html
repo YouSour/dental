@@ -6,15 +6,14 @@
             <table class="report-title">
                 <tr>
                     <td>
-                        <img src="/seng_ratha/logo.jpg">
+                        <img src="/seng_ratha/Logo_converted.jpg">
                     </td>
                     <td>
-                      <div class="header-style">
                       <span class="report-company-name"
                             style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
                       <span class="report-company-name">{{title.company.enName}}</span><br>
                       <u>ការទិញ (Purchase)</u><br>
-</div>
+                      {{title.company.khAddress}}, {{title.company.telephone}}
                     </td>
                 </tr>
             </table>
@@ -24,17 +23,17 @@
                 {{#with header}}
                     <div style="width: 50%; padding-top: 12px; float: left;">
                         <ul class="list-unstyled">
-                            <li><strong>Doctor ID :</strong> {{supplierId}}</li>
-                            <li><strong>Name :</strong> {{_supplier.name}}</li>
-                            <li><strong>Telephone :</strong> {{_supplier.telephone}}</li>
-                            <li><strong>Address :</strong> {{_supplier.address}}</li>
+                            <li><strong>លេខកូដគ្រូពេទ្យ : </strong> {{supplierId}}</li>
+                            <li><strong>ឈ្មោះ : </strong>{{_supplier.name}}</li>
+                            <li><strong>លេខទូរស័ព្ទ : </strong> {{_supplier.telephone}}</li>
+                            <li><strong>អាស័យដ្ធាន : </strong> {{_supplier.address}}</li>
                         </ul>
                     </div>
                     <div style="width: 50%; padding-top: 12px; float: left;">
                         <ul class="list-unstyled">
-                            <li><strong>Purchase ID :</strong> {{_id}}</li>
-                            <li><strong>Purchase Date :</strong> {{purchaseDate}}</li>
-                            <li><strong>exchange :</strong> {{exchange}}</li>
+                            <li><strong>លេខកូដ :</strong> {{_id}}</li>
+                            <li><strong>កាលបរិច្ឆេទ​ : </strong> {{purchaseDate}}</li>
+                            <li><strong>អាត្រាប្តូរប្រាក់ :</strong> {{exchange}}</li>
                         </ul>
                     </div>
                 {{/with}}
@@ -44,20 +43,20 @@
             <table class="report-content">
                 <thead class="report-content-header">
                 <tr>
-                    <th>N<sup>o</sup></th>
-                    <th>Items</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Amount</th>
+                    <th>ល.រ</th>
+                    <th>បរិយាយ</th>
+                    <th>ចំនួន</th>
+                    <th>តម្លៃ</th>
+                    <th>ទឹកប្រាក់</th>
                 </tr>
                 </thead>
 
                 <tbody class="report-content-body">
                 {{#each content}}
-                    <tr class="td-custom">
-                        <td class="index-style">{{index}}</td>
-                        <td class="items-style">{{itemName}}</td>
-                        <td class="qty-style">{{qty}}</td>
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{itemName}}</td>
+                        <td>{{qty}}</td>
                         <td>{{price}}</td>
                         <td>{{amount}}</td>
                     </tr>
@@ -65,32 +64,28 @@
                 </tbody>
             </table>
 
-            <!--Sign-->
-            <div style="width: 50%; float: left; margin-top: 20px">
-              <strong>Prepared By :</strong> __________________
-            </div>
-
             <!--Footer-->
             <div style="width: 50%; float: right; margin-top: 20px">
                 {{#with footer}}
                     <ul class="list-unstyled text-right">
                         <li>
-                            <strong>Total (USD) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+                            <strong>ទឹកប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
                         </li>
-                        <li><strong>Total (KHR) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+                        <li><strong>ទឹកប្រាក់បង់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
                         </li>
-                        <li><strong>Total (THB) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+                        <li><strong>ទឹកប្រាក់បង់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
                         </li>
                     </ul>
                 {{/with}}
             </div>
-
-            <!--Note-->
-            <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-              <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
-            </div>
-
         {{/with}}
+
+        <!--Sign-->
+        <div style="width: 40%; text-align: center; float: right; clear: both">
+            <strong>រៀបចំដោយ</strong>
+            <br><br><br><br><br><br><br>
+            __________________<br>
+        </div>
     {{else}}
         {{> loading}}
     {{/if}}

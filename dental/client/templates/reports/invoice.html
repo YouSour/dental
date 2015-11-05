@@ -1,60 +1,59 @@
 <!--Form-->
 <template name="dental_invoiceReport">
-  {{#autoForm schema=Dental.Schema.InvoiceReport id="dental_invoiceReport" action="invoiceReportGen" target="_blank"}}
-  <div class="row">
-    <div class="col-md-6">
-      {{> afQuickField name='patient' class="patientId"}} {{> afQuickField name='register'}}
-    </div>
-    <div class="col-md-6">
-      {{> afQuickField name='date'}}
+    {{#autoForm schema=Dental.Schema.InvoiceReport id="dental_invoiceReport" action="invoiceReportGen" target="_blank"}}
+        <div class="row">
+            <div class="col-md-6">
+                {{> afQuickField name='patient' class="patientId"}}
+                {{> afQuickField name='register'}}
+            </div>
+            <div class="col-md-6">
+                {{> afQuickField name='date'}}
 
-      <!--{{> afQuickField name='exchange'}}-->
-      <!--<div class="form-group{{#if afFieldIsInvalid name='exchange'}} has-error{{/if}}" data-required="true">-->
-      <!--<label class="control-label" for="exchange">Exchange</label>-->
+                <!--{{> afQuickField name='exchange'}}-->
+                <!--<div class="form-group{{#if afFieldIsInvalid name='exchange'}} has-error{{/if}}" data-required="true">-->
+                <!--<label class="control-label" for="exchange">Exchange</label>-->
 
-      <!--<div class="input-group select2-bootstrap-append">-->
-      <!--{{> afFieldInput name='exchange'}}-->
-      <!--<span class="input-group-addon">-->
-      <!--<a href="#" class="exchangeAddon">-->
-      <!--{{fa "plus"}}-->
-      <!--</a>-->
-      <!--</span>-->
-      <!--</div>-->
-      <!--{{#if afFieldIsInvalid name='exchange'}}-->
-      <!--<span class="help-block">{{afFieldMessage name='exchange'}}</span>-->
-      <!--{{/if}}-->
-      <!--</div>-->
+                <!--<div class="input-group select2-bootstrap-append">-->
+                <!--{{> afFieldInput name='exchange'}}-->
+                <!--<span class="input-group-addon">-->
+                <!--<a href="#" class="exchangeAddon">-->
+                <!--{{fa "plus"}}-->
+                <!--</a>-->
+                <!--</span>-->
+                <!--</div>-->
+                    <!--{{#if afFieldIsInvalid name='exchange'}}-->
+                <!--<span class="help-block">{{afFieldMessage name='exchange'}}</span>-->
+                    <!--{{/if}}-->
+                <!--</div>-->
 
-    </div>
-  </div>
-  <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
-  <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
-  {{/autoForm}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
 </template>
 
 <!--Generate-->
 <template name="dental_invoiceReportGen">
-  {{#if data}} {{#with data}}
-  <!--Title-->
-  <table class="report-title">
-    <tr>
-      <td>
-        <img src="/seng_ratha/logo.jpg">
-      </td>
-      <td>
-        <div class="header-style">
-          <span class="report-company-name" style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span>
-          <br>
-          <span class="report-company-name">{{title.company.enName}}</span>
-          <br>
-          <u> វិក្កយបត្រ (Invoice)</u>
-          <br>
-        </div>
-        <!-- {{title.company.khAddress}}, {{title.company.telephone}} -->
-      </td>
-    </tr>
-  </table>
-  <!-- <div class="report-title">
+    {{#if data}}
+        {{#with data}}
+            <!--Title-->
+            <table class="report-title">
+                <tr>
+                    <td>
+                        <img src="/seng_ratha/Logo_converted.jpg">
+                    </td>
+                    <td>
+                  <span class="report-company-name"
+                        style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                        <span class="report-company-name">{{title.company.enName}}</span><br>
+                        <u> វិក្កយបត្រ (Invoice)</u><br>
+
+                        {{title.company.khAddress}}, {{title.company.telephone}}
+                    </td>
+                </tr>
+            </table>
+            <!-- <div class="report-title">
 
                 <span class="report-company-name"
                       style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
@@ -64,139 +63,117 @@
                 {{title.company.khAddress}}, {{title.company.telephone}}
             </div> -->
 
-  <!--Header-->
-  <div style="width: 100%">
-    {{#with header}}
-    <div style="width: 50%; padding-top: 12px; float: left;">
-      <ul class="list-unstyled">
-        <li>
-          <strong>Patient ID :</strong> {{patientId}}</li>
-        <li>
-          <strong>Name :</strong> {{_patient.name}}</li>
-        <li>
-          <strong>Gender :</strong> {{_patient.gender}}</li>
-        <li>
-          <strong>Age :</strong> {{_patient.age}}</li>
-      </ul>
-    </div>
-    <div style="width: 50%; padding-top: 12px; float: right;">
-      <ul class="list-unstyled">
-        <li>
-          <strong>Register ID :</strong> {{_id}}</li>
-        <li>
-          <strong>Register Date :</strong> {{registerDate}}</li>
-        <li>
-          <strong>Description :</strong> {{des}}</li>
-        <li>
-          <strong>Exchange :</strong> {{exchange}}</li>
-      </ul>
-    </div>
-    {{/with}}
-  </div>
+            <!--Header-->
+            <div style="width: 100%">
+                {{#with header}}
+                    <div style="width: 50%; padding-top: 12px; float: left;">
+                        <ul class="list-unstyled">
+                            <li><strong>លេខកូដអ្នកជំងឺ :</strong> {{patientId}}</li>
+                            <li><strong>ឈ្មោះ :</strong> {{_patient.name}}</li>
+                            <li><strong>ភេទ :</strong> {{_patient.gender}}</li>
+                            <li><strong>អាយុ :</strong> {{_patient.age}}</li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%; padding-top: 12px; float: right;">
+                        <ul class="list-unstyled">
+                            <li><strong>លេខកូដចុះឈ្មោះ : </strong> {{_id}}</li>
+                            <li><strong>កាលបរិច្ឆេទចុះឈ្មោះ : </strong> {{registerDate}}</li>
+                            <li><strong>ពិពណ៌នា :</strong> {{des}}</li>
+                            <li><strong>អាត្រាប្តូរប្រាក់ :</strong> {{exchange}}</li>
+                        </ul>
+                    </div>
+                {{/with}}
+            </div>
 
-  <!--Content-->
-  <img src="/seng_ratha/tooth_invoice.jpg" class="border-img">
-  <table class="report-content">
-    <thead class="report-content-header">
-      <tr>
-        <th>N<sup>o</sup></th>
-        <th>Items</th>
-        <th>Qty</th>
-        <th>Price</th>
-        <th style="width">Disc.</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
+            <!--Content-->
+            <img src="/seng_ratha/tooth.jpg" class="border-img">
+            <table class="report-content">
+                <thead class="report-content-header">
+                <tr>
+                    <th>ល.រ</th>
+                    <th>បរិយាយ</th>
+                    <th>ចំនួន</th>
+                    <th>តម្លៃ</th>
+                    <th>បញ្ចុះតម្លៃរាយ</th>
+                    <th>ទឹកប្រាក់</th>
+                </tr>
+                </thead>
 
-    <tbody class="report-content-body">
-      {{#each content}}
-      <tr class="td-custom">
-        <td class="index-style">{{index}}</td>
-        <td class="items-style">{{itemName}}</td>
-        <td class="qty-style">{{qty}}</td>
-        <td>{{price}}</td>
-        <td class="dis-style">{{discount}} %</td>
-        <td>{{amount}}</td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+                <tbody class="report-content-body">
+                {{#each content}}
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{itemName}}</td>
+                        <td>{{qty}}</td>
+                        <td>{{price}}</td>
+                        <td>{{discount}}</td>
+                        <td>{{amount}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
 
-  <!--Footer-->
-  <div style="width: 100%">
-    <!--Deposit-->
-    <div style="width: 50%; float: left">
-      <table class="report-content">
-        <caption>Deposit Information</caption>
-        <thead class="report-content-header">
-          <tr>
-            <th>N<sup>o</sup></th>
-            <th>Deposit Date</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
+            <!--Footer-->
+            <div style="width: 100%">
+                <!--Deposit-->
+                <div style="width: 50%; float: left">
+                    <table class="report-content">
+                        <caption>ពត៍មានការកក់</caption>
+                        <thead class="report-content-header">
+                        <tr>
+                            <th>ល.រ</th>
+                            <th>កាលបរិច្ឆេទកក់ប្រាក់</th>
+                            <th>ទឹកប្រាក់</th>
+                        </tr>
+                        </thead>
 
-        <tbody class="report-content-body">
-          {{#each deposit}}
-          <tr class="td-custom">
-            <td class="index-style">{{index}}</td>
-            <td>{{depositDate}}</td>
-            <td>{{amount}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <div style="width: 69%; margin-top: 20px">
-        <ul class="list-unstyled">
-          <li>
-            <strong>Cashier :</strong> __________________
-          </li>
-        </ul>
-      </div>
+                        <tbody class="report-content-body">
+                        {{#each deposit}}
+                            <tr>
+                                <td>{{index}}</td>
+                                <td>{{depositDate}}</td>
+                                <td>{{amount}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
 
-    </div>
+                <!--Total-->
 
+              </div>  <div style="width: 48%; float: right; margin-top: 20px">
+            {{#with footer}}
+                <ul class="list-unstyled text-right">
+                    <li>
+                        <strong>ទឹកប្រាក់សរុប :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subTotal}}
+                    </li>
+                    <li>
+                        <strong>ទឹកប្រាក់កក់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{deposit}}
+                    </li>
+                    <li><strong>បញ្ចុះតម្លៃ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subDiscount}}
+                    </li>
+                    <li><strong>ទឹកប្រាក់បានបង់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{paidAmount}}
+                    </li>
 
-    <!--Total-->
+                    <div style=" margin-top: 20px;border-top:1px solid #000000; padding-top: 20px;">
+                    <li>
+                        <strong>ទឹកប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+                    </li>
+                    <li><strong>ទឹកប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+                    </li>
+                    <li><strong>ទឹកប្រាក់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+                    </li>
+                    </div>
+                </ul>
+            {{/with}}
+            </div>
+        {{/with}}
 
-  </div>
-  <div style="width: 48%; float: right; margin-top: 20px">
-    {{#with footer}}
-    <ul class="list-unstyled text-right">
-      <li>
-        <strong>Sub Total :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subTotal}}
-      </li>
-      <li>
-        <strong>Deposit :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{deposit}}
-      </li>
-      <li>
-        <strong>Discount ($) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subDiscount}}
-      </li>
-      <li>
-        <strong>Total Paid :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{paidAmount}}
-      </li>
-
-      <div style=" margin-top: 20px;border-top:1px solid #000000; padding-top: 20px;">
-        <li>
-          <strong>Total (USD) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
-        </li>
-        <li>
-          <strong>Total (KHR) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
-        </li>
-        <li>
-          <strong>Total (THB) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
-        </li>
-      </div>
-    </ul>
-    {{/with}}
-  </div>
-
-
-  <!--Note-->
-  <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-    <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
-    <br>
-    <strong><u>Note:</u></strong> All payments will not refundable (ទឹកប្រាក់បង់ មិនអាចយកវិញបានទេ).
-  </div>
-  {{/with}} {{else}} {{> loading}} {{/if}}
+        <!--Note-->
+        <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
+            <strong><u>Note:</u></strong> All payments will not refundable (ទឹកប្រាក់បង់ មិនអាចយកវិញបានទេ).
+        </div>
+    {{else}}
+        {{> loading}}
+    {{/if}}
 </template>
