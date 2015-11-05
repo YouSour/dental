@@ -235,12 +235,12 @@
   padding-right: 15px;
   padding-left: 15px;
   float: left;
-  width: 11%;
+  width: 14%;
 }
 @media (min-width: 768px) {
   .col-sm-2-custom ,.col-md-2-custom{
     float: left;
-    width: 11%;
+    width: 14%;
   }
   }
 
@@ -250,11 +250,11 @@
     padding-right: 15px;
     padding-left: 15px;
     float: left;
-    width: 30%;
+    width: 27%;
   }
   @media (min-width: 768px) {
     .col-sm-4-custom ,.col-md-4-custom{
       float: left;
-      width: 30%;
+      width: 27%;
     }
     }
