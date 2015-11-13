@@ -11,5 +11,16 @@ Module.Cpanel = {
     roles: [
         'super',
         'admin'
-    ]
+    ],
+    dump: {
+        data: [
+            'roles',
+            'users',
+            'cpanel_setting',
+            'cpanel_currency',
+            'cpanel_company',
+            'cpanel_branch',
+            'cpanel_exchange'
+        ]
+    }
 };

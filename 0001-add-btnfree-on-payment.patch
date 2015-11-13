@@ -1,0 +1,84 @@
+From 9e22093651463191a09d8e4d03c38d802ce3636a Mon Sep 17 00:00:00 2001
+From: yousour <hengyousour@gmail.com>
+Date: Tue, 10 Nov 2015 17:07:05 +0700
+Subject: [PATCH] add btnfree on payment
+
+---
+ dental/client/templates/payment/payment.html | 2 ++
+ dental/client/templates/payment/payment.js   | 6 ++++++
+ dental/common/collections/payment.js         | 6 +++---
+ 3 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/dental/client/templates/payment/payment.html b/dental/client/templates/payment/payment.html
+index b824d97..c9452ca 100644
+--- a/dental/client/templates/payment/payment.html
++++ b/dental/client/templates/payment/payment.html
+@@ -89,6 +89,7 @@
+         </div>
+ 
+         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
++        <button type="button" class="btn btn-success btnFree">{{fa "star"}} Free</button>
+         <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+     {{/autoForm}}
+ </template>
+@@ -162,6 +163,7 @@
+         </div>
+ 
+         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
++          <button type="button" class="btn btn-success btnFree">{{fa "star"}} Free</button>
+         <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+     {{/autoForm}}
+ </template>
+diff --git a/dental/client/templates/payment/payment.js b/dental/client/templates/payment/payment.js
+index 06e49cf..79988ce 100644
+--- a/dental/client/templates/payment/payment.js
++++ b/dental/client/templates/payment/payment.js
+@@ -90,6 +90,9 @@ Template.dental_paymentInsert.events({
+   },
+   'keyup .paidAmount': function() {
+     calculateBalance();
++  },
++  'click .btnFree': function(e, t) {
++    $('.dueAmount, .paidAmount, .balance').val(0);
+   }
+ });
+ 
+@@ -112,6 +115,9 @@ Template.dental_paymentUpdate.events({
+   },
+   'keyup .paidAmount': function() {
+     calculateBalance();
++  },
++  'click .btnFree': function(e, t) {
++    $('.dueAmount, .paidAmount, .balance').val(0);
+   }
+ });
+ 
+diff --git a/dental/common/collections/payment.js b/dental/common/collections/payment.js
+index 86526bf..3c0aeaa 100644
+--- a/dental/common/collections/payment.js
++++ b/dental/common/collections/payment.js
+@@ -49,10 +49,10 @@ Dental.Schema.Payment = new SimpleSchema({
+   paidAmount: {
+     type: Number,
+     decimal: true,
+-    min: 0.01,
++    min: 0,
+     custom: function() {
+       if (this.value > this.field('dueAmount').value) {
+-        return "greaterThan";
++        return "greaterThanDue";
+       }
+     },
+     label: 'Paid Amount'
+@@ -103,7 +103,7 @@ Dental.Collection.Payment.attachSchema(Dental.Schema.Payment);
+  * Custom Error Message
+  */
+ SimpleSchema.messages({
+-  "greaterThan": "Paid Amount Can't Be Greater Than Due Amount",
++  "greaterThanDue": "Paid Amount Can't Be Greater Than Due Amount",
+   "date": "Payment Date Can't Smaller Than " + moment().format(
+     'YYYY-MM-DD H:mm:ss')
+ });
+-- 
+1.9.1
+
