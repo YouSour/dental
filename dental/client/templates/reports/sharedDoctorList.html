@@ -20,15 +20,29 @@
 <template name="dental_sharedDoctorListReportGen">
     {{#if data}}
         {{#with data}}
-            <!--Title-->
-            <div class="report-title">
-                <span class="report-company-name"
-                      style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
-                <span class="report-company-name">{{title.company.enName}}</span><br>
-                Date: {{title.date}}<br>
-                <u>Shared Doctor Report</u><br>
-                {{title.company.khAddress}}, {{title.company.telephone}}
-            </div>
+    <!--Title-->
+        <table class="report-title" style="width:100%;">
+            <tr align="center">
+
+              <td colspan="2">
+                <td>
+                    <img src="/hengly/logo.png">
+                </td>
+
+                <td>
+                  <span class="report-company-name"
+                        style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                  <span class="report-company-name">{{title.company.enName}}</span><br>
+                  Date: {{title.date}}<br>
+                  <u>Shared Dotors Report</u><br>
+                  {{title.company.khAddress}}, {{title.company.telephone}}
+                </td>
+
+              </td>
+            </tr>
+        </table>
+
+
 
             <!--Header-->
             <table width="100%" border="0">
