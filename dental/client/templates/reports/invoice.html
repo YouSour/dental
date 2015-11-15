@@ -93,7 +93,7 @@
         <th>បរិយាយ</th>
         <th>ចំនួន</th>
         <th>តម្លៃ</th>
-        <th data-toggle="tooltip" data-placement="left" title="បញ្ចុះតម្លៃរាយ">ប.ត.រ</th>
+        <th data-toggle="tooltip" data-placement="left" title="បញ្ចុះតម្លៃរាយ">បញ្ចុះ</th>
         <th>ទឹកប្រាក់</th>
       </tr>
     </thead>
@@ -117,11 +117,11 @@
     <!--Deposit-->
     <div style="width: 50%; float: left">
       <table class="report-content">
-        <caption>ពត៍មានការកក់</caption>
+        <caption>ពត៍មានការកក់ប្រាក់</caption>
         <thead class="report-content-header">
           <tr>
             <th>ល.រ</th>
-            <th>កាលបរិច្ឆេទកក់ប្រាក់</th>
+            <th>កាលបរិច្ឆេទ</th>
             <th>ទឹកប្រាក់</th>
           </tr>
         </thead>
@@ -152,36 +152,34 @@
     {{#with footer}}
     <ul class="list-unstyled text-right">
       <li>
-        <strong>ទឹកប្រាក់សរុប :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subTotal}}
+        <strong>ប្រាក់សរុប :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subTotal}}
       </li>
       <li>
-        <strong>ទឹកប្រាក់កក់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{deposit}}
+        <strong>ប្រាក់កក់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{deposit}}
       </li>
       <li>
         <strong>បញ្ចុះតម្លៃ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subDiscount}}
       </li>
       <li>
-        <strong>ទឹកប្រាក់បានបង់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{paidAmount}}
+        <strong>ប្រាក់បានបង់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{paidAmount}}
       </li>
-
-      <div style=" margin-top: 20px;border-top:1px solid #000000; padding-top: 20px;">
-        <li>
-          <strong>ទឹកប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
-        </li>
-        <li>
-          <strong>ទឹកប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
-        </li>
-        <li>
-          <strong>ទឹកប្រាក់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
-        </li>
-      </div>
+      <li>
+        <strong>ប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+      </li>
+      <li>
+        <strong>ប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+      </li>
+      <li>
+        <strong>ប្រាក់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+      </li>
     </ul>
     {{/with}}
   </div>
 
   <!--Note-->
   <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-    <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
+    <strong>{{title.company.khAddress}}</strong><br>
+    <strong>ទូរស័ព្ទ៖ {{title.company.telephone}}</strong>
       <br>
     <strong><u>Note:</u></strong> All payments will not refundable (ទឹកប្រាក់បង់ មិនអាចយកវិញបានទេ).
   </div>

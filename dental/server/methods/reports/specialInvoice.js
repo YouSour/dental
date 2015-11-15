@@ -44,8 +44,9 @@ Meteor.methods({
         var itemDoc = Dental.Collection.DiseaseItem.findOne(obj.item);
         obj.index = index;
         obj.itemName = itemDoc.name;
-        obj.price = numeral(obj.price).format('0,0.00');
-        obj.amount = numeral(obj.amount).format('0,0.00');
+        obj.price = numeral(obj.price).format('$0,0.00');
+        obj.discount = obj.discount + "%";
+        obj.amount = numeral(obj.amount).format('$0,0.00');
 
         content.push(obj);
 
