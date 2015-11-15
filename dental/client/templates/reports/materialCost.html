@@ -79,13 +79,13 @@
     {{#with footer}}
     <ul class="list-unstyled text-right">
       <li>
-        <strong>ទឹកប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+        <strong>ប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
       </li>
       <li>
-        <strong>ទឹកប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+        <strong>ប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
       </li>
       <li>
-        <strong>ទឹកប្រាក់នៅសល់់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+        <strong>ប្រាក់នៅសល់់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
       </li>
     </ul>
     {{/with}}
@@ -93,7 +93,8 @@
 
   <!--Note-->
   <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
-    <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
+    <strong>{{title.company.khAddress}}</strong><br>
+    <strong>ទូរស័ព្ទ៖ {{title.company.telephone}}</strong>
   </div>
 
   {{/with}} {{else}} {{> loading}} {{/if}}

@@ -61,6 +61,7 @@ Meteor.methods({
         obj.index = index;
         obj.itemName = itemDoc.name;
         obj.price = numeral(obj.price).format('$0,0.00');
+        obj.discount = obj.discount + "%";
         obj.amount = numeral(obj.amount).format('$0,0.00');
         content.push(obj);
 
