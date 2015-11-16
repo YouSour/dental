@@ -90,6 +90,9 @@ Template.dental_paymentInsert.events({
   },
   'keyup .paidAmount': function() {
     calculateBalance();
+  },
+  'click .btnFree': function(e, t) {
+    $('.dueAmount, .paidAmount, .balance').val(0);
   }
 });
 
@@ -112,6 +115,9 @@ Template.dental_paymentUpdate.events({
   },
   'keyup .paidAmount': function() {
     calculateBalance();
+  },
+  'click .btnFree': function(e, t) {
+    $('.dueAmount, .paidAmount, .balance').val(0);
   }
 });
 
