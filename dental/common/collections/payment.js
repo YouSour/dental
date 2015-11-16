@@ -49,7 +49,7 @@ Dental.Schema.Payment = new SimpleSchema({
   paidAmount: {
     type: Number,
     decimal: true,
-    min: 0.01,
+    min: 0,
     custom: function() {
       if (this.value > this.field('dueAmount').value) {
         return "greaterThanDue";
