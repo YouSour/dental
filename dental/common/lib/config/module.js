@@ -9,8 +9,11 @@ Module.Dental = {
   version: '0.0.1',
   summary: 'Dental Clinic System is ...',
   roles: [
-    'admin',
-    'general',
+    'setting',
+    'data-insert',
+    'data-update',
+    'data-remove',
+    'data-patient-insert',
     'reporter'
   ],
   dump: {
