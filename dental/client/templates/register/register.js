@@ -262,7 +262,8 @@ Template.dental_registerInsert.events({
     var index = 0;
     $('div.array-item').each(function() {
       //clear selectize
-      $('select.item')[index].selectize.clear(true);
+      var cssSelector = '[name="disease.' + index + '.item"]';
+      $(cssSelector)[0].selectize.clear(true);
       index++;
     });
 
@@ -488,7 +489,9 @@ Template.afArrayField_customArrayFieldInvoiceForLaboExpense.events({
     });
 
     //get price labo item
-    thisObj.parents('div.array-item').find('.laboAmount').val(laboDoc.price);
+    if (!_.isUndefined(laboDoc)) {
+      thisObj.parents('div.array-item').find('.laboAmount').val(laboDoc.price);
+    }
     // Cal footer for labo expense
     calculateTotalForLaboExpense();
 
