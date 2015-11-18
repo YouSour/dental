@@ -49,7 +49,8 @@ Dental.Schema.Treatment = new SimpleSchema({
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['picture']]
+            ['insert', ['picture']],
+            ['misc', ['fullscreen']],
           ]
         }
       }

@@ -88,7 +88,8 @@ Dental.Schema.SpecialPayment = new SimpleSchema({
             ['font', ['strikethrough']],
             ['fontsize', ['fontsize']],
             ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']]
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['misc', ['fullscreen']],
           ]
         }
       }
