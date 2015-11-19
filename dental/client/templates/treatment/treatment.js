@@ -23,14 +23,14 @@ Template.dental_treatment.events({
     Session.set('closeTreatment', true);
     var data = Dental.RegisterState.get('data');
     alertify.treatment(fa("plus", "Treatment"), renderTemplate(Template.dental_treatmentInsert,
-      data));
+      data)).maximize();
   },
   'click .update': function() {
     var data = Dental.Collection.Treatment.findOne({
       _id: this._id
     });
     alertify.treatment(fa("pencil", "Treatment"), renderTemplate(Template
-      .dental_treatmentUpdate, data));
+      .dental_treatmentUpdate, data)).maximize();
   },
   'click .remove': function() {
     var self = this;
@@ -61,8 +61,10 @@ Template.dental_treatment.events({
       data));
   },
   'click .showDescription': function() {
-    alertify.alert(fa("eye", "Treatment"), renderTemplate(Template.dental_treatmentShowDescription,
-      this));
+    // Show Description
+    var q = 'treatmentId=' + this._id;
+    var url = 'treatmentDescriptionGen?' + q;
+    window.open(url);
   }
 });
 
