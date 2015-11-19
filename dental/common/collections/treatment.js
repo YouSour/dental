@@ -41,7 +41,7 @@ Dental.Schema.Treatment = new SimpleSchema({
         type: 'summernote',
         class: 'editor',
         settings: {
-          height: 100,
+          height: 340,
           toolbar: [
             //[groupname, [button list]]
             ['style', ['bold', 'italic', 'underline']],

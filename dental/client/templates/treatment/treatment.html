@@ -24,19 +24,17 @@
 
 <!--Action-->
 <template name="dental_treatmentDesAction">
-  <button type="button" class="btn btn-sm btn-primary btn-block showDescription">{{fa "eye"}} Show</button>
+<button type="button" class="btn btn-sm btn-primary btn-block showDescription">{{fa "eye"}} Show</button>
 </template>
 
 <!--Insert-->
 <template name="dental_treatmentInsert">
     {{#autoForm collection=Dental.Collection.Treatment id="dental_treatmentInsert" type="insert"}}
         <div class="row">
-            <div class="col-md-12">
-
-                {{> afQuickField name="patientId" type="hidden" value=patientId}}
-                {{> afQuickField name="registerId"  type="hidden" value=_id}}
+<div class="col-md-6">
                 {{> afQuickField name="treatmentDate"}}
-
+</div>
+<div class="col-md-6">
                 <div class="form-group{{#if afFieldIsInvalid name='doctorId'}} has-error{{/if}}" data-required="true">
                     <label class="control-label" for="doctorId">Doctor</label>
 
@@ -52,7 +50,11 @@
                         <span class="help-block">{{afFieldMessage name='doctorId'}}</span>
                     {{/if}}
                 </div>
+</div>
+<div class="col-md-12">
 
+    {{> afQuickField name="patientId" type="hidden" value=patientId}}
+    {{> afQuickField name="registerId"  type="hidden" value=_id}}
                 {{> afQuickField name="des" rows=3}}
                 <!-- {{> afQuickField name="attachFile"}} -->
 
@@ -123,19 +125,4 @@
         <!-- <dt>File</dt>
         <dd>{{lightbox url=attachFileUrl title=_doctor.name icon="paperclip"}}</dd> -->
     </dl>
-</template>
-
-<!--Show Description-->
-<template name="dental_treatmentShowDescription">
-    <!-- <div class="bs-callout bs-callout-default" id="callout-tables-striped-ie8">
-    <h4>Description</h4>
-    <hr>
-    <p></p>
-  </div> -->
-
-  <div class="page-header">
-  <h1>Description</h1>
-  <hr>
-  <p>{{{des}}}</p>
-</div>
 </template>

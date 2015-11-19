@@ -330,8 +330,13 @@ Template.dental_registerUpdate.events({
   'click .patientAddon': function(e, t) {
     alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))
       .maximize();
+  },
+  'click .showDescription': function() {
+    // Show Description
+    var q = 'treatmentId=' + this._id;
+    var url = 'treatmentDescriptionGen?' + q;
+    window.open(url);
   }
-
 });
 
 /**
