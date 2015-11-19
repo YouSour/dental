@@ -137,7 +137,7 @@ Template.dental_register.events({
         alertify.treatmentAction(
           fa("plus", "Treatment"),
           renderTemplate(Template.dental_treatmentInsert, data)
-        );
+        ).maximize();
       }
     }
   },
