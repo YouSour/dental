@@ -2,20 +2,21 @@
  *
  * @type {Mongo.Collection}
  */
-Dental.Collection.Treatment = new Mongo.Collection('dental_treatment');
+Dental.Collection.SpecialTreatment = new Mongo.Collection(
+  'dental_specialTreatment');
 
 /**
  *
  * @type {SimpleSchema}
  */
-Dental.Schema.Treatment = new SimpleSchema({
+Dental.Schema.SpecialTreatment = new SimpleSchema({
   patientId: {
     type: String
   },
-  registerId: {
+  specialRegisterId: {
     type: String
   },
-  treatmentDate: {
+  specialTreatmentDate: {
     type: String,
     defaultValue: function() {
       var currentDate = moment(ReactiveMethod.call("currentDate"),
@@ -88,4 +89,4 @@ Dental.Schema.Treatment = new SimpleSchema({
 /**
  * Attache schema
  */
-Dental.Collection.Treatment.attachSchema(Dental.Schema.Treatment);
+Dental.Collection.SpecialTreatment.attachSchema(Dental.Schema.SpecialTreatment);

@@ -38,6 +38,7 @@ Dental.TabularTable.Payment = new Tabular.Table({
   order: [
     ["1", "desc"]
   ],
+  extraFields: ['patientId'],
   autoWidth: false,
   columnDefs: [{
     "width": "12px",

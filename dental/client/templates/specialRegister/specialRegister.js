@@ -17,7 +17,7 @@ Template.dental_specialRegister.onCreated(function() {
     'patientAddon',
     'doctorAddon',
     'statusAction',
-    'treatmentAction',
+    'specialTreatmentAction',
     'appointmentAction',
     'paymentAction'
   ]);
@@ -120,12 +120,12 @@ Template.dental_specialRegister.events({
       }
     }
   },
-  'click .treatmentAction': function() {
+  'click .specialTreatmentAction': function() {
     if (this.status == "Active") {
       registerState(this);
-      alertify.treatmentAction(
-        fa("medkit", "Treatment"),
-        renderTemplate(Template.dental_treatment)
+      alertify.specialTreatmentAction(
+        fa("medkit", "Special Treatment"),
+        renderTemplate(Template.dental_specialTreatment)
       ).maximize();
     }
   },
@@ -155,9 +155,9 @@ Template.dental_specialRegister.events({
     ).maximize();
   },
   // Print action
-  'click .treatmentPrintAction': function() {
-    var q = 'patient=' + this.patientId + '&register=' + this._id;
-    var url = 'treatmentReportGen?' + q;
+  'click .specialTreatmentPrintAction': function() {
+    var q = 'patient=' + this.patientId + '&specialRegister=' + this._id;
+    var url = 'specialTreatmentReportGen?' + q;
     window.open(url);
   },
   'click .specialInvoiceReportPrintAction': function() {
@@ -219,7 +219,7 @@ Template.dental_specialRegisterInsert.events({
       .maximize();
   },
   'click #saveAndPrint': function() {
-    Session.set('printInvoice', true);
+    Session.set('printSpecialInvoice', true);
   }
 });
 
@@ -485,14 +485,14 @@ AutoForm.hooks({
       //$('select.doctor')[0].selectize.clear(true);
       //$('select.laboratory')[0].selectize.clear(true);
 
-      var printSession = Session.get('printInvoice');
+      var printSession = Session.get('printSpecialInvoice');
       var data = Dental.Collection.SpecialRegister.findOne(result);
       if (printSession) {
         var q = 'patient=' + data.patientId + '&specialRegister=' + data._id;
         var url = '/dental/specialInvoiceReportGen?' + q;
         window.open(url);
       }
-      Session.set('printInvoice', false);
+      Session.set('printSpecialInvoice', false);
       alertify.success('Success');
     },
     onError: function(fromType, error) {

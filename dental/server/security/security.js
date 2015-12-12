@@ -210,6 +210,21 @@ Dental.Collection.Payment.permit(['remove'])
   .apply();
 
 /*
+ *Special Treatment
+ */
+Dental.Collection.SpecialTreatment.permit(['insert'])
+  .dental_ifDataInsert()
+  .apply();
+
+Dental.Collection.SpecialTreatment.permit(['update'])
+  .dental_ifDataUpdate()
+  .apply();
+
+Dental.Collection.SpecialTreatment.permit(['remove'])
+  .dental_ifDataRemove()
+  .apply();
+
+/*
  *Special Payment
  */
 Dental.Collection.SpecialPayment.permit(['insert'])

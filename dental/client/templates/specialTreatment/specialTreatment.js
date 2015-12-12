@@ -1,45 +1,48 @@
-Dental.ListState = new ReactiveObj();
 /*
  * Index
  */
-Template.dental_treatment.onCreated(function() {
-  createNewAlertify(['treatment', 'doctorAddon']);
+Template.dental_specialTreatment.onCreated(function() {
+  createNewAlertify(['specialTreatment', 'doctorAddon']);
 });
 
-Template.dental_treatment.helpers({
+Template.dental_specialTreatment.helpers({
   register: function() {
     return Dental.RegisterState.get('data');
   },
   selector: function() {
-    var registerId = Dental.RegisterState.get('data')._id;
+    var specialRegisterId = Dental.RegisterState.get('data')._id;
     return {
-      registerId: registerId
+      specialRegisterId: specialRegisterId
     };
   }
 });
 
-Template.dental_treatment.events({
+Template.dental_specialTreatment.events({
   'click .insert': function() {
     Session.set('closeTreatment', true);
     var data = Dental.RegisterState.get('data');
-    alertify.treatment(fa("plus", "Treatment"), renderTemplate(Template.dental_treatmentInsert,
-      data)).maximize();
+    alertify.specialTreatment(fa("plus", "Special Treatment"),
+      renderTemplate(Template.dental_specialTreatmentInsert,
+        data)).maximize();
   },
   'click .update': function() {
-    var data = Dental.Collection.Treatment.findOne({
+    var data = Dental.Collection.SpecialTreatment.findOne({
       _id: this._id
     });
-    alertify.treatment(fa("pencil", "Treatment"), renderTemplate(Template
-      .dental_treatmentUpdate, data)).maximize();
+
+    alertify.specialTreatment(fa("pencil", "Special Treatment"),
+      renderTemplate(Template
+        .dental_specialTreatmentUpdate, data)).maximize();
   },
   'click .remove': function() {
     var self = this;
 
     alertify.confirm(
-      fa("remove", "Treatment"),
+      fa("remove", "Special Treatment"),
       "Are you sure to delete [" + self._id + "]?",
       function() {
-        Dental.Collection.Treatment.remove(self._id, function(error) {
+        Dental.Collection.SpecialTreatment.remove(self._id, function(
+          error) {
           if (error) {
             alertify.error(error.message);
           } else {
@@ -51,24 +54,25 @@ Template.dental_treatment.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.Treatment.findOne(this._id);
+    var data = Dental.Collection.SpecialTreatment.findOne(this._id);
     // data.attachFileUrl = null;
     //
     // if (!_.isUndefined(data.attachFile)) {
     //   data.attachFileUrl = Files.findOne(data.attachFile).url();
     // }
-    alertify.alert(fa("eye", "Treatment"), renderTemplate(Template.dental_treatmentShow,
+    alertify.alert(fa("eye", "Special Treatment"), renderTemplate(
+      Template.dental_specialTreatmentShow,
       data));
   },
   'click .showDescription': function() {
     // Show Description
-    var q = 'treatmentId=' + this._id;
-    var url = 'treatmentDescriptionGen?' + q;
+    var q = 'specialTreatmentId=' + this._id;
+    var url = 'specialTreatmentDescriptionGen?' + q;
     window.open(url);
   },
-  'click .treatmentPrintAction': function() {
-    var q = 'patient=' + this.patientId + '&register=' + this.registerId;
-    var url = 'treatmentReportGen?' + q;
+  'click .specialTreatmentPrintAction': function() {
+    var q = 'patient=' + this.patientId + '&specialRegister=' + this.specialRegisterId;
+    var url = 'specialTreatmentReportGen?' + q;
     window.open(url);
   }
 });
@@ -76,11 +80,11 @@ Template.dental_treatment.events({
 /**
  * Insert
  */
-Template.dental_treatmentInsert.onRendered(function() {
+Template.dental_specialTreatmentInsert.onRendered(function() {
   datepicker();
 });
 
-Template.dental_treatmentInsert.events({
+Template.dental_specialTreatmentInsert.events({
   'click .doctorAddon': function(e, t) {
     alertify.doctorAddon(
       fa("plus", "Doctor"),
@@ -88,18 +92,18 @@ Template.dental_treatmentInsert.events({
     );
   },
   'click #saveAndPrint': function(e, t) {
-    return Session.set('printTreatment', true);
+    return Session.set('printSpecialTreatment', true);
   }
 });
 
 /**
  * Update
  */
-Template.dental_treatmentUpdate.onRendered(function() {
+Template.dental_specialTreatmentUpdate.onRendered(function() {
   datepicker();
 });
 
-Template.dental_treatmentUpdate.events({
+Template.dental_specialTreatmentUpdate.events({
   'click .doctorAddon': function(e, t) {
     alertify.doctorAddon(
       fa("plus", "Doctor"),
@@ -112,11 +116,11 @@ Template.dental_treatmentUpdate.events({
  * Hook
  */
 AutoForm.hooks({
-  dental_treatmentInsert: {
+  dental_specialTreatmentInsert: {
     before: {
       insert: function(doc) {
         var currentBranch = Session.get('currentBranch');
-        doc._id = idGenerator.genWithPrefix(Dental.Collection.Treatment,
+        doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialTreatment,
           currentBranch + '-', 12);
         doc.branchId = currentBranch;
 
@@ -125,31 +129,30 @@ AutoForm.hooks({
     },
     onSuccess: function(formType, result) {
       if (Session.get('closeTreatment')) {
-        alertify.treatment().close();
+        alertify.specialTreatment().close();
       }
       //clear select2
       $('select').each(function() {
         $(this).select2("val", "");
       });
 
-      var printSession = Session.get('printTreatment');
-      var data = Dental.Collection.Treatment.findOne(result);
+      var printSession = Session.get('printSpecialTreatment');
+      var data = Dental.Collection.SpecialTreatment.findOne(result);
       if (printSession) {
-        var q = 'patient=' + data.patientId + '&register=' + data.registerId;
-        var url = 'treatmentReportGen?' + q;
+        var q = 'patient=' + data.patientId + '&specialRegister=' + data.specialRegisterId;
+        var url = 'specialTreatmentReportGen?' + q;
         window.open(url);
       }
-      Session.set('printTreatment', false);
-
+      Session.set('printSpecialTreatment', false);
       alertify.success("Success");
     },
     onError: function(formType, error) {
       alertify.error(error.message);
     }
   },
-  dental_treatmentUpdate: {
+  dental_specialTreatmentUpdate: {
     onSuccess: function(formType, result) {
-      alertify.treatment().close();
+      alertify.specialTreatment().close();
       alertify.success("Success");
     },
     onError: function(fromType, error) {

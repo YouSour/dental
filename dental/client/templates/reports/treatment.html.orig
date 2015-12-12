@@ -86,7 +86,7 @@
       <tr class="td-custom">
         <td class="index-style">{{index}}</td>
         <td class="treatment-date-style">{{treatmentDate}}</td>
-        <td class="treatment-des-style">{{{des}}}</td>
+        <td>{{{des}}}</td>
         <td class="doctor-style">{{_doctor.name}}</td>
       </tr>
       {{/each}}

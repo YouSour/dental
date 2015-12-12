@@ -1,0 +1,18 @@
+<!--Treatment Info-->
+<template name="dental_specialTreatmentInfo">
+    <div class="panel panel-default">
+        <div class="panel-heading">Special Treatment Info</div>
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                {{#each data}}
+                    <li><strong>Date:</strong> {{specialTreatmentDate}}</li>
+                    <li><strong>Des:</strong> <a href="#" class="showDescription">View</a></li>
+                    <li style="border-bottom: 1px solid;">
+                        <li><strong>Doctor:</strong> {{_doctor.name}}</li>
+                        <!-- <strong>Attach File:</strong> {{lightbox url=attachFileUrl title=_doctor.name icon="paperclip"}} -->
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</template>

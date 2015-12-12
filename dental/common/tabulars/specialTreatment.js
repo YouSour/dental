@@ -1,12 +1,12 @@
-Dental.TabularTable.Treatment = new Tabular.Table({
-  name: "dentalTreatmentList",
-  collection: Dental.Collection.Treatment,
+Dental.TabularTable.SpecialTreatment = new Tabular.Table({
+  name: "dentalSpecialTreatmentList",
+  collection: Dental.Collection.SpecialTreatment,
   columns: [{
       title: "<i class='fa fa-bars'></i>",
-      tmpl: Meteor.isClient && Template.dental_treatmentAction
+      tmpl: Meteor.isClient && Template.dental_specialTreatmentAction
     }, {
-      data: "treatmentDate",
-      title: "Treatment Date"
+      data: "specialTreatmentDate",
+      title: "Special Treatment Date"
     }, {
       data: "doctorId",
       title: "Doctor ID"
@@ -33,13 +33,13 @@ Dental.TabularTable.Treatment = new Tabular.Table({
     // },
     {
       title: "Attach File",
-      tmpl: Meteor.isClient && Template.dental_treatmentDesAction
+      tmpl: Meteor.isClient && Template.dental_specialTreatmentDesAction
     },
   ],
   order: [
     ["1", "desc"]
   ],
-  extraFields: ['patientId', 'registerId', 'des'],
+  extraFields: ['patientId', 'specialRegisterId', 'des'],
   autoWidth: false,
   columnDefs: [{
     "width": "12px",

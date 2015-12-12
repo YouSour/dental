@@ -4,9 +4,11 @@ Dental.Collection.SpecialPayment.before.insert(function(userId, doc) {
   }
 
   //generate Id
+  var id = doc._id;
   var branchPre = doc._id;
   doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialPayment,
     branchPre, 3);
+  Dental.ListState.set(id, doc.specialRegisterId);
 });
 Dental.Collection.SpecialPayment.after.insert(function(userId, doc) {
   Meteor.defer(function() {
@@ -36,7 +38,6 @@ Dental.Collection.SpecialPayment.after.remove(function(userId, doc) {
   });
 
 });
-
 
 var updateSpecialRegister = function(doc) {
   if (doc.paymentMethod == doc._specialRegister.paymentMethod.length) {
