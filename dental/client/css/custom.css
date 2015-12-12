@@ -212,6 +212,11 @@
   width: 125px;
 }
 
+/*custom style treatmentDescription*/
+.treatment-des-style{
+  text-align: left;
+}
+
 /*custom style doctor*/
 .doctor-style{
   width: 150px;

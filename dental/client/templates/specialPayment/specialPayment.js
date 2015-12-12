@@ -14,7 +14,6 @@ Template.dental_specialPayment.helpers({
   },
   selector: function() {
     var registerId = Dental.RegisterState.get('data')._id;
-
     return {
       specialRegisterId: registerId
     };
@@ -27,6 +26,7 @@ Template.dental_specialPayment.events({
     checkLastPayment(self);
   },
   'click .insert': function() {
+    Session.set('closeSpecialPayment', true);
     var data = Dental.RegisterState.get('data');
 
     // Check last balance
@@ -100,6 +100,9 @@ Template.dental_specialPaymentInsert.events({
   'click .staffAddon': function() {
     alertify.staffAddon(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert));
   },
+  'click #saveAndPrint': function() {
+    Session.set('printSpecialPayment', true);
+  },
   'change .paymentMethod': function(e) {
     var getAmount = $(e.currentTarget).val();
     var splitAmount = getAmount.split(" | ");
@@ -160,7 +163,20 @@ AutoForm.hooks({
       }
     },
     onSuccess: function(formType, result) {
-      alertify.payment().close();
+      if (Session.get('closeSpecialPayment')) {
+        alertify.payment().close();
+      }
+
+      Meteor.call('getSpecialPayment', result, function(err, result) {
+        var printSession = Session.get('printSpecialPayment');
+        if (printSession) {
+          var q = 'specialRegister=' + result;
+          var url = 'specialPaymentReportGen?' + q;
+          window.open(url);
+        }
+        Session.set('printSpecialPayment', false);
+      });
+
       alertify.success('Success');
     },
     onError: function(formType, error) {

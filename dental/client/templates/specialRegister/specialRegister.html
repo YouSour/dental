@@ -24,7 +24,7 @@
 
 <!--Treatment-Link-Action-->
 <template name="dental_specialTreatmentLinkAction">
-    <button type="button" class="btn btn-default btn-sm treatmentAction">
+    <button type="button" class="btn btn-default btn-sm specialTreatmentAction">
         {{#if _treatmentCount}}
             {{_treatmentCount}}
         {{else}}
@@ -55,8 +55,8 @@
 <!--Print-->
 <template name="dental_specialRegisterPrintAction">
     {{#tabularAction icon="print"}}
-        <!--<li><a style="cursor: pointer" class="treatmentPrintAction">{{fa "medkit"}} Treatment</a></li>-->
-        <li><a style="cursor: pointer" class="specialInvoiceReportPrintAction">{{fa "money"}} Invoice</a></li>
+        <li><a style="cursor: pointer" class="specialTreatmentPrintAction">{{fa "medkit"}} Special Treatment</a></li>
+        <li><a style="cursor: pointer" class="specialInvoiceReportPrintAction">{{fa "money"}} Special Invoice</a></li>
     {{/tabularAction}}
 </template>
 
@@ -130,10 +130,10 @@
 
                 <div class="text-right">
                     <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
-                    <button type="submit" class="btn btn-primary" id="saveAndPrint">{{fa "floppy-o"}} Save & Print</button>
+                    <button type="submit" class="btn btn-info" id="saveAndPrint">{{fa "floppy-o"}} Save & Print</button>
                     <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
                 </div>
-            </div>
+              </div>
 
         </div>
     {{/autoForm}}

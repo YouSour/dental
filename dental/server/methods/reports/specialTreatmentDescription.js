@@ -1,5 +1,5 @@
 Meteor.methods({
-  dental_treatmentDescription: function(params) {
+  dental_specialTreatmentDescription: function(params) {
     var self = params;
     var data = {
       title: {},
@@ -19,9 +19,9 @@ Meteor.methods({
 
     /********** Content & Footer **********/
     var content = [];
-    // Get treament
-    Dental.Collection.Treatment.find({
-        _id: self.treatmentId
+    // Get special treament
+    Dental.Collection.SpecialTreatment.find({
+        _id: self.specialTreatmentId
       })
       .forEach(function(obj) {
         obj.images = [];

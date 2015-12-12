@@ -74,6 +74,11 @@ Template.dental_payment.events({
   'click .show': function() {
     alertify.alert(fa("eye", "Payment"), renderTemplate(Template.dental_paymentShow,
       this));
+  },
+  'click .paymentPrintAction': function() {
+    var q = 'patient=' + this.patientId + '&register=' + this.registerId;
+    var url = 'invoiceReportGen?' + q;
+    window.open(url);
   }
 });
 
@@ -90,6 +95,9 @@ Template.dental_paymentInsert.events({
   },
   'keyup .paidAmount': function() {
     calculateBalance();
+  },
+  'click #saveAndPrint': function() {
+    Session.set('printInvoicePayment', true);
   },
   'click .btnFree': function(e, t) {
     $('.dueAmount, .paidAmount, .balance').val(0);
@@ -139,6 +147,15 @@ AutoForm.hooks({
       if (Session.get('closePayment')) {
         alertify.payment().close();
       }
+
+      var printSession = Session.get('printInvoicePayment');
+      var data = Dental.Collection.Payment.findOne(result);
+      if (printSession) {
+        var q = 'patient=' + data.patientId + '&register=' + data.registerId;
+        var url = '/dental/invoiceReportGen?' + q;
+        window.open(url);
+      }
+      Session.set('printInvoicePayment', false);
       alertify.success('Success');
     },
     onError: function(formType, error) {

@@ -42,12 +42,11 @@ Dental.TabularTable.SpecialRegister = new Tabular.Table({
     }, {
       data: "status",
       title: "Status"
+    }, {
+      data: "_treatmentCount",
+      title: "T+",
+      tmpl: Meteor.isClient && Template.dental_specialTreatmentLinkAction
     },
-    //{
-    //    data: "_treatmentCount",
-    //    title: "T+",
-    //    tmpl: Meteor.isClient && Template.dental_specialTreatmentLinkAction
-    //},
     //{
     //    data: "_appointmentCount",
     //    title: "A+",

@@ -140,6 +140,9 @@ Template.dental_quotationInsert.events({
   'keyup #subDiscount, click #subDiscount': function(e, t) {
     // Cal footer
     calculateTotal();
+  },
+  'click #saveAndPrint': function() {
+    Session.set('printQuotation', true);
   }
 });
 
@@ -275,6 +278,15 @@ AutoForm.hooks({
       });
       //clear selectize
       $('select.item')[0].selectize.clear(true);
+
+      var printSession = Session.get('printQuotation');
+      var data = Dental.Collection.Quotation.findOne(result);
+      if (printSession) {
+        var q = 'patient=' + data.patientId + '&quotation=' + data._id;
+        var url = 'quotationReportGen?' + q;
+        window.open(url);
+      }
+      Session.set('printQuotation', false);
 
       alertify.success("Success");
     },

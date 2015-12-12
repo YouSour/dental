@@ -14,7 +14,7 @@ Dental.Collection.SpecialRegister.cacheDoc(
 );
 
 Dental.Collection.SpecialRegister.cacheCount('treatmentCount', Dental.Collection
-  .Treatment, 'specialRegisterId');
+  .SpecialTreatment, 'specialRegisterId');
 Dental.Collection.SpecialRegister.cacheCount('appointmentCount', Dental.Collection
   .CalendarEvent, 'specialRegisterId');
 Dental.Collection.SpecialRegister.cacheCount('paymentCount', Dental.Collection.SpecialPayment,
