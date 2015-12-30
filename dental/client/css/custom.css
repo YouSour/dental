@@ -233,6 +233,10 @@
   width: 25%;
 }
 
+/*font-size-appoint-report*/
+.font-appointment-style{
+font-size: 16px;
+}
 /*Custom Columns*/
 .col-sm-2-custom,.col-md-2-custom {
   position: relative;
