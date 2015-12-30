@@ -235,8 +235,14 @@
 
 /*font-size-appoint-report*/
 .font-appointment-style{
-font-size: 16px;
+font-size: 18px;
 }
+
+/*font-size-appoint-report-table-header*/
+.font-appointment-tbl-header-style{
+font-size: 15px;
+}
+
 /*Custom Columns*/
 .col-sm-2-custom,.col-md-2-custom {
   position: relative;
