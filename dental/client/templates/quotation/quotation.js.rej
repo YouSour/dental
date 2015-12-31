@@ -1,0 +1,11 @@
+--- dental/client/templates/quotation/quotation.js
++++ dental/client/templates/quotation/quotation.js
+@@ -143,7 +143,7 @@
+   },
+   'click #saveAndPrint': function() {
+     Session.set('printInvoicePayment', true);
+-  },
++  }
+ });
+ 
+ /**

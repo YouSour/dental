@@ -72,6 +72,15 @@ Template.dental_register.events({
       _id: this._id
     });
 
+    // Doctor
+
+    var doctor = [];
+    _.each(data.doctorShare, function(val) {
+      var doctorDoc = Dental.Collection.Doctor.findOne(val.doctor);
+      doctor.push(doctorDoc.name);
+    });
+    data.doctor = JSON.stringify(doctor, null, '');
+
     // History
     var history = [];
     _.each(data._patient.history, function(val) {

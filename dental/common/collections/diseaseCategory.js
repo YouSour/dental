@@ -3,7 +3,8 @@
  *
  * @type {Mongo.Collection}
  */
-Dental.Collection.DiseaseCategory = new Mongo.Collection("dental_diseaseCategory");
+Dental.Collection.DiseaseCategory = new Mongo.Collection(
+  "dental_diseaseCategory");
 
 /**
  * Schema
@@ -11,16 +12,19 @@ Dental.Collection.DiseaseCategory = new Mongo.Collection("dental_diseaseCategory
  * @type {SimpleSchema}
  */
 Dental.Schema.DiseaseCategory = new SimpleSchema({
-    code: {
-        type: String,
-        unique: true,
-        max: 50
-    },
-    name: {
-        type: String,
-        unique: true,
-        max: 250
-    }
+  code: {
+    type: String,
+    unique: true,
+    max: 50
+  },
+  name: {
+    type: String,
+    unique: true,
+    max: 250
+  },
+  branchId: {
+    type: String
+  }
 });
 
 /**
