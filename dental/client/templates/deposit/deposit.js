@@ -66,6 +66,11 @@ Template.dental_depositInsert.onRendered(function() {
   datepicker();
 });
 
+Template.dental_depositInsert.events({
+  'click #saveAndPrint': function() {
+    Session.set('printInvoiceDeposit', true);
+  }
+});
 /**
  * Update
  */
@@ -93,6 +98,15 @@ AutoForm.hooks({
       if (Session.get('closeDeposit')) {
         alertify.deposit().close();
       }
+
+      var printSession = Session.get('printInvoiceDeposit');
+      var data = Dental.Collection.Deposit.findOne(result);
+      if (printSession) {
+        var q = 'patient=' + data.patientId + '&register=' + data.registerId;
+        var url = '/dental/invoiceReportGen?' + q;
+        window.open(url);
+      }
+      Session.set('printInvoiceDeposit', false);
       alertify.success("Success");
     },
     onError: function(formType, error) {
