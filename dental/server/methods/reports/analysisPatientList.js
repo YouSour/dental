@@ -30,13 +30,9 @@ Meteor.methods({
     }
     //console.log(JSON.stringify(patientDoc));
 
-    data.header = [
-      //{col1: 'Patient ID: ' + self.patient, col2: 'Patient Name: ' + patientDoc.name,
-      {
-        col1: 'Branch: ' + branch
-      }
-      //{col1: 'Name: ', col2: 'Age: ' , col3: 'Date: ' + self.date},
-    ];
+    data.header = [{
+      col1: '<b>' + 'Branch: ' + '</b>' + branch
+    }];
 
     /********** Content & Footer **********/
     var content = [];

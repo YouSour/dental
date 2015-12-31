@@ -1,0 +1,5079 @@
+From 5bed220cfa9d21a94ecfeebde6d504b9a58df78f Mon Sep 17 00:00:00 2001
+From: yousour <hengyousour@gmail.com>
+Date: Thu, 24 Dec 2015 11:17:32 +0700
+Subject: [PATCH] register by disease report
+
+---
+ dental/client/templates/diseaseItem/diseaseItem.js | 197 ++++-----
+ dental/client/templates/layout/navbar.html         |   3 +
+ dental/client/templates/quotation/quotation.html   |   1 -
+ dental/client/templates/quotation/quotation.js     |   2 +-
+ dental/client/templates/register/register.html     |   2 +
+ dental/client/templates/register/register.js       |   9 +
+ .../templates/reports/analysisPatientList.html     |   4 +-
+ .../client/templates/reports/appointmentList.html  |   5 +-
+ .../templates/reports/closedRegisterList.html      |   4 +-
+ .../reports/closedSpecialRegisterList.html         |   4 +-
+ .../templates/reports/closedSpecialRegisterList.js |   2 +-
+ dental/client/templates/reports/depositList.html   |   5 +-
+ dental/client/templates/reports/diseaseList.html   |   4 +-
+ .../client/templates/reports/materialCostList.html |   6 +-
+ .../templates/reports/osForActiveRegister.html     |   5 +-
+ .../reports/osForActiveSpecialRegister.html        |   5 +-
+ .../templates/reports/osForClosingRegister.html    |   5 +-
+ .../templates/reports/patientHistoryList.html      |   4 +-
+ .../client/templates/reports/patientHistoryList.js |   3 +-
+ dental/client/templates/reports/paymentList.html   |   8 +-
+ dental/client/templates/reports/purchaseList.html  |   6 +-
+ dental/client/templates/reports/quotationList.html |   5 +-
+ .../templates/reports/registerByDiseaseList.html   |  99 +++++
+ .../reports/registerHistoryByDiseaseList.js        |  24 ++
+ dental/client/templates/reports/registerList.html  |   2 +-
+ dental/client/templates/reports/registerList.js    |   2 +-
+ .../client/templates/reports/sharedDoctorList.html |   2 +-
+ .../templates/reports/specialPaymentList.html      |   8 +-
+ .../templates/reports/specialRegisterList.html     |   2 +-
+ dental/common/collections/diseaseCategory.js       |  62 +--
+ dental/common/collections/diseaseItem.js           |  97 ++---
+ .../collections/reports/registerByDiseaseList.js   |  29 ++
+ dental/common/lib/listForReport.js                 | 456 +++++++++++++--------
+ .../routers/reports/registerByDiseaseList.js       |  36 ++
+ .../server/methods/reports/analysisPatientList.js  |  10 +-
+ dental/server/methods/reports/appointmentList.js   | 152 ++++---
+ dental/server/methods/reports/depositList.js       | 195 +++++----
+ dental/server/methods/reports/diseaseList.js       | 204 ++++-----
+ dental/server/methods/reports/materialCostList.js  | 227 +++++-----
+ .../server/methods/reports/osForActiveRegister.js  | 192 +++++----
+ .../methods/reports/osForActiveSpecialRegister.js  | 191 +++++----
+ .../server/methods/reports/osForClosingRegister.js | 238 ++++++-----
+ dental/server/methods/reports/paymentList.js       | 290 +++++++------
+ dental/server/methods/reports/purchaseList.js      | 231 ++++++-----
+ dental/server/methods/reports/quotationList.js     | 194 +++++----
+ .../methods/reports/registerByDiseaseList.js       | 121 ++++++
+ .../server/methods/reports/registerClosedList.js   | 148 ++++---
+ dental/server/methods/reports/registerList.js      | 162 ++++----
+ dental/server/methods/reports/sharedDoctor.js      |   2 +-
+ .../server/methods/reports/specialPaymentList.js   | 290 +++++++------
+ .../methods/reports/specialRegisterClosedList.js   | 148 ++++---
+ .../server/methods/reports/specialRegisterList.js  | 165 ++++----
+ dental/server/startup/category.js                  |  39 +-
+ dental/server/startup/item.js                      |  83 ++--
+ 54 files changed, 2618 insertions(+), 1772 deletions(-)
+ create mode 100644 dental/client/templates/reports/registerByDiseaseList.html
+ create mode 100644 dental/client/templates/reports/registerHistoryByDiseaseList.js
+ create mode 100644 dental/common/collections/reports/registerByDiseaseList.js
+ create mode 100644 dental/common/routers/reports/registerByDiseaseList.js
+ create mode 100644 dental/server/methods/reports/registerByDiseaseList.js
+
+diff --git a/dental/client/templates/diseaseItem/diseaseItem.js b/dental/client/templates/diseaseItem/diseaseItem.js
+index def3b3f..55b20f6 100644
+--- a/dental/client/templates/diseaseItem/diseaseItem.js
++++ b/dental/client/templates/diseaseItem/diseaseItem.js
+@@ -1,97 +1,100 @@
+-/**
+- * Index
+- */
+-Template.dental_diseaseItem.onRendered(function () {
+-    // Create new  alertify
+-    createNewAlertify(["diseaseItem", 'diseaseCategory']);
+-});
+-
+-Template.dental_diseaseItem.events({
+-    'click .insert': function (e, t) {
+-        alertify.diseaseItem(fa("plus", "Disease Item"), renderTemplate(Template.dental_diseaseItemInsert)).maximize();
+-    },
+-    'click .update': function (e, t) {
+-        var data = Dental.Collection.DiseaseItem.findOne(this._id);
+-
+-        alertify.diseaseItem(fa("pencil", "Disease Item"), renderTemplate(Template.dental_diseaseItemUpdate, data)).maximize();
+-    },
+-    'click .remove': function (e, t) {
+-        var self = this;
+-
+-        alertify.confirm(
+-            fa("remove", "Disease Item"),
+-            "Are you sure to delete [" + self._id + "] ?",
+-            function (closeEvent) {
+-                Dental.Collection.DiseaseItem.remove(self._id, function (error) {
+-                    if (error) {
+-                        alertify.error(error.message);
+-                    } else {
+-                        alertify.success("Success");
+-                    }
+-                });
+-            },
+-            null
+-        );
+-    },
+-    'click .show': function (e, t) {
+-        var data = Dental.Collection.DiseaseItem.findOne(this._id);
+-
+-        alertify.alert(fa("eye", "Disease Item"), renderTemplate(Template.dental_diseaseItemShow, data));
+-    }
+-});
+-
+-/**
+- * Insert
+- */
+-Template.dental_diseaseItemInsert.events({
+-    'click .diseaseCategoryAddon': function (e, t) {
+-        alertify.diseaseCategory(fa("plus", "Disease Category"), renderTemplate(Template.dental_diseaseCategoryInsert));
+-    }
+-});
+-
+-/**
+- * Update
+- */
+-Template.dental_diseaseItemUpdate.events({
+-    'click .diseaseCategoryAddon': function (e, t) {
+-        alertify.diseaseCategory(fa("plus", "Disease Category"),renderTemplate(Template.dental_diseaseCategoryInsert));
+-    }
+-});
+-
+-/**
+- * Hook
+- */
+-AutoForm.hooks({
+-    dental_diseaseItemInsert: {
+-        before: {
+-            insert: function (doc) {
+-                doc._id = idGenerator.gen(Dental.Collection.DiseaseItem, 6);
+-
+-                return doc;
+-            }
+-        },
+-        onSuccess: function (formType, result) {
+-            $('select').each(function(){
+-                $(this).select2("val","");
+-            });
+-
+-            alertify.success('Success');
+-        },
+-        onError: function (formType, error) {
+-            alertify.error(error.message);
+-        }
+-    },
+-    dental_diseaseItemUpdate: {
+-
+-        onSuccess: function (formType, result) {
+-            alertify.diseaseItem().close();
+-            alertify.success('Success');
+-        },
+-        onError: function (formType, error) {
+-            alertify.error(error.message);
+-        }
+-    }
+-
+-});
+-
+-
++/**
++ * Index
++ */
++Template.dental_diseaseItem.onRendered(function() {
++  // Create new  alertify
++  createNewAlertify(["diseaseItem", 'diseaseCategory']);
++});
++
++Template.dental_diseaseItem.events({
++  'click .insert': function(e, t) {
++    alertify.diseaseItem(fa("plus", "Disease Item"), renderTemplate(
++      Template.dental_diseaseItemInsert)).maximize();
++  },
++  'click .update': function(e, t) {
++    var data = Dental.Collection.DiseaseItem.findOne(this._id);
++
++    alertify.diseaseItem(fa("pencil", "Disease Item"), renderTemplate(
++      Template.dental_diseaseItemUpdate, data)).maximize();
++  },
++  'click .remove': function(e, t) {
++    var self = this;
++
++    alertify.confirm(
++      fa("remove", "Disease Item"),
++      "Are you sure to delete [" + self._id + "] ?",
++      function(closeEvent) {
++        Dental.Collection.DiseaseItem.remove(self._id, function(error) {
++          if (error) {
++            alertify.error(error.message);
++          } else {
++            alertify.success("Success");
++          }
++        });
++      },
++      null
++    );
++  },
++  'click .show': function(e, t) {
++    var data = Dental.Collection.DiseaseItem.findOne(this._id);
++
++    alertify.alert(fa("eye", "Disease Item"), renderTemplate(Template.dental_diseaseItemShow,
++      data));
++  }
++});
++
++/**
++ * Insert
++ */
++Template.dental_diseaseItemInsert.events({
++  'click .diseaseCategoryAddon': function(e, t) {
++    alertify.diseaseCategory(fa("plus", "Disease Category"),
++      renderTemplate(Template.dental_diseaseCategoryInsert));
++  }
++});
++
++/**
++ * Update
++ */
++Template.dental_diseaseItemUpdate.events({
++  'click .diseaseCategoryAddon': function(e, t) {
++    alertify.diseaseCategory(fa("plus", "Disease Category"),
++      renderTemplate(Template.dental_diseaseCategoryInsert));
++  }
++});
++
++/**
++ * Hook
++ */
++AutoForm.hooks({
++  dental_diseaseItemInsert: {
++    before: {
++      insert: function(doc) {
++        doc._id = idGenerator.gen(Dental.Collection.DiseaseItem, 6);
++        doc.branchId = Session.get('currentBranch');
++        return doc;
++      }
++    },
++    onSuccess: function(formType, result) {
++      $('select').each(function() {
++        $(this).select2("val", "");
++      });
++
++      alertify.success('Success');
++    },
++    onError: function(formType, error) {
++      alertify.error(error.message);
++    }
++  },
++  dental_diseaseItemUpdate: {
++
++    onSuccess: function(formType, result) {
++      alertify.diseaseItem().close();
++      alertify.success('Success');
++    },
++    onError: function(formType, error) {
++      alertify.error(error.message);
++    }
++  }
++
++});
+diff --git a/dental/client/templates/layout/navbar.html b/dental/client/templates/layout/navbar.html
+index 229c593..9481aa2 100644
+--- a/dental/client/templates/layout/navbar.html
++++ b/dental/client/templates/layout/navbar.html
+@@ -57,6 +57,9 @@
+                 <li class="{{isActiveRoute name='dental.closedRegisterListReport'}}">
+                     <a href="{{pathFor 'dental.closedRegisterListReport'}}">Closed Register</a>
+                 </li>
++                <li class="{{isActiveRoute name='dental.registerByDiseaseListReport'}}">
++                <a href="{{pathFor 'dental.registerByDiseaseListReport'}}">Register By Disease</a>
++                </li>
+                 <li class="{{isActiveRoute name='dental.specialRegisterListReport'}}">
+                     <a href="{{pathFor 'dental.specialRegisterListReport'}}">Special Register</a>
+                 </li>
+diff --git a/dental/client/templates/quotation/quotation.html b/dental/client/templates/quotation/quotation.html
+index 819ff93..7ea362c 100644
+--- a/dental/client/templates/quotation/quotation.html
++++ b/dental/client/templates/quotation/quotation.html
+@@ -57,7 +57,6 @@
+             </div>
+         </div>
+ 
+-
+         <div class="row">
+             <div class="col-md-12 text-right">
+                 <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+diff --git a/dental/client/templates/quotation/quotation.js b/dental/client/templates/quotation/quotation.js
+index 31b5dc8..2c09c19 100644
+--- a/dental/client/templates/quotation/quotation.js
++++ b/dental/client/templates/quotation/quotation.js
+@@ -143,7 +143,7 @@ Template.dental_quotationInsert.events({
+   },
+   'click #saveAndPrint': function() {
+     Session.set('printInvoicePayment', true);
+-  },
++  }
+ });
+ 
+ /**
+diff --git a/dental/client/templates/register/register.html b/dental/client/templates/register/register.html
+index b7dfd21..fbcecfb 100644
+--- a/dental/client/templates/register/register.html
++++ b/dental/client/templates/register/register.html
+@@ -233,6 +233,8 @@
+             <dd>{{subDiscount}}</dd>
+             <dt>Total</dt>
+             <dd>{{total}}</dd>
++            <dt>Doctor</dt>
++            <dd>{{doctor}}</dd>
+             <dt>Doctor Share Total</dt>
+             <dd>{{doctorShareTotal}}</dd>
+             <dt>Labo Expense Total</dt>
+diff --git a/dental/client/templates/register/register.js b/dental/client/templates/register/register.js
+index ed8b331..1eafee1 100644
+--- a/dental/client/templates/register/register.js
++++ b/dental/client/templates/register/register.js
+@@ -72,6 +72,15 @@ Template.dental_register.events({
+       _id: this._id
+     });
+ 
++    // Doctor
++
++    var doctor = [];
++    _.each(data.doctorShare, function(val) {
++      var doctorDoc = Dental.Collection.Doctor.findOne(val.doctor);
++      doctor.push(doctorDoc.name);
++    });
++    data.doctor = JSON.stringify(doctor, null, '');
++
+     // History
+     var history = [];
+     _.each(data._patient.history, function(val) {
+diff --git a/dental/client/templates/reports/analysisPatientList.html b/dental/client/templates/reports/analysisPatientList.html
+index febf22b..e36cb86 100644
+--- a/dental/client/templates/reports/analysisPatientList.html
++++ b/dental/client/templates/reports/analysisPatientList.html
+@@ -46,9 +46,7 @@
+         <table width="100%" border="0">
+             {{#each header}}
+                 <tr>
+-                    <td width="33%">{{col1}}</td>
+-                    <td width="33%">{{col2}}</td>
+-                    <td>{{col3}}</td>
++                      <td class="td-custom-style">{{{col1}}}</td>
+                 </tr>
+             {{/each}}
+         </table>
+diff --git a/dental/client/templates/reports/appointmentList.html b/dental/client/templates/reports/appointmentList.html
+index d159262..cc1e469 100644
+--- a/dental/client/templates/reports/appointmentList.html
++++ b/dental/client/templates/reports/appointmentList.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
++                        <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/closedRegisterList.html b/dental/client/templates/reports/closedRegisterList.html
+index abacb2c..2ddc667 100644
+--- a/dental/client/templates/reports/closedRegisterList.html
++++ b/dental/client/templates/reports/closedRegisterList.html
+@@ -46,9 +46,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td>{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/closedSpecialRegisterList.html b/dental/client/templates/reports/closedSpecialRegisterList.html
+index 20ec985..9b4a692 100644
+--- a/dental/client/templates/reports/closedSpecialRegisterList.html
++++ b/dental/client/templates/reports/closedSpecialRegisterList.html
+@@ -46,9 +46,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td>{{col3}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/closedSpecialRegisterList.js b/dental/client/templates/reports/closedSpecialRegisterList.js
+index 39eddc6..9eea9c1 100644
+--- a/dental/client/templates/reports/closedSpecialRegisterList.js
++++ b/dental/client/templates/reports/closedSpecialRegisterList.js
+@@ -20,4 +20,4 @@ Template.dental_closedSpecialRegisterListReportGen.helpers({
+ 
+         return call.result();
+     }
+-});
+\ No newline at end of file
++});
+diff --git a/dental/client/templates/reports/depositList.html b/dental/client/templates/reports/depositList.html
+index 8174417..704c5fa 100644
+--- a/dental/client/templates/reports/depositList.html
++++ b/dental/client/templates/reports/depositList.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/diseaseList.html b/dental/client/templates/reports/diseaseList.html
+index 4271509..0c548fe 100644
+--- a/dental/client/templates/reports/diseaseList.html
++++ b/dental/client/templates/reports/diseaseList.html
+@@ -46,9 +46,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td>{{col3}}</td>
++                        <td class="td-custom-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/materialCostList.html b/dental/client/templates/reports/materialCostList.html
+index af73621..44e9891 100644
+--- a/dental/client/templates/reports/materialCostList.html
++++ b/dental/client/templates/reports/materialCostList.html
+@@ -47,9 +47,9 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td style="text-align: left">{{col1}}</td>
+-                        <td style="text-align: center">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" algin="center">{{{col2}}}</td>
++                      <td class="td-cus-style" align="right">{{{col3}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/osForActiveRegister.html b/dental/client/templates/reports/osForActiveRegister.html
+index 17fa22f..b069e0d 100644
+--- a/dental/client/templates/reports/osForActiveRegister.html
++++ b/dental/client/templates/reports/osForActiveRegister.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/osForActiveSpecialRegister.html b/dental/client/templates/reports/osForActiveSpecialRegister.html
+index a2ba1b5..af1db17 100644
+--- a/dental/client/templates/reports/osForActiveSpecialRegister.html
++++ b/dental/client/templates/reports/osForActiveSpecialRegister.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/osForClosingRegister.html b/dental/client/templates/reports/osForClosingRegister.html
+index 74962ab..69fc123 100644
+--- a/dental/client/templates/reports/osForClosingRegister.html
++++ b/dental/client/templates/reports/osForClosingRegister.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/patientHistoryList.html b/dental/client/templates/reports/patientHistoryList.html
+index a414513..597822a 100644
+--- a/dental/client/templates/reports/patientHistoryList.html
++++ b/dental/client/templates/reports/patientHistoryList.html
+@@ -199,5 +199,7 @@
+   {{/with}}
+ 
+   <!--Sign-->
+-  {{>signFooter}} {{else}} {{> loading}} {{/if}}
++  {{>signFooter}} {{else}}
++  {{> loading}}
++  {{/if}}
+ </template>
+diff --git a/dental/client/templates/reports/patientHistoryList.js b/dental/client/templates/reports/patientHistoryList.js
+index 81d5df5..ce58bc6 100644
+--- a/dental/client/templates/reports/patientHistoryList.js
++++ b/dental/client/templates/reports/patientHistoryList.js
+@@ -12,7 +12,8 @@ Template.dental_patientHistoryListReportGen.helpers({
+     var self = this;
+ 
+     var callId = JSON.stringify(self);
+-    var call = Meteor.callAsync(callId, 'dental_patientHistoryList', self);
++    var call = Meteor.callAsync(callId,
++      'dental_patientHistoryList', self);
+ 
+     if (!call.ready()) {
+       return false;
+diff --git a/dental/client/templates/reports/paymentList.html b/dental/client/templates/reports/paymentList.html
+index cec524a..7281d3b 100644
+--- a/dental/client/templates/reports/paymentList.html
++++ b/dental/client/templates/reports/paymentList.html
+@@ -48,10 +48,10 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="23%">{{col1}}</td>
+-                        <td width="27%">{{col2}}</td>
+-                        <td width="27%">{{col3}}</td>
+-                        <td style="text-align: right">{{col4}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
++                        <td class="td-cus-style" algin="center">{{{col2}}}</td>
++                        <td class="td-cus-style" algin="center">{{{col3}}}</td>
++                        <td class="td-cus-style" align="right">{{{col4}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/purchaseList.html b/dental/client/templates/reports/purchaseList.html
+index c0fed5c..553faa1 100644
+--- a/dental/client/templates/reports/purchaseList.html
++++ b/dental/client/templates/reports/purchaseList.html
+@@ -47,9 +47,9 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td style="text-align: left">{{col1}}</td>
+-                        <td style="text-align: center">{{col2}}</td>
+-                        <td style="text-align: right">{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" algin="center">{{{col2}}}</td>
++                      <td class="td-cus-style" align="right">{{{col3}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/quotationList.html b/dental/client/templates/reports/quotationList.html
+index eec447b..93298da 100644
+--- a/dental/client/templates/reports/quotationList.html
++++ b/dental/client/templates/reports/quotationList.html
+@@ -46,9 +46,8 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
+-                        <td width="33%">{{col2}}</td>
+-                        <td>{{col3}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/registerByDiseaseList.html b/dental/client/templates/reports/registerByDiseaseList.html
+new file mode 100644
+index 0000000..40b8757
+--- /dev/null
++++ b/dental/client/templates/reports/registerByDiseaseList.html
+@@ -0,0 +1,99 @@
++<!--Form-->
++<template name="dental_registerByDiseaseListReport">
++  {{#autoForm schema=Dental.Schema.RegisterByDiseaseListReport id="dental_registerByDiseaseListReport" action="registerByDiseaseListReportGen" target="_blank"}}
++  <div class="row">
++    <div class="col-md-6">
++      {{> afQuickField name='branchId'}}
++      {{> afQuickField name='diseaseItemId'}}
++    </div>
++    <div class="col-md-6">
++      {{> afQuickField name='date'}}
++    </div>
++  </div>
++  <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
++  <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
++  {{/autoForm}}
++</template>
++
++<!--Generate-->
++<template name="dental_registerByDiseaseListReportGen">
++  {{#if data}}
++  {{#with data}}
++  <!--Title-->
++
++  <!--Title-->
++  <table class="report-title" style="width:100%;">
++      <tr align="center">
++
++        <td colspan="2">
++          <td>
++              <img src="/seng_ratha/logo.jpg">
++          </td>
++
++          <td>
++            <span class="report-company-name"
++                  style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
++            <span class="report-company-name">{{title.company.enName}}</span><br>
++            <u>Register By Disease Report</u><br>
++            {{title.company.khAddress}}, {{title.company.telephone}}
++          </td>
++
++        </td>
++      </tr>
++  </table>
++
++  <!--Header-->
++  <table width="100%" border="0">
++      {{#each header}}
++          <tr>
++            <td class="td-cus-style">{{{col1}}}</td>
++            <td class="td-cus-style" align="right">{{{col2}}}</td>
++          </tr>
++      {{/each}}
++  </table>
++
++  <!--Content-->
++
++  <table class="report-content">
++      <thead class="report-content-header">
++      <tr>
++          <th>N<sup>o</sup></th>
++          <th>Register Date</th>
++          <th>Register ID</th>
++          <th>Patient ID</th>
++          <th>Patient</th>
++          <th>Age</th>
++          <th>Address</th>
++          <th>Telephone</th>
++          <th>Description</th>
++      </tr>
++      </thead>
++
++      <tbody class="report-content-body">
++      {{#each content}}
++          <tr>
++              <td>{{index}}</td>
++              <td>{{registerDate}}</td>
++              <td>{{_id}}</td>
++              <td>{{patientId}}</td>
++              <td>{{patient}}</td>
++              <td>{{age}}</td>
++              <td>{{address}}</td>
++              <td>{{telephone}}</td>
++              <td>{{description}}</td>
++          </tr>
++      {{/each}}
++      </tbody>
++  </table>
++
++
++  <!--Footer-->
++  <p></p>
++{{/with}}
++
++
++  <!--Sign-->
++  {{>signFooter}} {{else}}
++  <!-- {{> loading}}  -->
++  {{/if}}
++</template>
+diff --git a/dental/client/templates/reports/registerHistoryByDiseaseList.js b/dental/client/templates/reports/registerHistoryByDiseaseList.js
+new file mode 100644
+index 0000000..279cb91
+--- /dev/null
++++ b/dental/client/templates/reports/registerHistoryByDiseaseList.js
+@@ -0,0 +1,24 @@
++/************ Form *************/
++
++Template.dental_registerByDiseaseListReport.onRendered(function() {
++  var name = $('[name="date"]');
++  DateTimePicker.dateRange(name);
++});
++
++
++/************ Generate *************/
++Template.dental_registerByDiseaseListReportGen.helpers({
++  data: function() {
++    var self = this;
++
++    var callId = JSON.stringify(self);
++    var call = Meteor.callAsync(callId,
++      'dental_registerByDiseaseList', self);
++
++    if (!call.ready()) {
++      return false;
++    }
++
++    return call.result();
++  }
++});
+diff --git a/dental/client/templates/reports/registerList.html b/dental/client/templates/reports/registerList.html
+index f46f66c..7921536 100644
+--- a/dental/client/templates/reports/registerList.html
++++ b/dental/client/templates/reports/registerList.html
+@@ -43,7 +43,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/registerList.js b/dental/client/templates/reports/registerList.js
+index d1b4299..1486c58 100644
+--- a/dental/client/templates/reports/registerList.js
++++ b/dental/client/templates/reports/registerList.js
+@@ -20,4 +20,4 @@ Template.dental_registerListReportGen.helpers({
+ 
+         return call.result();
+     }
+-});
+\ No newline at end of file
++});
+diff --git a/dental/client/templates/reports/sharedDoctorList.html b/dental/client/templates/reports/sharedDoctorList.html
+index 36c2c75..2a31c76 100644
+--- a/dental/client/templates/reports/sharedDoctorList.html
++++ b/dental/client/templates/reports/sharedDoctorList.html
+@@ -46,7 +46,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/specialPaymentList.html b/dental/client/templates/reports/specialPaymentList.html
+index 06e80b2..122a0de 100644
+--- a/dental/client/templates/reports/specialPaymentList.html
++++ b/dental/client/templates/reports/specialPaymentList.html
+@@ -48,10 +48,10 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="23%">{{col1}}</td>
+-                        <td width="27%">{{col2}}</td>
+-                        <td width="27%">{{col3}}</td>
+-                        <td style="text-align: right">{{col4}}</td>
++                      <td class="td-cus-style">{{{col1}}}</td>
++                      <td class="td-cus-style" algin="center">{{{col2}}}</td>
++                      <td class="td-cus-style" algin="center">{{{col3}}}</td>
++                      <td class="td-cus-style" align="right">{{{col4}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/client/templates/reports/specialRegisterList.html b/dental/client/templates/reports/specialRegisterList.html
+index 75a076c..3cd7a61 100644
+--- a/dental/client/templates/reports/specialRegisterList.html
++++ b/dental/client/templates/reports/specialRegisterList.html
+@@ -44,7 +44,7 @@
+             <table width="100%" border="0">
+                 {{#each header}}
+                     <tr>
+-                        <td width="33%">{{col1}}</td>
++                        <td class="td-cus-style">{{{col1}}}</td>
+                     </tr>
+                 {{/each}}
+             </table>
+diff --git a/dental/common/collections/diseaseCategory.js b/dental/common/collections/diseaseCategory.js
+index 44bda2f..6f7bd82 100644
+--- a/dental/common/collections/diseaseCategory.js
++++ b/dental/common/collections/diseaseCategory.js
+@@ -1,29 +1,33 @@
+-/**
+- * Collection
+- *
+- * @type {Mongo.Collection}
+- */
+-Dental.Collection.DiseaseCategory = new Mongo.Collection("dental_diseaseCategory");
+-
+-/**
+- * Schema
+- *
+- * @type {SimpleSchema}
+- */
+-Dental.Schema.DiseaseCategory = new SimpleSchema({
+-    code: {
+-        type: String,
+-        unique: true,
+-        max: 50
+-    },
+-    name: {
+-        type: String,
+-        unique: true,
+-        max: 250
+-    }
+-});
+-
+-/**
+- * Attache Schema
+- */
+-Dental.Collection.DiseaseCategory.attachSchema(Dental.Schema.DiseaseCategory);
++/**
++ * Collection
++ *
++ * @type {Mongo.Collection}
++ */
++Dental.Collection.DiseaseCategory = new Mongo.Collection(
++  "dental_diseaseCategory");
++
++/**
++ * Schema
++ *
++ * @type {SimpleSchema}
++ */
++Dental.Schema.DiseaseCategory = new SimpleSchema({
++  code: {
++    type: String,
++    unique: true,
++    max: 50
++  },
++  name: {
++    type: String,
++    unique: true,
++    max: 250
++  },
++  branchId: {
++    type: String
++  }
++});
++
++/**
++ * Attache Schema
++ */
++Dental.Collection.DiseaseCategory.attachSchema(Dental.Schema.DiseaseCategory);
+diff --git a/dental/common/collections/diseaseItem.js b/dental/common/collections/diseaseItem.js
+index 2316a30..b8fde11 100644
+--- a/dental/common/collections/diseaseItem.js
++++ b/dental/common/collections/diseaseItem.js
+@@ -1,47 +1,50 @@
+-/**
+- * Collection
+- *
+- * @type {Mongo.Collection}
+- */
+-Dental.Collection.DiseaseItem = new Mongo.Collection("dental_diseaseItem");
+-
+-/**
+- * Schema
+- *
+- * @type {SimpleSchema}
+- */
+-Dental.Schema.DiseaseItem = new SimpleSchema({
+-    diseaseCategoryId: {
+-        type: String,
+-        max: 5,
+-        autoform: {
+-            type: "select2",
+-            options: function () {
+-                return Dental.List.diseaseCategory();
+-            }
+-        }
+-    },
+-    code: {
+-        type: String,
+-        unique: true,
+-        max: 50
+-    },
+-    name: {
+-        type: String,
+-        unique: true,
+-        max: 250
+-    },
+-    price: {
+-        type: Number,
+-        decimal: true
+-    },
+-    memberPrice: {
+-        type: Number,
+-        decimal: true
+-    }
+-});
+-
+-/**
+- * Attach schema
+- */
+-Dental.Collection.DiseaseItem.attachSchema(Dental.Schema.DiseaseItem);
++/**
++ * Collection
++ *
++ * @type {Mongo.Collection}
++ */
++Dental.Collection.DiseaseItem = new Mongo.Collection("dental_diseaseItem");
++
++/**
++ * Schema
++ *
++ * @type {SimpleSchema}
++ */
++Dental.Schema.DiseaseItem = new SimpleSchema({
++  diseaseCategoryId: {
++    type: String,
++    max: 5,
++    autoform: {
++      type: "select2",
++      options: function() {
++        return Dental.List.diseaseCategory();
++      }
++    }
++  },
++  code: {
++    type: String,
++    unique: true,
++    max: 50
++  },
++  name: {
++    type: String,
++    unique: true,
++    max: 250
++  },
++  price: {
++    type: Number,
++    decimal: true
++  },
++  memberPrice: {
++    type: Number,
++    decimal: true
++  },
++  branchId: {
++    type: String
++  }
++});
++
++/**
++ * Attach schema
++ */
++Dental.Collection.DiseaseItem.attachSchema(Dental.Schema.DiseaseItem);
+diff --git a/dental/common/collections/reports/registerByDiseaseList.js b/dental/common/collections/reports/registerByDiseaseList.js
+new file mode 100644
+index 0000000..400dc8d
+--- /dev/null
++++ b/dental/common/collections/reports/registerByDiseaseList.js
+@@ -0,0 +1,29 @@
++/**
++ * Schema
++ */
++Dental.Schema.RegisterByDiseaseListReport = new SimpleSchema({
++  branchId: {
++    type: String,
++    autoform: {
++      type: "select2",
++      options: function() {
++        return Dental.ListForReport.branchList();
++      }
++    },
++    optional: true
++  },
++  diseaseItemId: {
++    type: String,
++    label: "Disease",
++    autoform: {
++      type: "select2",
++      options: function() {
++        return Dental.ListForReport.disease();
++      }
++    }
++  },
++  date: {
++    type: String,
++    label: "Date Range"
++  }
++});
+diff --git a/dental/common/lib/listForReport.js b/dental/common/lib/listForReport.js
+index bda7e14..2806f69 100644
+--- a/dental/common/lib/listForReport.js
++++ b/dental/common/lib/listForReport.js
+@@ -1,168 +1,288 @@
+-/**
+- * List
+- */
+-Dental.ListForReportState = new ReactiveObj();
+-
+-Dental.ListForReport = {
+-    patient: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        var currentBranch = Session.get('currentBranch');
+-        Dental.Collection.Patient.find({branchId: currentBranch})
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.name + ' (' + obj.gender + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    staff: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        Dental.Collection.Staff.find()
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.name + ' (' + obj.position + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    branch: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        Cpanel.Collection.Branch.find()
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.enName + ' (' + obj.enShortName + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    register: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        var patientId = Dental.ListForReportState.get('patientId');
+-        Dental.Collection.Register.find({
+-            patientId: patientId
+-        }).forEach(function (obj) {
+-            var label = obj._id + ' | Date: ' + obj.registerDate + ' | Total: ' + numeral(obj.total).format('0,0.00');
+-            list.push({label: label, value: obj._id});
+-        });
+-
+-        return list;
+-    },
+-    quotationForPatient: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        var patientId = Dental.ListForReportState.get('patientId');
+-        Dental.Collection.Quotation.find({
+-            patientId: patientId
+-        }).forEach(function (obj) {
+-            var label = obj._id + ' | Date: ' + obj.quotationDate + ' | Total: ' + numeral(obj.total).format('0,0.00');
+-            list.push({label: label, value: obj._id});
+-        });
+-
+-        return list;
+-    },
+-    registerListForDeposit: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        var patientId = Dental.ListForReportState.get('patientId');
+-        Dental.Collection.Register.find({
+-            patientId: patientId
+-        }).forEach(function (obj) {
+-            var label = obj._id + ' | Date: ' + obj.registerDate + ' | Total: ' + numeral(obj.total).format('0,0.00');
+-            list.push({label: label, value: obj._id});
+-        });
+-
+-        return list;
+-    },
+-    patientList: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-
+-        var currentBranch = Session.get('currentBranch');
+-        Dental.Collection.Patient.find({branchId: currentBranch})
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.name + ' (' + obj.gender + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    staffList: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-
+-        Dental.Collection.Staff.find()
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.name + ' (' + obj.position + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    doctorList: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-
+-        Dental.Collection.Doctor.find()
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.name + ' (' + obj.gender + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    branchList: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-
+-        Cpanel.Collection.Branch.find()
+-            .forEach(function (obj) {
+-                list.push({label: obj._id + " : " + obj.enName + ' (' + obj.enShortName + ')', value: obj._id});
+-            });
+-
+-        return list;
+-    },
+-    supplierList: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-
+-        Dental.Collection.Supplier.find().forEach(function (obj) {
+-            list.push({label: obj._id + " : " + obj.name, value: obj._id});
+-        });
+-
+-        return list;
+-    },
+-    statusListForPayment: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-        list.push({label: "Partial", value: "Partial"});
+-        list.push({label: "Close", value: "Close"});
+-
+-        return list;
+-    },
+-    statusListForRegister: function () {
+-        var list = [];
+-        list.push({label: "All", value: ""});
+-        list.push({label: "Active", value: "Active"});
+-        list.push({label: "Close", value: "Close"});
+-
+-        return list;
+-    },
+-    exchangeList: function () {
+-        var list = [];
+-        list.push({label: "(Select One)", value: ""});
+-
+-        Cpanel.Collection.Exchange.find()
+-            .forEach(function (obj) {
+-                list.push({
+-                    label: numeral(obj.rates.USD).format('0,0.00 $') + " | " + numeral(obj.rates.KHR).format('0,0.00') + " R | " + numeral(obj.rates.THB).format('0,0.0000') + " B ",
+-                    value: obj._id
+-                });
+-            });
+-
+-        return list;
+-    }
+-};
++/**
++ * List
++ */
++Dental.ListForReportState = new ReactiveObj();
++
++Dental.ListForReport = {
++  patient: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    var currentBranch = Session.get('currentBranch');
++    Dental.Collection.Patient.find({
++        branchId: currentBranch
++      })
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name + ' (' + obj.gender + ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  disease: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    var currentBranch = Session.get('currentBranch');
++    Dental.Collection.DiseaseItem.find({
++        branchId: currentBranch
++      })
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name,
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  staff: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    Dental.Collection.Staff.find()
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name + ' (' + obj.position +
++            ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  branch: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    Cpanel.Collection.Branch.find()
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.enName + ' (' + obj.enShortName +
++            ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  register: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    var patientId = Dental.ListForReportState.get('patientId');
++    Dental.Collection.Register.find({
++      patientId: patientId
++    }).forEach(function(obj) {
++      var label = obj._id + ' | Date: ' + obj.registerDate +
++        ' | Total: ' + numeral(obj.total).format('0,0.00');
++      list.push({
++        label: label,
++        value: obj._id
++      });
++    });
++
++    return list;
++  },
++  quotationForPatient: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    var patientId = Dental.ListForReportState.get('patientId');
++    Dental.Collection.Quotation.find({
++      patientId: patientId
++    }).forEach(function(obj) {
++      var label = obj._id + ' | Date: ' + obj.quotationDate +
++        ' | Total: ' + numeral(obj.total).format('0,0.00');
++      list.push({
++        label: label,
++        value: obj._id
++      });
++    });
++
++    return list;
++  },
++  registerListForDeposit: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    var patientId = Dental.ListForReportState.get('patientId');
++    Dental.Collection.Register.find({
++      patientId: patientId
++    }).forEach(function(obj) {
++      var label = obj._id + ' | Date: ' + obj.registerDate +
++        ' | Total: ' + numeral(obj.total).format('0,0.00');
++      list.push({
++        label: label,
++        value: obj._id
++      });
++    });
++
++    return list;
++  },
++  patientList: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++
++    var currentBranch = Session.get('currentBranch');
++    Dental.Collection.Patient.find({
++        branchId: currentBranch
++      })
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name + ' (' + obj.gender + ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  staffList: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++
++    Dental.Collection.Staff.find()
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name + ' (' + obj.position +
++            ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  doctorList: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++
++    Dental.Collection.Doctor.find()
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.name + ' (' + obj.gender + ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  branchList: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++
++    Cpanel.Collection.Branch.find()
++      .forEach(function(obj) {
++        list.push({
++          label: obj._id + " : " + obj.enName + ' (' + obj.enShortName +
++            ')',
++          value: obj._id
++        });
++      });
++
++    return list;
++  },
++  supplierList: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++
++    Dental.Collection.Supplier.find().forEach(function(obj) {
++      list.push({
++        label: obj._id + " : " + obj.name,
++        value: obj._id
++      });
++    });
++
++    return list;
++  },
++  statusListForPayment: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++    list.push({
++      label: "Partial",
++      value: "Partial"
++    });
++    list.push({
++      label: "Close",
++      value: "Close"
++    });
++
++    return list;
++  },
++  statusListForRegister: function() {
++    var list = [];
++    list.push({
++      label: "All",
++      value: ""
++    });
++    list.push({
++      label: "Active",
++      value: "Active"
++    });
++    list.push({
++      label: "Close",
++      value: "Close"
++    });
++
++    return list;
++  },
++  exchangeList: function() {
++    var list = [];
++    list.push({
++      label: "(Select One)",
++      value: ""
++    });
++
++    Cpanel.Collection.Exchange.find()
++      .forEach(function(obj) {
++        list.push({
++          label: numeral(obj.rates.USD).format('0,0.00 $') + " | " +
++            numeral(obj.rates.KHR).format('0,0.00') + " R | " +
++            numeral(obj.rates.THB).format('0,0.0000') + " B ",
++          value: obj._id
++        });
++      });
++
++    return list;
++  }
++};
+diff --git a/dental/common/routers/reports/registerByDiseaseList.js b/dental/common/routers/reports/registerByDiseaseList.js
+new file mode 100644
+index 0000000..5a4648b
+--- /dev/null
++++ b/dental/common/routers/reports/registerByDiseaseList.js
+@@ -0,0 +1,36 @@
++Router.route('dental/registerByDiseaseListReport', function() {
++  this.render('dental_registerByDiseaseListReport');
++}, {
++  name: 'dental.registerByDiseaseListReport',
++  title: "Register By Disease List Report",
++  header: {
++    title: 'Register By Disease Report',
++    sub: '',
++    icon: 'file-text-o'
++  },
++  breadcrumb: {
++    title: 'Register By Disease Report',
++    parent: 'dental.home'
++  }
++});
++
++Router.route('dental/registerByDiseaseListReportGen', function() {
++  // Config layout
++  this.layout('reportLayout', {
++    // Page size: a4, a5, mini
++    // Orientation: portrait, landscape
++    // Font size: fontBody: undefined (10px), bg (12px)
++    data: {
++      pageSize: 'a4',
++      orientation: 'landscape',
++      fontBody: 'bg'
++    }
++  });
++
++  var q = this.params.query;
++  this.render('dental_registerByDiseaseListReportGen', {
++    data: function() {
++      return q;
++    }
++  });
++});
+diff --git a/dental/server/methods/reports/analysisPatientList.js b/dental/server/methods/reports/analysisPatientList.js
+index 6e0f1aa..c9e9c7f 100644
+--- a/dental/server/methods/reports/analysisPatientList.js
++++ b/dental/server/methods/reports/analysisPatientList.js
+@@ -30,13 +30,9 @@ Meteor.methods({
+     }
+     //console.log(JSON.stringify(patientDoc));
+ 
+-    data.header = [
+-      //{col1: 'Patient ID: ' + self.patient, col2: 'Patient Name: ' + patientDoc.name,
+-      {
+-        col1: 'Branch: ' + branch
+-      }
+-      //{col1: 'Name: ', col2: 'Age: ' , col3: 'Date: ' + self.date},
+-    ];
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
+ 
+     /********** Content & Footer **********/
+     var content = [];
+diff --git a/dental/server/methods/reports/appointmentList.js b/dental/server/methods/reports/appointmentList.js
+index 58054cc..bc68f74 100644
+--- a/dental/server/methods/reports/appointmentList.js
++++ b/dental/server/methods/reports/appointmentList.js
+@@ -1,77 +1,107 @@
+ Meteor.methods({
+-    dental_appointmentList: function (params) {
+-        Meteor._sleepForMs(1000);
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: [],
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch,doctor;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var doctorDoc = Dental.Collection.Doctor.findOne({_id:self.doctorId});
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-        if (self.doctorId != "") {doctor = self.doctorId+" | "+doctorDoc.name} else {doctor = "All";}
++  dental_appointmentList: function(params) {
++    Meteor._sleepForMs(1000);
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch, doctor;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var doctorDoc = Dental.Collection.Doctor.findOne({
++      _id: self.doctorId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
++    if (self.doctorId != "") {
++      doctor = self.doctorId + " | " + doctorDoc.name
++    } else {
++      doctor = "All";
++    }
+ 
+ 
+-        data.header = [
+-            {col1: 'Branch: ' + branch, col2:'', col3:'Doctor: '+ doctor}
+-        ];
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Doctor: ' + '</b>' + doctor
++    }];
+ 
+-        /********** Content & Footer **********/
+-        var content = [];
++    /********** Content & Footer **********/
++    var content = [];
+ 
+-        var selector = {};
++    var selector = {};
+ 
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.start = {$gte: fromDate, $lte: toDate};
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        if (self.doctorId != "") selector.doctorId = self.doctorId;
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.start = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (self.branchId != "") selector.branchId = self.branchId;
++    if (self.doctorId != "") selector.doctorId = self.doctorId;
+ 
+-        // Get Appointment
+-        var getAppointment = Dental.Collection.CalendarEvent.find(selector);
++    // Get Appointment
++    var getAppointment = Dental.Collection.CalendarEvent.find(selector);
+ 
+-        var index = 1;
++    var index = 1;
+ 
+-        if (!_.isUndefined(getAppointment)) {
+-            getAppointment.forEach(function (obj) {
+-                obj.index = index;
+-                obj.doctor = obj._doctor.name + " (" + obj._doctor.gender + ")";
+-                obj.patient = obj._register._patient.name + " (" + obj._register._patient.gender + ")";
++    if (!_.isUndefined(getAppointment)) {
++      getAppointment.forEach(function(obj) {
++        obj.index = index;
++        obj.doctor = obj._doctor.name + " (" + obj._doctor.gender +
++          ")";
++        obj.patient = obj._register._patient.name + " (" + obj._register
++          ._patient.gender + ")";
+ 
+-                if(!_.isUndefined(obj._register.des)) {obj.description = obj._register.des;}else{obj.description = "None";}
++        if (!_.isUndefined(obj._register.des)) {
++          obj.description = obj._register.des;
++        } else {
++          obj.description = "None";
++        }
+ 
+-                if(!_.isUndefined(obj._register._patient.telephone)) {obj.telephone = obj._register._patient.telephone;}else{obj.telephone = "None";}
++        if (!_.isUndefined(obj._register._patient.telephone)) {
++          obj.telephone = obj._register._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/depositList.js b/dental/server/methods/reports/depositList.js
+index 7352e68..f739b13 100644
+--- a/dental/server/methods/reports/depositList.js
++++ b/dental/server/methods/reports/depositList.js
+@@ -1,98 +1,125 @@
+ Meteor.methods({
+-    dental_depositList: function (params) {
+-        
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne(self.exchange);
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-
+-        data.header = [
+-            {col1: 'Branch: ' + branch, col2:'', col3:'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B" }
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
++  dental_depositList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne(self.exchange);
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-        var selector = {};
+-        var selectorExchange = {};
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++          .USD)
++        .format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates.KHR).format(
++          '0,0.00') + " R" + " | " + numeral(exchangeDoc.rates.THB).format(
++          '0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.depositDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (self.branchId != "") selector.branchId = self.branchId;
++
++    // Get Deposit
++    var getDeposit = Dental.Collection.Deposit.find(selector);
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalUsd = 0;
++    //Grand Total KHR
++    var grandTotalKhr = 0;
++    //Grand Total THB
++    var grandTotalThb = 0;
++
++    if (!_.isUndefined(getDeposit)) {
++      getDeposit.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._register._patient.name + " (" + obj._register
++          ._patient.gender + ")";
++
++        if (!_.isUndefined(obj._register._patient.age)) {
++          obj.age = obj._register._patient.age;
++        } else {
++          obj.age = "None";
++        }
+ 
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.depositDate = {$gte: fromDate, $lte: toDate};
+-        if (self.branchId != "") selector.branchId = self.branchId;
++        if (!_.isUndefined(obj._register.des)) {
++          obj.des = obj._register.des;
++        } else {
++          obj.des = "None";
++        }
+ 
+-        // Get Deposit
+-        var getDeposit = Dental.Collection.Deposit.find(selector);
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++        content.push(obj);
+ 
+-        var index = 1;
++        obj.amount = numeral(obj.amount).format('0,0.00');
+ 
+         //Grand Total USD
+-        var grandTotalUsd = 0;
+-        //Grand Total KHR
+-        var grandTotalKhr = 0;
+-        //Grand Total THB
+-        var grandTotalThb = 0;
+-
+-        if (!_.isUndefined(getDeposit)) {
+-            getDeposit.forEach(function (obj) {
+-                obj.index = index;
+-                obj.patient = obj._register._patient.name + " (" + obj._register._patient.gender + ")";
+-
+-                if(!_.isUndefined(obj._register._patient.age)) {obj.age = obj._register._patient.age;}else{obj.age = "None";}
+-
+-                if(!_.isUndefined(obj._register.des)) {obj.des = obj._register.des;}else{obj.des = "None";}
+-
+-                content.push(obj);
+-
+-                obj.amount = numeral(obj.amount).format('0,0.00');
+-
+-                //Grand Total USD
+-                grandTotalUsd += Math.round(obj.amount * exchange.rates.USD);
++        grandTotalUsd += Math.round(obj.amount * exchange.rates.USD);
+ 
+-                //Grand Total KHR
+-                grandTotalKhr += Math.round(obj.amount * exchange.rates.KHR);
++        //Grand Total KHR
++        grandTotalKhr += Math.round(obj.amount * exchange.rates.KHR);
+ 
+-                //Grand Total THB
+-                grandTotalThb += Math.round(obj.amount * exchange.rates.THB);
++        //Grand Total THB
++        grandTotalThb += Math.round(obj.amount * exchange.rates.THB);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/diseaseList.js b/dental/server/methods/reports/diseaseList.js
+index 21e5adb..ea9952c 100644
+--- a/dental/server/methods/reports/diseaseList.js
++++ b/dental/server/methods/reports/diseaseList.js
+@@ -1,99 +1,113 @@
+ Meteor.methods({
+-    dental_diseaseList: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
++  dental_diseaseList: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.registerDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    if (self.branchId != "") selector.branchId = self.branchId;
++
++    // Get Register
++    var getRegister = Dental.Collection.Register.find(selector);
++
++    var totalDisease = 0;
++    var index = 1;
++    var diseaseList = [];
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        obj.index = index;
++
++        //Loop Disease Item
++        obj.disease.forEach(function(disease) {
++          if (disease != null) {
++            disease.name = Dental.Collection.DiseaseItem.findOne(
++              disease.item).name;
++            diseaseList.push(disease);
++          }
++        });
++
++      });
++    }
+ 
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-
+-        data.header = [
+-            {col1: 'Branch: ' + branch}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.registerDate = {$gte: fromDate, $lte: toDate};
+-
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-
+-        // Get Register
+-        var getRegister = Dental.Collection.Register.find(selector);
+-
+-        var totalDisease = 0;
+-        var index = 1;
+-        var diseaseList = [];
+-
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
+-                obj.index = index;
+-
+-                //Loop Disease Item
+-                obj.disease.forEach(function (disease) {
+-                    if (disease != null) {
+-                        disease.name = Dental.Collection.DiseaseItem.findOne(disease.item).name;
+-                        diseaseList.push(disease);
+-                    }
+-                });
+-
+-            });
+-        }
+-
+-        var result = [];
+-        diseaseList.reduce(function (key, val) {
+-            if (!key[val.item]) {//val.itemId
+-                key[val.item] = {//=group by
+-                    qty: 0,
+-                    name: val.name,
+-                    item: val.item,
+-                    price: val.price,
+-                    amount: val.amount,
+-                    index: index
+-                };
+-                index++;
+-                result.push(key[val.item]);
+-            } else {
+-                key[val.item].amount += val.amount;
+-            }
+-            key[val.item].qty += val.qty;
+-            totalDisease += val.qty;
+-
+-            return key;
+-
+-        }, {});
+-
+-        content = result;
+-        data.footer.totalDisease = totalDisease;
+-
+-        if (content.length > 0) {
+-            data.content = content;
+-
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++    var result = [];
++    diseaseList.reduce(function(key, val) {
++      if (!key[val.item]) { //val.itemId
++        key[val.item] = { //=group by
++          qty: 0,
++          name: val.name,
++          item: val.item,
++          price: val.price,
++          amount: val.amount,
++          index: index
++        };
++        index++;
++        result.push(key[val.item]);
++      } else {
++        key[val.item].amount += val.amount;
++      }
++      key[val.item].qty += val.qty;
++      totalDisease += val.qty;
++
++      return key;
++
++    }, {});
++
++    content = result;
++    data.footer.totalDisease = totalDisease;
++
++    if (content.length > 0) {
++      data.content = content;
++
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/materialCostList.js b/dental/server/methods/reports/materialCostList.js
+index e6becf2..8420f11 100644
+--- a/dental/server/methods/reports/materialCostList.js
++++ b/dental/server/methods/reports/materialCostList.js
+@@ -1,109 +1,136 @@
+ Meteor.methods({
+-    dental_materialCostList: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var doctor, branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var doctorDoc = Dental.Collection.Doctor.findOne({_id:self.doctorId});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne({_id:self.exchange});
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-        if (self.doctorId != "") {doctor = self.doctorId+" | "+doctorDoc.name;} else {doctor = 'All';}
+-
+-        data.header = [
+-            {col1: 'Brand: ' + branch, col2: 'Doctor: ' + doctor, col3: 'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B"},
+-            {col1: '', col2: '' , col3: ''}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var selectorExchange = {};
+-
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.materialCostDate = {$gte: fromDate, $lte: toDate};
+-
+-        if (self.doctorId != "") selector.doctorId = self.doctorId;
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        if (self.exchange != "") selectorExchange._id = self.exchange;
+-        // Get MaterialCost
+-        var getMaterialCost = Dental.Collection.MaterialCost.find(selector);
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
+-
+-        var index = 1;
+-
+-        //Grand Total USD
+-        var grandTotalUsd = 0;
+-        //Grand Total KHR
+-        var grandTotalKhr = 0;
+-        //Grand Total THB
+-        var grandTotalThb = 0;
+-
+-        if (!_.isUndefined(getMaterialCost)) {
+-            getMaterialCost.forEach(function (obj) {
+-
+-                obj.index = index;
+-                obj.doctor = obj._doctor.name + " ("+obj._doctor.gender+")";
+-                var item = '';
+-                obj.items.forEach(function (i) {
+-                    item += '<tr>' +
+-                        '<td>' + Dental.Collection.MaterialCostItem.findOne(i.materialCostItemId).name + '</td>' +
+-                        '<td>' + i.qty + '</td>' +
+-                        '<td>' + i.price + '</td>' +
+-                        '<td>' + i.amount + '</td>' +
+-                        '</tr>';
+-                });
+-                obj.items = item;
+-
+-                obj.total = numeral(obj.total).format('0,0.00');
+-
+-                content.push(obj);
++  dental_materialCostList: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var doctor, branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var doctorDoc = Dental.Collection.Doctor.findOne({
++      _id: self.doctorId
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
++    if (self.doctorId != "") {
++      doctor = self.doctorId + " | " + doctorDoc.name;
++    } else {
++      doctor = 'All';
++    }
+ 
+-                index += 1;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Doctor: ' + '</b>' + doctor,
++      col3: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++        .USD).format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates
++        .KHR).format('0,0.00') + " R" + " | " + numeral(exchangeDoc
++        .rates.THB).format('0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.materialCostDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    if (self.doctorId != "") selector.doctorId = self.doctorId;
++    if (self.branchId != "") selector.branchId = self.branchId;
++    if (self.exchange != "") selectorExchange._id = self.exchange;
++    // Get MaterialCost
++    var getMaterialCost = Dental.Collection.MaterialCost.find(selector);
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalUsd = 0;
++    //Grand Total KHR
++    var grandTotalKhr = 0;
++    //Grand Total THB
++    var grandTotalThb = 0;
++
++    if (!_.isUndefined(getMaterialCost)) {
++      getMaterialCost.forEach(function(obj) {
++
++        obj.index = index;
++        obj.doctor = obj._doctor.name + " (" + obj._doctor.gender +
++          ")";
++        var item = '';
++        obj.items.forEach(function(i) {
++          item += '<tr>' +
++            '<td>' + Dental.Collection.MaterialCostItem.findOne(i
++              .materialCostItemId).name + '</td>' +
++            '<td>' + i.qty + '</td>' +
++            '<td>' + i.price + '</td>' +
++            '<td>' + i.amount + '</td>' +
++            '</tr>';
++        });
++        obj.items = item;
++
++        obj.total = numeral(obj.total).format('0,0.00');
++
++        content.push(obj);
++
++        index += 1;
+ 
+-                //Grand Total USD
+-                grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
++        //Grand Total USD
++        grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
+ 
+-                //Grand Total KHR
+-                grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
++        //Grand Total KHR
++        grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
+ 
+-                //Grand Total THB
+-                grandTotalThb += Math.round(obj.total * exchange.rates.THB);
+-            });
+-        }
++        //Grand Total THB
++        grandTotalThb += Math.round(obj.total * exchange.rates.THB);
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/osForActiveRegister.js b/dental/server/methods/reports/osForActiveRegister.js
+index cce29e5..d7ffec5 100644
+--- a/dental/server/methods/reports/osForActiveRegister.js
++++ b/dental/server/methods/reports/osForActiveRegister.js
+@@ -1,99 +1,127 @@
+ Meteor.methods({
+-    dental_osForActiveRegisterReport: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
+-        var exchange = Cpanel.Collection.Exchange.findOne({_id: self.exchange});
+-
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName
+-        } else {
+-            branch = "All";
+-        }
++  dental_osForActiveRegisterReport: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var exchange = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-        data.header = [
+-            {
+-                col1: 'Brand: ' + branch,
+-                col2: '',
+-                col3: 'Exchange: ' + numeral(exchange.rates.USD).format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format('0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format('0,0.00') + " B"
+-            }
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-        var selector = {};
+-
+-        var dateVal = self.date + ' 23:59:59';
+-        selector.registerDate = {$lte: dateVal};
+-        selector.$or = [{closingDate: {$not: {$lte: dateVal}}}, {closingDate: {$eq: ''}}];
+-        if (self.branchId != "") {
+-            selector.branchId = self.branchId;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Exchange: ' + '</b>' + numeral(exchange.rates.USD)
++        .format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format(
++          '0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format(
++          '0,0.00') + " B"
++
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++    var selector = {};
++
++    var dateVal = self.date + ' 23:59:59';
++    selector.registerDate = {
++      $lte: dateVal
++    };
++    selector.$or = [{
++      closingDate: {
++        $not: {
++          $lte: dateVal
+         }
++      }
++    }, {
++      closingDate: {
++        $eq: ''
++      }
++    }];
++    if (self.branchId != "") {
++      selector.branchId = self.branchId;
++    }
+ 
+-        // Get invoice
+-        var getRegister = Dental.Collection.Register.find(selector);
++    // Get invoice
++    var getRegister = Dental.Collection.Register.find(selector);
+ 
+-        var index = 1;
++    var index = 1;
+ 
+-        // Sub total
+-        var grandTotalUsd = 0;
+-        var grandTotalKhr = 0;
+-        var grandTotalThb = 0;
++    // Sub total
++    var grandTotalUsd = 0;
++    var grandTotalKhr = 0;
++    var grandTotalThb = 0;
+ 
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
+ 
+-                obj.index = index;
+-                obj.patientGender = obj._patient.name + " (" + obj._patient.gender + ")";
+-                obj.subTotalFm = numeral(obj.subTotal).format('0,0.00');
+-                obj.subDiscountFm = numeral(obj.subDiscount).format('0,0.00');
+-                obj.depositFm = numeral(obj.deposit).format('0,0.00');
+-                obj.totalFm = numeral(obj.total).format('0,0.00');
++        obj.index = index;
++        obj.patientGender = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++        obj.subTotalFm = numeral(obj.subTotal).format('0,0.00');
++        obj.subDiscountFm = numeral(obj.subDiscount).format('0,0.00');
++        obj.depositFm = numeral(obj.deposit).format('0,0.00');
++        obj.totalFm = numeral(obj.total).format('0,0.00');
+ 
+-                if(!_.isUndefined(obj._patient.age)){obj.age = obj._patient.age;}else{obj.age = "None";}
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
++        } else {
++          obj.age = "None";
++        }
+ 
+-                if(!_.isUndefined(obj._patient.telephone)){obj.telephone = obj._patient.telephone;}else{obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                //Grand Total USD
+-                grandTotalUsd += math.round(obj.total);
+-                grandTotalKhr += math.round(obj.total * exchange.rates.KHR);
+-                grandTotalThb += math.round(obj.total * exchange.rates.THB);
++        //Grand Total USD
++        grandTotalUsd += math.round(obj.total);
++        grandTotalKhr += math.round(obj.total * exchange.rates.KHR);
++        grandTotalThb += math.round(obj.total * exchange.rates.THB);
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/osForActiveSpecialRegister.js b/dental/server/methods/reports/osForActiveSpecialRegister.js
+index aea22f7..998193f 100644
+--- a/dental/server/methods/reports/osForActiveSpecialRegister.js
++++ b/dental/server/methods/reports/osForActiveSpecialRegister.js
+@@ -1,99 +1,126 @@
+ Meteor.methods({
+-    dental_osForActiveSpecialRegisterReport: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
+-        var exchange = Cpanel.Collection.Exchange.findOne({_id: self.exchange});
+-
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName
+-        } else {
+-            branch = "All";
+-        }
++  dental_osForActiveSpecialRegisterReport: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var exchange = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-        data.header = [
+-            {
+-                col1: 'Brand: ' + branch,
+-                col2: '',
+-                col3: 'Exchange: ' + numeral(exchange.rates.USD).format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format('0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format('0,0.00') + " B"
+-            }
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-        var selector = {};
+-
+-        var dateVal = self.date + ' 23:59:59';
+-        selector.registerDate = {$lte: dateVal};
+-        selector.$or = [{closingDate: {$not: {$lte: dateVal}}}, {closingDate: {$eq: ''}}];
+-        if (self.branchId != "") {
+-            selector.branchId = self.branchId;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Exchange: ' + '</b>' + numeral(exchange.rates.USD)
++        .format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format(
++          '0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format(
++          '0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++    var selector = {};
++
++    var dateVal = self.date + ' 23:59:59';
++    selector.registerDate = {
++      $lte: dateVal
++    };
++    selector.$or = [{
++      closingDate: {
++        $not: {
++          $lte: dateVal
+         }
++      }
++    }, {
++      closingDate: {
++        $eq: ''
++      }
++    }];
++    if (self.branchId != "") {
++      selector.branchId = self.branchId;
++    }
+ 
+-        // Get invoice
+-        var getRegister = Dental.Collection.SpecialRegister.find(selector);
++    // Get invoice
++    var getRegister = Dental.Collection.SpecialRegister.find(selector);
+ 
+-        var index = 1;
++    var index = 1;
+ 
+-        // Sub total
+-        var grandTotalUsd = 0;
+-        var grandTotalKhr = 0;
+-        var grandTotalThb = 0;
++    // Sub total
++    var grandTotalUsd = 0;
++    var grandTotalKhr = 0;
++    var grandTotalThb = 0;
+ 
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
+ 
+-                obj.index = index;
+-                obj.patientGender = obj._patient.name + " (" + obj._patient.gender + ")";
+-                obj.subTotalFm = numeral(obj.subTotal).format('0,0.00');
+-                obj.subDiscountFm = numeral(obj.subDiscount).format('0,0.00');
+-                obj.depositFm = numeral(obj.deposit).format('0,0.00');
+-                obj.totalFm = numeral(obj.total).format('0,0.00');
++        obj.index = index;
++        obj.patientGender = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++        obj.subTotalFm = numeral(obj.subTotal).format('0,0.00');
++        obj.subDiscountFm = numeral(obj.subDiscount).format('0,0.00');
++        obj.depositFm = numeral(obj.deposit).format('0,0.00');
++        obj.totalFm = numeral(obj.total).format('0,0.00');
+ 
+-                if(!_.isUndefined(obj._patient.age)){obj.age = obj._patient.age;}else{obj.age = "None";}
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
++        } else {
++          obj.age = "None";
++        }
+ 
+-                if(!_.isUndefined(obj._patient.telephone)){obj.telephone = obj._patient.telephone;}else{obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                //Grand Total USD
+-                grandTotalUsd += math.round(obj.total);
+-                grandTotalKhr += math.round(obj.total * exchange.rates.KHR);
+-                grandTotalThb += math.round(obj.total * exchange.rates.THB);
++        //Grand Total USD
++        grandTotalUsd += math.round(obj.total);
++        grandTotalKhr += math.round(obj.total * exchange.rates.KHR);
++        grandTotalThb += math.round(obj.total * exchange.rates.THB);
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/osForClosingRegister.js b/dental/server/methods/reports/osForClosingRegister.js
+index 22d5ee3..e16b5ee 100644
+--- a/dental/server/methods/reports/osForClosingRegister.js
++++ b/dental/server/methods/reports/osForClosingRegister.js
+@@ -1,115 +1,141 @@
+ Meteor.methods({
+-    dental_osForClosingRegisterReport: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
+-        var exchange = Cpanel.Collection.Exchange.findOne({_id: self.exchange});
+-
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName
+-        } else {
+-            branch = "All";
+-        }
+-
+-        data.header = [
+-            {
+-                col1: 'Brand: ' + branch,
+-                col2: '',
+-                col3: 'Exchange: ' + numeral(exchange.rates.USD).format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format('0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format('0,0.00') + " B"
+-            }
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-        var selector = {};
+-
+-        selector.status = 'Close';
+-        var dateVal = self.date + ' 23:59:59';
+-        selector.closingDate = {$lte: dateVal};
+-        if (self.branchId != "") {
+-            selector.branchId = self.branchId;
+-        }
+-
+-        // Get invoice
+-        var getRegister = Dental.Collection.Register.find(selector);
+-
+-        var index = 1;
+-
+-        // Sub total
+-        var grandTotalUsd = 0;
+-        var grandTotalKhr = 0;
+-        var grandTotalThb = 0;
+-
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
+-                //check last payment
+-                var paymentDoc = Dental.Collection.Payment.findOne({
+-                    registerId: obj._id,
+-                    paymentDate: {$lte: dateVal}
+-                }, {sort: {_id: -1}});
+-
+-                if (_.isUndefined(paymentDoc) || paymentDoc.status == "Partial") {
+-                    var paymentDate = 'none';
+-                    var paymentBalance = 0;
+-                    if (!_.isUndefined(paymentDoc)) {
+-                        paymentDate = paymentDoc.paymentDate;
+-                        paymentBalance = paymentDoc.balance;
+-                    }
+-
+-                    obj.index = index;
+-                    obj.patientGender = obj._patient.name + " (" + obj._patient.gender + ")";
+-                    obj.lastPaidDate = paymentDate;
+-
+-                    if(!_.isUndefined(obj._patient.age)){obj.age = obj._patient.age;}else{obj.age = "None";}
+-
+-                    if(!_.isUndefined(obj._patient.telephone)){obj.telephone = obj._patient.telephone;}else{obj.telephone = "None";}
+-
+-                    var dueAmount = math.round(obj.total - paymentBalance);
+-                    obj.totalFm = numeral(obj.total).format('0,0.00');
+-                    obj.totalDueFm = numeral(dueAmount).format('0,0.00');
+-                    obj.balanceFm = numeral(paymentBalance).format('0,0.00');
+-
+-                    //Grand Total USD
+-                    grandTotalUsd += math.round(paymentBalance);
+-                    grandTotalKhr += math.round(paymentBalance * exchange.rates.KHR);
+-                    grandTotalThb += math.round(paymentBalance * exchange.rates.THB);
++  dental_osForClosingRegisterReport: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var exchange = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-                    content.push(obj);
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Exchange: ' + '</b>' + numeral(exchange.rates.USD)
++        .format('$ 0,0.00') + " | " + numeral(exchange.rates.KHR).format(
++          '0,0.00') + " R" + " | " + numeral(exchange.rates.THB).format(
++          '0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++    var selector = {};
++
++    selector.status = 'Close';
++    var dateVal = self.date + ' 23:59:59';
++    selector.closingDate = {
++      $lte: dateVal
++    };
++    if (self.branchId != "") {
++      selector.branchId = self.branchId;
++    }
+ 
+-                    index += 1;
+-                }
+-            });
++    // Get invoice
++    var getRegister = Dental.Collection.Register.find(selector);
++
++    var index = 1;
++
++    // Sub total
++    var grandTotalUsd = 0;
++    var grandTotalKhr = 0;
++    var grandTotalThb = 0;
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        //check last payment
++        var paymentDoc = Dental.Collection.Payment.findOne({
++          registerId: obj._id,
++          paymentDate: {
++            $lte: dateVal
++          }
++        }, {
++          sort: {
++            _id: -1
++          }
++        });
++
++        if (_.isUndefined(paymentDoc) || paymentDoc.status ==
++          "Partial") {
++          var paymentDate = 'none';
++          var paymentBalance = 0;
++          if (!_.isUndefined(paymentDoc)) {
++            paymentDate = paymentDoc.paymentDate;
++            paymentBalance = paymentDoc.balance;
++          }
++
++          obj.index = index;
++          obj.patientGender = obj._patient.name + " (" + obj._patient
++            .gender + ")";
++          obj.lastPaidDate = paymentDate;
++
++          if (!_.isUndefined(obj._patient.age)) {
++            obj.age = obj._patient.age;
++          } else {
++            obj.age = "None";
++          }
++
++          if (!_.isUndefined(obj._patient.telephone)) {
++            obj.telephone = obj._patient.telephone;
++          } else {
++            obj.telephone = "None";
++          }
++
++          var dueAmount = math.round(obj.total - paymentBalance);
++          obj.totalFm = numeral(obj.total).format('0,0.00');
++          obj.totalDueFm = numeral(dueAmount).format('0,0.00');
++          obj.balanceFm = numeral(paymentBalance).format('0,0.00');
++
++          //Grand Total USD
++          grandTotalUsd += math.round(paymentBalance);
++          grandTotalKhr += math.round(paymentBalance * exchange.rates
++            .KHR);
++          grandTotalThb += math.round(paymentBalance * exchange.rates
++            .THB);
++
++          content.push(obj);
++
++          index += 1;
+         }
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
++  }
+ });
+diff --git a/dental/server/methods/reports/paymentList.js b/dental/server/methods/reports/paymentList.js
+index 7923ec2..b3a84c7 100644
+--- a/dental/server/methods/reports/paymentList.js
++++ b/dental/server/methods/reports/paymentList.js
+@@ -1,128 +1,178 @@
+ Meteor.methods({
+-    dental_paymentList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date : self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch,staff,status;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var staffDoc = Dental.Collection.Staff.findOne({_id:self.staff});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne({_id:self.exchange});
+-
+-        if (self.branchId != "") {branch = self.branchId + " | " +branchDoc.enName;} else {branch = "All";}
+-        if (self.staff != "") {staff = self.staff+" | " +staffDoc.name;} else {staff = "All";}
+-        if ( self.status != "") {status = self.status;} else {status = "All";}
+-
+-
+-        data.header = [
+-            {col1: 'Branch: ' + branch, col2: 'Staff: ' + staff, col3: 'Status: ' + status , col4: 'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B"}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-
+-        var selector = {};
+-        var selectorExchange = {};
+-
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.paymentDate = {$gte: fromDate, $lte: toDate};
+-
+-        // Filter
+-        if (self.staff != "") selector.staffId = self.staff;
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        if (self.status != "") selector.status = self.status;
+-
+-        if (self.exchange != "") selectorExchange._id = self.exchange;
+-
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++  dental_paymentList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch, staff, status;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var staffDoc = Dental.Collection.Staff.findOne({
++      _id: self.staff
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
++    if (self.staff != "") {
++      staff = self.staff + " | " + staffDoc.name;
++    } else {
++      staff = "All";
++    }
++    if (self.status != "") {
++      status = self.status;
++    } else {
++      status = "All";
++    }
+ 
+-        // Get payment
+-        var getPayment = Dental.Collection.Payment.find(selector);
+ 
+-        var index = 1;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Staff: ' + '</b>' + staff,
++      col3: '<b>' + 'Status: ' + '</b>' + status,
++      col4: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++        .USD).format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates
++        .KHR).format('0,0.00') + " R" + " | " + numeral(exchangeDoc
++        .rates.THB).format('0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.paymentDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    // Filter
++    if (self.staff != "") selector.staffId = self.staff;
++    if (self.branchId != "") selector.branchId = self.branchId;
++    if (self.status != "") selector.status = self.status;
++
++    if (self.exchange != "") selectorExchange._id = self.exchange;
++
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    // Get payment
++    var getPayment = Dental.Collection.Payment.find(selector);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalDueAmountUsd = 0;
++    var grandTotalPaidAmountUsd = 0;
++    var grandTotalBalanceUsd = 0;
++    //Grand Total KHR
++    var grandTotalDueAmountKhr = 0;
++    var grandTotalPaidAmountKhr = 0;
++    var grandTotalBalanceKhr = 0;
++    //Grand Total THB
++    var grandTotalDueAmountThb = 0;
++    var grandTotalPaidAmountThb = 0;
++    var grandTotalBalanceThb = 0;
++
++    if (!_.isUndefined(getPayment)) {
++      getPayment.forEach(function(obj) {
++
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++        obj.due = numeral(obj.dueAmount).format('0,0.00');
++        obj.paid = numeral(obj.paidAmount).format('0,0.00');
++        obj.balance = numeral(obj.balance).format('0,0.00');
++
++        content.push(obj);
++        index += 1;
+ 
+         //Grand Total USD
+-        var grandTotalDueAmountUsd = 0;
+-        var grandTotalPaidAmountUsd = 0;
+-        var grandTotalBalanceUsd = 0;
++        grandTotalDueAmountUsd += Math.round(obj.dueAmount * exchange
++          .rates.USD);
++        grandTotalPaidAmountUsd += Math.round(obj.paidAmount *
++          exchange.rates.USD);
++        grandTotalBalanceUsd += Math.round(obj.balance * exchange.rates
++          .USD);
++
+         //Grand Total KHR
+-        var grandTotalDueAmountKhr = 0;
+-        var grandTotalPaidAmountKhr = 0;
+-        var grandTotalBalanceKhr = 0;
++        grandTotalDueAmountKhr += Math.round(obj.dueAmount * exchange
++          .rates.KHR);
++        grandTotalPaidAmountKhr += Math.round(obj.paidAmount *
++          exchange.rates.KHR);
++        grandTotalBalanceKhr += Math.round(obj.balance * exchange.rates
++          .KHR);
++
+         //Grand Total THB
+-        var grandTotalDueAmountThb = 0;
+-        var grandTotalPaidAmountThb = 0;
+-        var grandTotalBalanceThb = 0;
+-
+-        if (!_.isUndefined(getPayment)) {
+-            getPayment.forEach(function (obj) {
+-
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-                obj.due = numeral(obj.dueAmount).format('0,0.00');
+-                obj.paid = numeral(obj.paidAmount).format('0,0.00');
+-                obj.balance = numeral(obj.balance).format('0,0.00');
+-
+-                content.push(obj);
+-                index += 1;
+-
+-                //Grand Total USD
+-                grandTotalDueAmountUsd += Math.round(obj.dueAmount * exchange.rates.USD);
+-                grandTotalPaidAmountUsd += Math.round(obj.paidAmount * exchange.rates.USD);
+-                grandTotalBalanceUsd += Math.round(obj.balance * exchange.rates.USD);
+-
+-                //Grand Total KHR
+-                grandTotalDueAmountKhr += Math.round(obj.dueAmount * exchange.rates.KHR);
+-                grandTotalPaidAmountKhr += Math.round(obj.paidAmount * exchange.rates.KHR);
+-                grandTotalBalanceKhr += Math.round(obj.balance * exchange.rates.KHR);
+-
+-                //Grand Total THB
+-                grandTotalDueAmountThb += Math.round(obj.dueAmount * exchange.rates.THB);
+-                grandTotalPaidAmountThb += Math.round(obj.paidAmount * exchange.rates.THB);
+-                grandTotalBalanceThb += Math.round(obj.balance * exchange.rates.THB);
+-
+-            });
+-        }
+-
+-        data.footer.totalDueAmountUsd = numeral(grandTotalDueAmountUsd).format('0,0.00');
+-        data.footer.totalPaidAmountUsd = numeral(grandTotalPaidAmountUsd).format('0,0.00');
+-        data.footer.totalBalanceUsd = numeral(grandTotalBalanceUsd).format('0,0.00');
+-
+-        data.footer.totalDueAmountKhr = numeral(grandTotalDueAmountKhr).format('0,0.00');
+-        data.footer.totalPaidAmountKhr = numeral(grandTotalPaidAmountKhr).format('0,0.00');
+-        data.footer.totalBalanceKhr = numeral(grandTotalBalanceKhr).format('0,0.00');
+-
+-        data.footer.totalDueAmountThb = numeral(grandTotalDueAmountThb).format('0,0.00');
+-        data.footer.totalPaidAmountThb = numeral(grandTotalPaidAmountThb).format('0,0.00');
+-        data.footer.totalBalanceThb = numeral(grandTotalBalanceThb).format('0,0.00');
+-
+-        if (content.length > 0) {
+-            data.content = content;
+-
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++        grandTotalDueAmountThb += Math.round(obj.dueAmount * exchange
++          .rates.THB);
++        grandTotalPaidAmountThb += Math.round(obj.paidAmount *
++          exchange.rates.THB);
++        grandTotalBalanceThb += Math.round(obj.balance * exchange.rates
++          .THB);
++
++      });
++    }
++
++    data.footer.totalDueAmountUsd = numeral(grandTotalDueAmountUsd).format(
++      '0,0.00');
++    data.footer.totalPaidAmountUsd = numeral(grandTotalPaidAmountUsd).format(
++      '0,0.00');
++    data.footer.totalBalanceUsd = numeral(grandTotalBalanceUsd).format(
++      '0,0.00');
++
++    data.footer.totalDueAmountKhr = numeral(grandTotalDueAmountKhr).format(
++      '0,0.00');
++    data.footer.totalPaidAmountKhr = numeral(grandTotalPaidAmountKhr).format(
++      '0,0.00');
++    data.footer.totalBalanceKhr = numeral(grandTotalBalanceKhr).format(
++      '0,0.00');
++
++    data.footer.totalDueAmountThb = numeral(grandTotalDueAmountThb).format(
++      '0,0.00');
++    data.footer.totalPaidAmountThb = numeral(grandTotalPaidAmountThb).format(
++      '0,0.00');
++    data.footer.totalBalanceThb = numeral(grandTotalBalanceThb).format(
++      '0,0.00');
++
++    if (content.length > 0) {
++      data.content = content;
++
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/purchaseList.js b/dental/server/methods/reports/purchaseList.js
+index 0896818..5f7c1b8 100644
+--- a/dental/server/methods/reports/purchaseList.js
++++ b/dental/server/methods/reports/purchaseList.js
+@@ -1,116 +1,143 @@
+ Meteor.methods({
+-    dental_purchaseList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var supplierName, branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var supplierDoc = Dental.Collection.Supplier.findOne({_id:self.supplierId});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne({_id:self.exchange});
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-        if (self.supplierId != "") {supplierName = self.supplierId+" | "+supplierDoc.name;} else {supplierName = 'All';}
+-
+-        data.header = [
+-            {col1: 'Brand: ' + branch, col2: 'Supplier Name: ' + supplierName, col3: 'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B"},
+-            {col1: '', col2: '' , col3: ''}
+-        ];
++  dental_purchaseList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var supplierName, branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var supplierDoc = Dental.Collection.Supplier.findOne({
++      _id: self.supplierId
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
++    if (self.supplierId != "") {
++      supplierName = self.supplierId + " | " + supplierDoc.name;
++    } else {
++      supplierName = 'All';
++    }
+ 
+-        /********** Content & Footer **********/
+-        var content = [];
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Supplier Name: ' + '</b>' + supplierName,
++      col3: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++        .USD).format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates
++        .KHR).format('0,0.00') + " R" + " | " + numeral(exchangeDoc
++        .rates.THB).format('0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.purchaseDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    if (self.supplierId != "") selector.supplierId = self.supplierId;
++    if (self.branchId != "") selector.branchId = self.branchId;
++    if (self.exchange != "") selectorExchange._id = self.exchange;
++    // Get purchase
++    var getPurchase = Dental.Collection.Purchase.find(selector);
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalUsd = 0;
++    //Grand Total KHR
++    var grandTotalKhr = 0;
++    //Grand Total THB
++    var grandTotalThb = 0;
++
++    if (!_.isUndefined(getPurchase)) {
++      getPurchase.forEach(function(obj) {
++
++        obj.index = index;
++
++        if (obj._register != null) {
++          obj.patient = obj._register._patient.name + " (" + obj._register
++            ._patient.gender + ")";
++        } else {
++          obj.patient = "None";
++        }
+ 
+-        var selector = {};
+-        var selectorExchange = {};
++        var item = '';
++        obj.items.forEach(function(i) {
++          item += '<tr>' +
++            '<td>' + Dental.Collection.OrderItem.findOne(i.orderItemId)
++            .name + '</td>' +
++            '<td>' + i.qty + '</td>' +
++            '<td>' + i.price + '</td>' +
++            '<td>' + i.amount + '</td>' +
++            '</tr>';
++        });
++        obj.items = item;
+ 
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.purchaseDate = {$gte: fromDate, $lte: toDate};
++        obj.total = numeral(obj.total).format('0,0.00');
+ 
+-        if (self.supplierId != "")selector.supplierId = self.supplierId;
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        if (self.exchange != "") selectorExchange._id = self.exchange;
+-        // Get purchase
+-        var getPurchase = Dental.Collection.Purchase.find(selector);
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++        content.push(obj);
+ 
+-        var index = 1;
++        index += 1;
+ 
+         //Grand Total USD
+-        var grandTotalUsd = 0;
+-        //Grand Total KHR
+-        var grandTotalKhr = 0;
+-        //Grand Total THB
+-        var grandTotalThb = 0;
+-
+-        if (!_.isUndefined(getPurchase)) {
+-            getPurchase.forEach(function (obj) {
++        grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
+ 
+-                obj.index = index;
+-
+-                if (obj._register != null) {
+-                    obj.patient = obj._register._patient.name + " ("+obj._register._patient.gender+")";
+-                } else {
+-                    obj.patient = "None";
+-                }
+-
+-                var item = '';
+-                obj.items.forEach(function (i) {
+-                    item += '<tr>' +
+-                        '<td>' + Dental.Collection.OrderItem.findOne(i.orderItemId).name + '</td>' +
+-                        '<td>' + i.qty + '</td>' +
+-                        '<td>' + i.price + '</td>' +
+-                        '<td>' + i.amount + '</td>' +
+-                        '</tr>';
+-                });
+-                obj.items = item;
+-
+-                obj.total = numeral(obj.total).format('0,0.00');
+-
+-                content.push(obj);
+-
+-                index += 1;
+-
+-                //Grand Total USD
+-                grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
+-
+-                //Grand Total KHR
+-                grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
++        //Grand Total KHR
++        grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
+ 
+-                //Grand Total THB
+-                grandTotalThb += Math.round(obj.total * exchange.rates.THB);
+-            });
+-        }
++        //Grand Total THB
++        grandTotalThb += Math.round(obj.total * exchange.rates.THB);
++      });
++    }
+ 
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/quotationList.js b/dental/server/methods/reports/quotationList.js
+index d8d4447..bce966d 100644
+--- a/dental/server/methods/reports/quotationList.js
++++ b/dental/server/methods/reports/quotationList.js
+@@ -1,94 +1,116 @@
+ Meteor.methods({
+-    dental_quotationList: function (params) {
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne(self.exchange);
+-
+-        if (self.branchId != "") {branch = self.branchId+" | "+branchDoc.enName} else {branch = "All";}
+-
+-        data.header = [
+-            {col1: 'Branch: ' + branch, col2:'', col3:'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B" }
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var selectorExchange = {};
+-
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.quotationDate = {$gte: fromDate, $lte: toDate};
+-
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        if (self.exchange != "") selectorExchange._id = self.exchange;
+-        // Get quotation
+-        var getQuotation = Dental.Collection.Quotation.find(selector);
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
+-
+-        var index = 1;
+-
+-        //Grand Total USD
+-        var grandTotalUsd = 0;
+-        //Grand Total KHR
+-        var grandTotalKhr = 0;
+-        //Grand Total THB
+-        var grandTotalThb = 0;
+-
+-        if (!_.isUndefined(getQuotation)) {
+-            getQuotation.forEach(function (obj) {
+-
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " ("+obj._patient.gender+")";
+-                obj.total = numeral(obj.total).format('0,0.00');
+-
+-                if(!_.isUndefined(obj._patient.age)) {obj.age = obj._patient.age;}else{obj.age = "None";}
+-
+-                content.push(obj);
++  dental_quotationList: function(params) {
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne(self.exchange);
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName
++    } else {
++      branch = "All";
++    }
+ 
+-                index += 1;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++        .USD).format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates
++        .KHR).format('0,0.00') + " R" + " | " + numeral(exchangeDoc
++        .rates.THB).format('0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.quotationDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    if (self.branchId != "") selector.branchId = self.branchId;
++    if (self.exchange != "") selectorExchange._id = self.exchange;
++    // Get quotation
++    var getQuotation = Dental.Collection.Quotation.find(selector);
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalUsd = 0;
++    //Grand Total KHR
++    var grandTotalKhr = 0;
++    //Grand Total THB
++    var grandTotalThb = 0;
++
++    if (!_.isUndefined(getQuotation)) {
++      getQuotation.forEach(function(obj) {
++
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++        obj.total = numeral(obj.total).format('0,0.00');
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
++        } else {
++          obj.age = "None";
++        }
+ 
+-                //Grand Total USD
+-                grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
++        content.push(obj);
+ 
+-                //Grand Total KHR
+-                grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
++        index += 1;
+ 
+-                //Grand Total THB
+-                grandTotalThb += Math.round(obj.total * exchange.rates.THB);
+-            });
+-        }
+-        data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
+-        data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
+-        data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++        //Grand Total USD
++        grandTotalUsd += Math.round(obj.total * exchange.rates.USD);
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++        //Grand Total KHR
++        grandTotalKhr += Math.round(obj.total * exchange.rates.KHR);
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++        //Grand Total THB
++        grandTotalThb += Math.round(obj.total * exchange.rates.THB);
++      });
++    }
++    data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
++    data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
++    data.footer.grandTotalThb = numeral(grandTotalThb).format('0,0.00');
++
++    if (content.length > 0) {
++      data.content = content;
++
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/registerByDiseaseList.js b/dental/server/methods/reports/registerByDiseaseList.js
+new file mode 100644
+index 0000000..3703e83
+--- /dev/null
++++ b/dental/server/methods/reports/registerByDiseaseList.js
+@@ -0,0 +1,121 @@
++Meteor.methods({
++  dental_registerByDiseaseList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch, disease;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    var diseaseDoc = Dental.Collection.DiseaseItem.findOne({
++      _id: self.diseaseItemId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
++
++    if (self.diseaseItemId != "") {
++      disease = self.diseaseItemId + " | " + diseaseDoc.name;
++    }
++
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Doisease Item ID: ' + '</b>' + disease
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.registerDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (self.branchId != "") selector.branchId = self.branchId;
++
++    // Get register
++    var getRegister = Dental.Collection.Register.find(selector);
++
++    var index = 1;
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
++        } else {
++          obj.age = "None";
++        }
++
++        if (!_.isUndefined(obj._patient.address)) {
++          obj.address = obj._patient.address;
++        } else {
++          obj.address = "None";
++        }
++
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
++
++        if (!_.isUndefined(obj.des)) {
++          obj.description = obj.des;
++        } else {
++          obj.description = "None";
++        }
++
++        //loop Disease
++        var diseaseId = '';
++        obj.disease.forEach(function(d) {
++          diseaseId = d.item;
++          if (diseaseId == self.diseaseItemId) {
++            content.push(obj);
++          }
++        });
++
++        index += 1;
++      });
++    }
++
++    if (content.length > 0) {
++      data.content = content;
++
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
++    }
++  }
++});
+diff --git a/dental/server/methods/reports/registerClosedList.js b/dental/server/methods/reports/registerClosedList.js
+index e1d7343..c9be864 100644
+--- a/dental/server/methods/reports/registerClosedList.js
++++ b/dental/server/methods/reports/registerClosedList.js
+@@ -1,75 +1,93 @@
+ Meteor.methods({
+-    dental_closedRegisterList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: [],
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
++  dental_closedRegisterList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
+ 
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.closingDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (fromDate != null && toDate != null) selector.status = "Close";
++    if (self.branchId != "") selector.branchId = self.branchId;
++    // Get register
++    var getRegister = Dental.Collection.Register.find(selector);
++
++    var index = 1;
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
+         } else {
+-            branch = "All";
++          obj.age = "None";
+         }
+ 
+-        data.header = [
+-            {col1: 'Branch: ' + branch}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.closingDate = {$gte: fromDate, $lte: toDate};
+-        if (fromDate != null && toDate != null) selector.status = "Close";
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        // Get register
+-        var getRegister = Dental.Collection.Register.find(selector);
+-
+-        var index = 1;
+-
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-
+-                if (!_.isUndefined(obj._patient.age)) {obj.age = obj._patient.age;} else {obj.age = "None";}
+-
+-                if (!_.isUndefined(obj._patient.telephone)) {obj.telephone = obj._patient.telephone;} else {obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/registerList.js b/dental/server/methods/reports/registerList.js
+index aa7ff67..c64ec54 100644
+--- a/dental/server/methods/reports/registerList.js
++++ b/dental/server/methods/reports/registerList.js
+@@ -1,81 +1,105 @@
+ Meteor.methods({
+-    dental_registerList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: [],
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        console.log(self.patient);
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
++  dental_registerList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
+ 
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.registerDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (self.branchId != "") selector.branchId = self.branchId;
++
++    // Get register
++    var getRegister = Dental.Collection.Register.find(selector);
++
++    var index = 1;
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
+         } else {
+-            branch = "All";
++          obj.age = "None";
+         }
+ 
+-        data.header = [
+-            {col1: 'Branch: ' + branch}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.registerDate = {$gte: fromDate, $lte: toDate};
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-
+-        // Get register
+-        var getRegister = Dental.Collection.Register.find(selector);
+-
+-        var index = 1;
+-
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-
+-                if(!_.isUndefined(obj._patient.age)) {obj.age = obj._patient.age;}else{obj.age = "None";}
+-
+-                if(!_.isUndefined(obj._patient.address)) {obj.address = obj._patient.address;}else{obj.address = "None";}
++        if (!_.isUndefined(obj._patient.address)) {
++          obj.address = obj._patient.address;
++        } else {
++          obj.address = "None";
++        }
+ 
+-                if(!_.isUndefined(obj._patient.telephone)) {obj.telephone = obj._patient.telephone;}else{obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                if(!_.isUndefined(obj.des)) {obj.description = obj.des;}else{obj.description = "None";}
++        if (!_.isUndefined(obj.des)) {
++          obj.description = obj.des;
++        } else {
++          obj.description = "None";
++        }
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/sharedDoctor.js b/dental/server/methods/reports/sharedDoctor.js
+index 3fa05d2..15e53b9 100644
+--- a/dental/server/methods/reports/sharedDoctor.js
++++ b/dental/server/methods/reports/sharedDoctor.js
+@@ -31,7 +31,7 @@ Meteor.methods({
+     }
+ 
+     data.header = [{
+-      col1: 'Branch: ' + branch
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
+     }];
+ 
+     /********** Content & Footer **********/
+diff --git a/dental/server/methods/reports/specialPaymentList.js b/dental/server/methods/reports/specialPaymentList.js
+index edad33c..78012e9 100644
+--- a/dental/server/methods/reports/specialPaymentList.js
++++ b/dental/server/methods/reports/specialPaymentList.js
+@@ -1,128 +1,174 @@
+ Meteor.methods({
+-    dental_specialPaymentList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: {},
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date : self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch,staff,status;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id:self.branchId});
+-        var staffDoc = Dental.Collection.Staff.findOne({_id:self.staff});
+-        var exchangeDoc = Cpanel.Collection.Exchange.findOne({_id:self.exchange});
+-
+-        if (self.branchId != "") {branch = self.branchId + " | " +branchDoc.enName;} else {branch = "All";}
+-        if (self.staff != "") {staff = self.staff+" | " +staffDoc.name;} else {staff = "All";}
+-        //if ( self.status != "") {status = self.status;} else {status = "All";}
+-
+-
+-        data.header = [
+-            {col1: 'Branch: ' + branch, col2: 'Staff: ' + staff, col3: 'Status: ', col4: 'Exchange: ' + numeral(exchangeDoc.rates.USD).format('$ 0,0.00') +" | "+ numeral(exchangeDoc.rates.KHR).format('0,0.00')+" R" + " | "+ numeral(exchangeDoc.rates.THB).format('0,0.00')+" B"}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-
+-        var selector = {};
+-        var selectorExchange = {};
+-
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.paymentDate = {$gte: fromDate, $lte: toDate};
+-
+-        // Filter
+-        if (self.staff != "") selector.staffId = self.staff;
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        //if (self.status != "") selector.status = self.status;
+-
+-        if (self.exchange != "") selectorExchange._id = self.exchange;
+-
+-        //Get Exchange
+-        var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
+-
+-        // Get payment
+-        var getPayment = Dental.Collection.SpecialPayment.find(selector);
+-
+-        var index = 1;
++  dental_specialPaymentList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: {},
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch, staff, status;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++    var staffDoc = Dental.Collection.Staff.findOne({
++      _id: self.staff
++    });
++    var exchangeDoc = Cpanel.Collection.Exchange.findOne({
++      _id: self.exchange
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
++    if (self.staff != "") {
++      staff = self.staff + " | " + staffDoc.name;
++    } else {
++      staff = "All";
++    }
++    //if ( self.status != "") {status = self.status;} else {status = "All";}
++
++
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch,
++      col2: '<b>' + 'Staff: ' + '</b>' + staff,
++      col3: '<b>' + 'Status: ' + '</b>' + status,
++      col4: '<b>' + 'Exchange: ' + '</b>' + numeral(exchangeDoc.rates
++        .USD).format('$ 0,0.00') + " | " + numeral(exchangeDoc.rates
++        .KHR).format('0,0.00') + " R" + " | " + numeral(exchangeDoc
++        .rates.THB).format('0,0.00') + " B"
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++
++    var selector = {};
++    var selectorExchange = {};
++
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.paymentDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++
++    // Filter
++    if (self.staff != "") selector.staffId = self.staff;
++    if (self.branchId != "") selector.branchId = self.branchId;
++    //if (self.status != "") selector.status = self.status;
++
++    if (self.exchange != "") selectorExchange._id = self.exchange;
++
++    //Get Exchange
++    var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
++
++    // Get payment
++    var getPayment = Dental.Collection.SpecialPayment.find(selector);
++
++    var index = 1;
++
++    //Grand Total USD
++    var grandTotalDueAmountUsd = 0;
++    var grandTotalPaidAmountUsd = 0;
++    var grandTotalBalanceUsd = 0;
++    //Grand Total KHR
++    var grandTotalDueAmountKhr = 0;
++    var grandTotalPaidAmountKhr = 0;
++    var grandTotalBalanceKhr = 0;
++    //Grand Total THB
++    var grandTotalDueAmountThb = 0;
++    var grandTotalPaidAmountThb = 0;
++    var grandTotalBalanceThb = 0;
++
++    if (!_.isUndefined(getPayment)) {
++      getPayment.forEach(function(obj) {
++
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++        obj.due = numeral(obj.dueAmount).format('0,0.00');
++        obj.paid = numeral(obj.paidAmount).format('0,0.00');
++        obj.balance = numeral(obj.balance).format('0,0.00');
++
++        content.push(obj);
++        index += 1;
+ 
+         //Grand Total USD
+-        var grandTotalDueAmountUsd = 0;
+-        var grandTotalPaidAmountUsd = 0;
+-        var grandTotalBalanceUsd = 0;
++        grandTotalDueAmountUsd += Math.round(obj.dueAmount * exchange
++          .rates.USD);
++        grandTotalPaidAmountUsd += Math.round(obj.paidAmount *
++          exchange.rates.USD);
++        grandTotalBalanceUsd += Math.round(obj.balance * exchange.rates
++          .USD);
++
+         //Grand Total KHR
+-        var grandTotalDueAmountKhr = 0;
+-        var grandTotalPaidAmountKhr = 0;
+-        var grandTotalBalanceKhr = 0;
++        grandTotalDueAmountKhr += Math.round(obj.dueAmount * exchange
++          .rates.KHR);
++        grandTotalPaidAmountKhr += Math.round(obj.paidAmount *
++          exchange.rates.KHR);
++        grandTotalBalanceKhr += Math.round(obj.balance * exchange.rates
++          .KHR);
++
+         //Grand Total THB
+-        var grandTotalDueAmountThb = 0;
+-        var grandTotalPaidAmountThb = 0;
+-        var grandTotalBalanceThb = 0;
+-
+-        if (!_.isUndefined(getPayment)) {
+-            getPayment.forEach(function (obj) {
+-
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-                obj.due = numeral(obj.dueAmount).format('0,0.00');
+-                obj.paid = numeral(obj.paidAmount).format('0,0.00');
+-                obj.balance = numeral(obj.balance).format('0,0.00');
+-
+-                content.push(obj);
+-                index += 1;
+-
+-                //Grand Total USD
+-                grandTotalDueAmountUsd += Math.round(obj.dueAmount * exchange.rates.USD);
+-                grandTotalPaidAmountUsd += Math.round(obj.paidAmount * exchange.rates.USD);
+-                grandTotalBalanceUsd += Math.round(obj.balance * exchange.rates.USD);
+-
+-                //Grand Total KHR
+-                grandTotalDueAmountKhr += Math.round(obj.dueAmount * exchange.rates.KHR);
+-                grandTotalPaidAmountKhr += Math.round(obj.paidAmount * exchange.rates.KHR);
+-                grandTotalBalanceKhr += Math.round(obj.balance * exchange.rates.KHR);
+-
+-                //Grand Total THB
+-                grandTotalDueAmountThb += Math.round(obj.dueAmount * exchange.rates.THB);
+-                grandTotalPaidAmountThb += Math.round(obj.paidAmount * exchange.rates.THB);
+-                grandTotalBalanceThb += Math.round(obj.balance * exchange.rates.THB);
+-
+-            });
+-        }
+-
+-        data.footer.totalDueAmountUsd = numeral(grandTotalDueAmountUsd).format('0,0.00');
+-        data.footer.totalPaidAmountUsd = numeral(grandTotalPaidAmountUsd).format('0,0.00');
+-        data.footer.totalBalanceUsd = numeral(grandTotalBalanceUsd).format('0,0.00');
+-
+-        data.footer.totalDueAmountKhr = numeral(grandTotalDueAmountKhr).format('0,0.00');
+-        data.footer.totalPaidAmountKhr = numeral(grandTotalPaidAmountKhr).format('0,0.00');
+-        data.footer.totalBalanceKhr = numeral(grandTotalBalanceKhr).format('0,0.00');
+-
+-        data.footer.totalDueAmountThb = numeral(grandTotalDueAmountThb).format('0,0.00');
+-        data.footer.totalPaidAmountThb = numeral(grandTotalPaidAmountThb).format('0,0.00');
+-        data.footer.totalBalanceThb = numeral(grandTotalBalanceThb).format('0,0.00');
+-
+-        if (content.length > 0) {
+-            data.content = content;
+-
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++        grandTotalDueAmountThb += Math.round(obj.dueAmount * exchange
++          .rates.THB);
++        grandTotalPaidAmountThb += Math.round(obj.paidAmount *
++          exchange.rates.THB);
++        grandTotalBalanceThb += Math.round(obj.balance * exchange.rates
++          .THB);
++
++      });
++    }
++
++    data.footer.totalDueAmountUsd = numeral(grandTotalDueAmountUsd).format(
++      '0,0.00');
++    data.footer.totalPaidAmountUsd = numeral(grandTotalPaidAmountUsd).format(
++      '0,0.00');
++    data.footer.totalBalanceUsd = numeral(grandTotalBalanceUsd).format(
++      '0,0.00');
++
++    data.footer.totalDueAmountKhr = numeral(grandTotalDueAmountKhr).format(
++      '0,0.00');
++    data.footer.totalPaidAmountKhr = numeral(grandTotalPaidAmountKhr).format(
++      '0,0.00');
++    data.footer.totalBalanceKhr = numeral(grandTotalBalanceKhr).format(
++      '0,0.00');
++
++    data.footer.totalDueAmountThb = numeral(grandTotalDueAmountThb).format(
++      '0,0.00');
++    data.footer.totalPaidAmountThb = numeral(grandTotalPaidAmountThb).format(
++      '0,0.00');
++    data.footer.totalBalanceThb = numeral(grandTotalBalanceThb).format(
++      '0,0.00');
++
++    if (content.length > 0) {
++      data.content = content;
++
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/specialRegisterClosedList.js b/dental/server/methods/reports/specialRegisterClosedList.js
+index 970d07d..6855aa0 100644
+--- a/dental/server/methods/reports/specialRegisterClosedList.js
++++ b/dental/server/methods/reports/specialRegisterClosedList.js
+@@ -1,75 +1,93 @@
+ Meteor.methods({
+-    dental_closedSpecialRegisterList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: [],
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
++  dental_closedSpecialRegisterList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
+ 
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.closingDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (fromDate != null && toDate != null) selector.status = "Close";
++    if (self.branchId != "") selector.branchId = self.branchId;
++    // Get register
++    var getRegister = Dental.Collection.SpecialRegister.find(selector);
++
++    var index = 1;
++
++    if (!_.isUndefined(getRegister)) {
++      getRegister.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
+         } else {
+-            branch = "All";
++          obj.age = "None";
+         }
+ 
+-        data.header = [
+-            {col1: 'Branch: ' + branch}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.closingDate = {$gte: fromDate, $lte: toDate};
+-        if (fromDate != null && toDate != null) selector.status = "Close";
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-        // Get register
+-        var getRegister = Dental.Collection.SpecialRegister.find(selector);
+-
+-        var index = 1;
+-
+-        if (!_.isUndefined(getRegister)) {
+-            getRegister.forEach(function (obj) {
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-
+-                if (!_.isUndefined(obj._patient.age)) {obj.age = obj._patient.age;} else {obj.age = "None";}
+-
+-                if (!_.isUndefined(obj._patient.telephone)) {obj.telephone = obj._patient.telephone;} else {obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/methods/reports/specialRegisterList.js b/dental/server/methods/reports/specialRegisterList.js
+index b948a7a..c62cd75 100644
+--- a/dental/server/methods/reports/specialRegisterList.js
++++ b/dental/server/methods/reports/specialRegisterList.js
+@@ -1,81 +1,108 @@
+ Meteor.methods({
+-    dental_specialRegisterList: function (params) {
+-
+-        var self = params;
+-        var data = {
+-            title: {},
+-            header: [],
+-            content: [],
+-            footer: [],
+-            deposit: []
+-        };
+-
+-        /********* Title *********/
+-        var company = Cpanel.Collection.Company.findOne();
+-        data.title = {
+-            company: company,
+-            date: self.date
+-        };
+-
+-        /********* Header ********/
+-
+-        console.log(self.patient);
+-
+-        var branch;
+-
+-        var branchDoc = Cpanel.Collection.Branch.findOne({_id: self.branchId});
++  dental_specialRegisterList: function(params) {
++
++    var self = params;
++    var data = {
++      title: {},
++      header: [],
++      content: [],
++      footer: [],
++      deposit: []
++    };
++
++    /********* Title *********/
++    var company = Cpanel.Collection.Company.findOne();
++    data.title = {
++      company: company,
++      date: self.date
++    };
++
++    /********* Header ********/
++
++    console.log(self.patient);
++
++    var branch;
++
++    var branchDoc = Cpanel.Collection.Branch.findOne({
++      _id: self.branchId
++    });
++
++    if (self.branchId != "") {
++      branch = self.branchId + " | " + branchDoc.enName;
++    } else {
++      branch = "All";
++    }
+ 
+-        if (self.branchId != "") {
+-            branch = self.branchId + " | " + branchDoc.enName;
++    data.header = [{
++      col1: '<b>' + 'Branch: ' + '</b>' + branch
++    }];
++
++    /********** Content & Footer **********/
++    var content = [];
++
++    var selector = {};
++    var date = self.date.split(" To ");
++    var fromDate = moment(date[0] + " 00:00:00").format(
++      "YYYY-MM-DD HH:mm:ss");
++    var toDate = moment(date[1] + " 23:59:59").format(
++      "YYYY-MM-DD HH:mm:ss");
++    if (fromDate != null && toDate != null) selector.registerDate = {
++      $gte: fromDate,
++      $lte: toDate
++    };
++    if (self.branchId != "") selector.branchId = self.branchId;
++
++    // Get Special Register
++    var getSpecialRegister = Dental.Collection.SpecialRegister.find(
++      selector);
++
++    var index = 1;
++
++    if (!_.isUndefined(getSpecialRegister)) {
++      getSpecialRegister.forEach(function(obj) {
++        obj.index = index;
++        obj.patient = obj._patient.name + " (" + obj._patient.gender +
++          ")";
++
++        if (!_.isUndefined(obj._patient.age)) {
++          obj.age = obj._patient.age;
+         } else {
+-            branch = "All";
++          obj.age = "None";
+         }
+ 
+-        data.header = [
+-            {col1: 'Branch: ' + branch}
+-        ];
+-
+-        /********** Content & Footer **********/
+-        var content = [];
+-
+-        var selector = {};
+-        var date = self.date.split(" To ");
+-        var fromDate = moment(date[0] + " 00:00:00").format("YYYY-MM-DD HH:mm:ss");
+-        var toDate = moment(date[1] + " 23:59:59").format("YYYY-MM-DD HH:mm:ss");
+-        if (fromDate != null && toDate != null) selector.registerDate = {$gte: fromDate, $lte: toDate};
+-        if (self.branchId != "") selector.branchId = self.branchId;
+-
+-        // Get Special Register
+-        var getSpecialRegister = Dental.Collection.SpecialRegister.find(selector);
+-
+-        var index = 1;
+-
+-        if (!_.isUndefined(getSpecialRegister)) {
+-            getSpecialRegister.forEach(function (obj) {
+-                obj.index = index;
+-                obj.patient = obj._patient.name + " (" + obj._patient.gender + ")";
+-
+-                if(!_.isUndefined(obj._patient.age)) {obj.age = obj._patient.age;}else{obj.age = "None";}
+-
+-                if(!_.isUndefined(obj._patient.address)) {obj.address = obj._patient.address;}else{obj.address = "None";}
++        if (!_.isUndefined(obj._patient.address)) {
++          obj.address = obj._patient.address;
++        } else {
++          obj.address = "None";
++        }
+ 
+-                if(!_.isUndefined(obj._patient.telephone)) {obj.telephone = obj._patient.telephone;}else{obj.telephone = "None";}
++        if (!_.isUndefined(obj._patient.telephone)) {
++          obj.telephone = obj._patient.telephone;
++        } else {
++          obj.telephone = "None";
++        }
+ 
+-                if(!_.isUndefined(obj.des)) {obj.description = obj.des;}else{obj.description = "None";}
++        if (!_.isUndefined(obj.des)) {
++          obj.description = obj.des;
++        } else {
++          obj.description = "None";
++        }
+ 
+-                content.push(obj);
++        content.push(obj);
+ 
+-                index += 1;
+-            });
+-        }
++        index += 1;
++      });
++    }
+ 
+-        if (content.length > 0) {
+-            data.content = content;
++    if (content.length > 0) {
++      data.content = content;
+ 
+-            return data;
+-        } else {
+-            data.content.push({index: 'no results'});
+-            return data;
+-        }
++      return data;
++    } else {
++      data.content.push({
++        index: 'no results'
++      });
++      return data;
+     }
+-});
+\ No newline at end of file
++  }
++});
+diff --git a/dental/server/startup/category.js b/dental/server/startup/category.js
+index 6003d36..70d1623 100644
+--- a/dental/server/startup/category.js
++++ b/dental/server/startup/category.js
+@@ -1,20 +1,19 @@
+-Meteor.startup(function () {
+-    if (Dental.Collection.DiseaseCategory.find().count() == 0) {
+-        var data = [
+-            {
+-                _id: "001",
+-                code: "A",
+-                name: "Apple"
+-            },
+-            {
+-                _id: "002",
+-                code: "B",
+-                name: "Ball"
+-            }
+-        ];
+-
+-        _.each(data, function (obj) {
+-            Dental.Collection.DiseaseCategory.insert(obj);
+-        });
+-    }
+-});
+\ No newline at end of file
++Meteor.startup(function() {
++  if (Dental.Collection.DiseaseCategory.find().count() == 0) {
++    var data = [{
++      _id: "001",
++      code: "A",
++      name: "Apple",
++      branchId: "001"
++    }, {
++      _id: "002",
++      code: "B",
++      name: "Ball",
++      branchId: "001"
++    }];
++
++    _.each(data, function(obj) {
++      Dental.Collection.DiseaseCategory.insert(obj);
++    });
++  }
++});
+diff --git a/dental/server/startup/item.js b/dental/server/startup/item.js
+index 6ea5a18..1590a0b 100644
+--- a/dental/server/startup/item.js
++++ b/dental/server/startup/item.js
+@@ -1,42 +1,41 @@
+-Meteor.startup(function () {
+-    if (Dental.Collection.DiseaseItem.find().count() == 0) {
+-        var data = [
+-            {
+-                "_id": "000001",
+-                "diseaseCategoryId": "001",
+-                "code": "AI1",
+-                "name": "AItem 1",
+-                "price": 50,
+-                "memberPrice": 40
+-            },
+-            {
+-                "_id": "000002",
+-                "diseaseCategoryId": "001",
+-                "code": "AI2",
+-                "name": "AItem 2",
+-                "price": 70,
+-                "memberPrice": 60
+-            },
+-            {
+-                "_id": "000003",
+-                "diseaseCategoryId": "002",
+-                "code": "BI1",
+-                "name": "BItem 1",
+-                "price": 50,
+-                "memberPrice": 40
+-            },
+-            {
+-                "_id": "000004",
+-                "diseaseCategoryId": "002",
+-                "code": "BI2",
+-                "name": "BItem 2",
+-                "price": 70,
+-                "memberPrice": 60
+-            }
+-        ];
+-
+-        _.each(data, function (obj) {
+-            Dental.Collection.DiseaseItem.insert(obj);
+-        });
+-    }
+-});
+\ No newline at end of file
++Meteor.startup(function() {
++  if (Dental.Collection.DiseaseItem.find().count() == 0) {
++    var data = [{
++      _id: "000001",
++      diseaseCategoryId: "001",
++      code: "AI1",
++      name: "AItem 1",
++      price: 50,
++      memberPrice: 40,
++      branchId: "001"
++    }, {
++      _id: "000002",
++      diseaseCategoryId: "001",
++      code: "AI2",
++      name: "AItem 2",
++      price: 70,
++      memberPrice: 60,
++      branchId: "001"
++    }, {
++      _id: "000003",
++      diseaseCategoryId: "002",
++      code: "BI1",
++      name: "BItem 1",
++      price: 50,
++      memberPrice: 40,
++      branchId: "001"
++    }, {
++      _id: "000004",
++      diseaseCategoryId: "002",
++      code: "BI2",
++      name: "BItem 2",
++      price: 70,
++      memberPrice: 60,
++      branchId: "001"
++    }];
++
++    _.each(data, function(obj) {
++      Dental.Collection.DiseaseItem.insert(obj);
++    });
++  }
++});
+-- 
+1.9.1
+

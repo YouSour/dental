@@ -1,5 +1,5 @@
 Meteor.methods({
-  dental_closedSpecialRegisterList: function(params) {
+  dental_registerByDiseaseList: function(params) {
 
     var self = params;
     var data = {
@@ -19,10 +19,14 @@ Meteor.methods({
 
     /********* Header ********/
 
-    var branch;
+    var branch, disease;
 
     var branchDoc = Cpanel.Collection.Branch.findOne({
       _id: self.branchId
+    });
+
+    var diseaseDoc = Dental.Collection.DiseaseItem.findOne({
+      _id: self.diseaseItemId
     });
 
     if (self.branchId != "") {
@@ -31,8 +35,13 @@ Meteor.methods({
       branch = "All";
     }
 
+    if (self.diseaseItemId != "") {
+      disease = self.diseaseItemId + " | " + diseaseDoc.name;
+    }
+
     data.header = [{
-      col1: '<b>' + 'Branch: ' + '</b>' + branch
+      col1: '<b>' + 'Branch: ' + '</b>' + branch,
+      col2: '<b>' + 'Doisease Item ID: ' + '</b>' + disease
     }];
 
     /********** Content & Footer **********/
@@ -44,14 +53,14 @@ Meteor.methods({
       "YYYY-MM-DD HH:mm:ss");
     var toDate = moment(date[1] + " 23:59:59").format(
       "YYYY-MM-DD HH:mm:ss");
-    if (fromDate != null && toDate != null) selector.closingDate = {
+    if (fromDate != null && toDate != null) selector.registerDate = {
       $gte: fromDate,
       $lte: toDate
     };
-    if (fromDate != null && toDate != null) selector.status = "Close";
     if (self.branchId != "") selector.branchId = self.branchId;
+
     // Get register
-    var getRegister = Dental.Collection.SpecialRegister.find(selector);
+    var getRegister = Dental.Collection.Register.find(selector);
 
     var index = 1;
 
@@ -67,13 +76,32 @@ Meteor.methods({
           obj.age = "None";
         }
 
+        if (!_.isUndefined(obj._patient.address)) {
+          obj.address = obj._patient.address;
+        } else {
+          obj.address = "None";
+        }
+
         if (!_.isUndefined(obj._patient.telephone)) {
           obj.telephone = obj._patient.telephone;
         } else {
           obj.telephone = "None";
         }
 
-        content.push(obj);
+        if (!_.isUndefined(obj.des)) {
+          obj.description = obj.des;
+        } else {
+          obj.description = "None";
+        }
+
+        //loop Disease
+        var diseaseId = '';
+        obj.disease.forEach(function(d) {
+          diseaseId = d.item;
+          if (diseaseId == self.diseaseItemId) {
+            content.push(obj);
+          }
+        });
 
         index += 1;
       });

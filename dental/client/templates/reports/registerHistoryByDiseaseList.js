@@ -1,19 +1,19 @@
 /************ Form *************/
 
-// Template.dental_patientHistoryListReport.onRendered(function () {
-//     var name = $('[name="date"]');
-//     DateTimePicker.dateRange(name);
-// });
+Template.dental_registerByDiseaseListReport.onRendered(function() {
+  var name = $('[name="date"]');
+  DateTimePicker.dateRange(name);
+});
 
 
 /************ Generate *************/
-Template.dental_patientHistoryListReportGen.helpers({
+Template.dental_registerByDiseaseListReportGen.helpers({
   data: function() {
     var self = this;
 
     var callId = JSON.stringify(self);
     var call = Meteor.callAsync(callId,
-      'dental_patientHistoryList', self);
+      'dental_registerByDiseaseList', self);
 
     if (!call.ready()) {
       return false;
