@@ -218,7 +218,6 @@
 }
 
 /*custom style doctor*/
-.doctor-style{
   width: 150px;
 }
 
@@ -252,6 +251,12 @@ font-size: 15px;
   float: left;
   width: 14%;
 }
+
+/*Top Margin*/
+.top-margin{
+  margin-top: 20px;
+}
+
 @media (min-width: 768px) {
   .col-sm-2-custom ,.col-md-2-custom{
     float: left;
