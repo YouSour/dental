@@ -66,6 +66,7 @@ Meteor.methods({
       };
     }
     // find doctor Id all
+    var grandTotal = 0;
     var doctorList = Dental.Collection.Register.aggregate([{
       $unwind: "$doctorShare"
     }, {
@@ -127,12 +128,15 @@ Meteor.methods({
             detailObj.isHeader = false, detailObj.amount = ob
               .amount;
             totalAmount += ob.amount;
+            grandTotal += ob.amount;
           }
         });
         detailObj.totalAmount = totalAmount;
         content.push(detailObj);
       });
     });
+
+    data.footer.grandTotal = grandTotal;
 
     if (content.length > 0) {
       data.content = content;
