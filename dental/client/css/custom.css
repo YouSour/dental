@@ -257,6 +257,16 @@ font-size: 15px;
   margin-top: 20px;
 }
 
+/*custom select2*/
+.select2-container .select2-choice {
+    height: 37px;
+    line-height: 1.62857;
+}
+
+.select2-search {
+  padding-top: 4px;
+}
+
 @media (min-width: 768px) {
   .col-sm-2-custom ,.col-md-2-custom{
     float: left;
