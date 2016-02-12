@@ -24,14 +24,34 @@ Meteor.methods({
         _id: self.specialTreatmentId
       })
       .forEach(function(obj) {
-        obj.images = [];
-        obj.attachFile.forEach(function(id) {
-          obj.images.push({
-            link: Files.findOne(id).url()
+        // Patient Photo
+        obj.patientPhoto = "/no-image.png";
+        if (!_.isUndefined(obj._specialRegister._patient.photo)) {
+          obj.patientPhoto = Files.findOne(obj._specialRegister
+            ._patient
+            .photo).url();
+        }
+
+        //Patient Info
+        obj.patient = obj.patientId + " : " + obj._specialRegister._patient.name +
+          " (" + obj._specialRegister._patient.gender + ")";
+        //Doctor Info
+        obj.doctor = obj.doctorId + " : " + obj._doctor.name + " (" +
+          obj._doctor.gender + ")";
+
+          obj.images = [];
+          obj.attachFile.forEach(function(id) {
+            var imageDoc = Files.findOne(id);
+            obj.images.push({
+              name: imageDoc.name(),
+              link: imageDoc.url(),
+              type: imageDoc.type(),
+              size: imageDoc.size() + " Kb",
+              linkDownload: imageDoc.url() + "?download=true"
+            });
           });
+          content.push(obj);
         });
-        content.push(obj);
-      });
 
     if (content.length > 0) {
       data.content = content;
