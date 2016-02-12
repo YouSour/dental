@@ -40,7 +40,6 @@ Meteor.methods({
             size: imageDoc.size() + " Kb",
             linkDownload: imageDoc.url() + "?download=true"
           });
-          // console.log(obj.images);
         });
         content.push(obj);
       });

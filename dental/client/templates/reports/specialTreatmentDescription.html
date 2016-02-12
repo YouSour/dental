@@ -1,19 +1,44 @@
 <!--Show Description-->
 <template name="dental_specialTreatmentDescription">
-  <div class="page-header">
-  <h1>{{fa "paperclip"}} Attach File</h1>
-  <hr>
+  <div class="container">
   {{#if data}}
   {{#with data}}
+<div class="panel panel-default top-margin"> <div class="panel-heading"> <h3 class="panel-title">{{fa "paperclip"}} Attach File</h3> </div>
+<div class="panel-body">
+  <div class="row">
       {{#each content}}
+      <div class="col-md-12">
+      <div class="bs-callout bs-callout-success" id="callout-alerts-no-default"><p>{{lightbox url=patientPhoto title=_specialRegister._patient.name}} <b>Treatment Date :</b> {{treatmentDate}} | <b>Patient :</b> {{patient}} | <b>Doctor :</b> {{doctor}}</p></div>
+      </div>
         {{#each images}}
-        <p><img src="{{link}}"/></p>
-        {{/each}}
+      <div class="col-sm-6 col-md-4">
+  <div class="thumbnail">
+          <a href="{{link}}" data-lightbox="example-1" data-title="{{name}}"><img src="{{link}}" style="height:212px;"/></a>
+    <div class="caption">
+      <h4>{{name}}</h4>
+      <p><b>Type :</b> <span class="label label-default">{{type}}</span></p>
+      <p><b>Size :</b> <span class="label label-default">{{size}}</span></p>
+      <p><a href="{{linkDownload}}" class="btn btn-success" role="button" >{{fa "arrow-circle-o-down"}} Download</a></p>
+    </div>
+  </div>
+</div>
+    {{/each}}
       {{/each}}
+    </div>
+</div>
+ <div class="panel-footer">
+           <p class="text-muted">
+               <img style="display: inline-block" alt="Rabbit TC" width="20" height="20" src="/rabbit.png">
+               Rabbit Training Center
+               <i class="fa fa-copyright"></i> 2015,
+               <i class="fa fa-phone-square"></i> 053 50 66 777.
+           </p>
+ </div>
+</div>
+
   {{/with}}
   {{else}}
   {{> loading}}
   {{/if}}
-
 </div>
 </template>
