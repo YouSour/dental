@@ -1,3 +1,30 @@
 <template name="dental_home">
-    <h3>Dental home page!</h3>
+  <div class="panel panel-default animated bounceIn">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{fa "rocket"}} Quick Shortcuts</h3>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-12">
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="row">
+              <a href="{{pathFor 'dental.patient'}}" class="btn btn-success btn-lg-custom" role="button">{{fa "users"}} <br/>Patient</a>
+              <a href="{{pathFor 'dental.register'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "file-text-o"}} <br/>Register</a>
+              <a href="{{pathFor 'dental.specialRegister'}}" class="btn btn-danger btn-lg-custom" role="button">{{fa "tasks"}} <br/>Special Register</a>
+              <a href="{{pathFor 'dental.quotation'}}" class="btn btn-warning btn-lg-custom" role="button">{{fa "book"}} <br/>Quotation</a>
+            </div><br>
+            <div class="row">
+              <a href="{{pathFor 'dental.materialCost'}}" class="btn btn-success btn-lg-custom" role="button">{{fa "medkit"}} <br/>Material Cost</a>
+              <a href="{{pathFor 'dental.purchase'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "cart-plus"}} <br/>Purchase</a>
+              <a href="{{pathFor 'cpanel.exchange'}}" class="btn btn-danger btn-lg-custom" role="button">{{fa "exchange"}} <br/>Exchange</a>
+              <a href="{{pathFor 'dental.calendar'}}" class="btn btn-warning btn-lg-custom" role="button">{{fa "calendar"}} <br/>Calendar</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 </template>
