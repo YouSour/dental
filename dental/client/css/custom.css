@@ -1,12 +1,12 @@
-.panel-custom{
-    margin-top: 25px;
-
+.panel-custom {
+  margin-top: 25px;
 }
-.panel-title-custom{
-    font-size: 29px;
+.panel-title-custom {
+  font-size: 29px;
 }
 
 /*Custom*/
+
 .navbar-nav > .messages-menu {
   position: relative;
 }
@@ -16,10 +16,10 @@
   margin: 0!important;
   top: 100%;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li{
+.navbar-nav > .messages-menu > .dropdown-menu > li {
   position: relative;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li.header{
+.navbar-nav > .messages-menu > .dropdown-menu > li.header {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 0;
@@ -30,7 +30,7 @@
   color: #444444;
   font-size: 14px;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li.footer > a{
+.navbar-nav > .messages-menu > .dropdown-menu > li.footer > a {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 4px;
@@ -43,12 +43,12 @@
   text-align: center;
 }
 @media (max-width: 991px) {
-  .navbar-nav > .messages-menu > .dropdown-menu > li.footer > a{
+  .navbar-nav > .messages-menu > .dropdown-menu > li.footer > a {
     background: #fff!important;
     color: #444!important;
   }
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li.footer > a:hover{
+.navbar-nav > .messages-menu > .dropdown-menu > li.footer > a:hover {
   text-decoration: none;
   font-weight: normal;
 }
@@ -59,13 +59,13 @@
   list-style: none;
   overflow-x: hidden;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a{
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a {
   display: block;
   white-space: nowrap;
   /* Prevent text from breaking */
   border-bottom: 1px solid #f4f4f4;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:hover{
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:hover {
   background: #f4f4f4;
   text-decoration: none;
 }
@@ -97,8 +97,7 @@
   font-size: 12px;
   color: #888888;
 }
-.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:before,
-.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after {
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:before, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after {
   content: " ";
   display: table;
 }
@@ -107,6 +106,7 @@
 }
 
 /*Custom label*/
+
 .navbar .nav > li > a > .label {
   position: absolute;
   top: 9px;
@@ -122,7 +122,6 @@
 .dropdown-submenu {
   position: relative;
 }
-
 .dropdown-submenu>.dropdown-menu {
   top: 0;
   left: 100%;
@@ -132,11 +131,9 @@
   -moz-border-radius: 0 6px 6px;
   border-radius: 0 6px 6px 6px;
 }
-
 .dropdown-submenu:hover>.dropdown-menu {
   display: block;
 }
-
 .dropdown-submenu>a:after {
   display: block;
   content: " ";
@@ -150,15 +147,12 @@
   margin-top: 5px;
   margin-right: -10px;
 }
-
 .dropdown-submenu:hover>a:after {
   border-left-color: #fff;
 }
-
 .dropdown-submenu.pull-left {
   float: none;
 }
-
 .dropdown-submenu.pull-left>.dropdown-menu {
   left: -100%;
   margin-left: 10px;
@@ -168,11 +162,13 @@
 }
 
 /* space li for help in register*/
-.space-li{
+
+.space-li {
   margin-bottom: 5px;
 }
 
 /*border Image*/
+
 .border-img {
   display: inline-block;
   max-width: 100%;
@@ -187,38 +183,46 @@
 }
 
 /*custom style td*/
-.td-custom{
+
+.td-custom {
   text-align: center;
 }
 
 /*custom style No*/
-.index-style,.qty-style{
+
+.index-style, .qty-style {
   width: 10px;
 }
 
 /*custom style items*/
-.items-style{
+
+.items-style {
   width: 40%;
-  text-align:left;
+  text-align: left;
 }
 
 /*custom style discount*/
-.dis-style{
+
+.dis-style {
   width: 42px;
 }
 
 /*custom style treatmentDate*/
-.treatment-date-style{
+
+.treatment-date-style {
   width: 125px;
 }
 
 /*custom style treatmentDescription*/
-.treatment-des-style{
+
+.treatment-des-style {
   text-align: left;
 }
 
 /*custom style doctor*/
-  width: 150px;
+
+width: 150px;
+
 }
 
 /*header style*/
@@ -226,24 +230,23 @@
   width: 305px;
 }
 
-
 /*custom td patient history*/
-.td-cus-style{
+.td-cus-style {
   width: 25%;
 }
 
 /*font-size-appoint-report*/
-.font-appointment-style{
-font-size: 18px;
+.font-appointment-style {
+  font-size: 18px;
 }
 
 /*font-size-appoint-report-table-header*/
-.font-appointment-tbl-header-style{
-font-size: 15px;
+.font-appointment-tbl-header-style {
+  font-size: 15px;
 }
 
 /*Custom Columns*/
-.col-sm-2-custom,.col-md-2-custom {
+.col-sm-2-custom, .col-md-2-custom {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
@@ -253,38 +256,44 @@ font-size: 15px;
 }
 
 /*Top Margin*/
-.top-margin{
+.top-margin {
   margin-top: 20px;
 }
 
 /*custom select2*/
 .select2-container .select2-choice {
-    height: 37px;
-    line-height: 1.62857;
+  height: 37px;
+  line-height: 1.62857;
 }
-
 .select2-search {
   padding-top: 4px;
 }
 
+/*btn-lg-custom*/
+.btn-lg-custom {
+  padding: 15px 16px 13px;
+  width: 274px;
+  font-size: 16px;
+  line-height: 17px;
+}
+
 @media (min-width: 768px) {
-  .col-sm-2-custom ,.col-md-2-custom{
+  .col-sm-2-custom, .col-md-2-custom {
     float: left;
     width: 14%;
   }
-  }
-
-  .col-sm-4-custom,.col-md-4-custom {
-    position: relative;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
+}
+.col-sm-4-custom, .col-md-4-custom {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  float: left;
+  width: 27%;
+}
+@media (min-width: 768px) {
+  .col-sm-4-custom, .col-md-4-custom {
     float: left;
     width: 27%;
   }
-  @media (min-width: 768px) {
-    .col-sm-4-custom ,.col-md-4-custom{
-      float: left;
-      width: 27%;
-    }
-    }
+}
