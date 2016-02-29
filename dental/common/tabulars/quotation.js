@@ -35,6 +35,7 @@ Dental.TabularTable.Quotation = new Tabular.Table({
     ],
     order: [['1', 'desc']],
     autoWidth: false,
+    extraFields:["disease","subtotal","subDiscount","des"],
     columnDefs: [
         {"width": "12px", "targets": 0},
         {"width": "12px", "targets": 1}

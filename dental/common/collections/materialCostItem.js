@@ -32,6 +32,9 @@ Dental.Schema.MaterialCostItem = new SimpleSchema({
                 return Dental.List.materialCostCategory();
             }
         }
+    },
+    branchId:{
+      type:String
     }
 });
 

@@ -26,9 +26,7 @@ Template.dental_specialTreatment.events({
         data)).maximize();
   },
   'click .update': function() {
-    var data = Dental.Collection.SpecialTreatment.findOne({
-      _id: this._id
-    });
+    var data = this;
 
     alertify.specialTreatment(fa("pencil", "Special Treatment"),
       renderTemplate(Template
@@ -54,7 +52,7 @@ Template.dental_specialTreatment.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.SpecialTreatment.findOne(this._id);
+    var data = this;
     // data.attachFileUrl = null;
     //
     // if (!_.isUndefined(data.attachFile)) {

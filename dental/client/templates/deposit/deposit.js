@@ -26,9 +26,7 @@ Template.dental_deposit.events({
       data));
   },
   'click .update': function() {
-    var data = Dental.Collection.Deposit.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.deposit(fa("pencil", "Deposit"), renderTemplate(Template.dental_depositUpdate,
       data));
   },
@@ -51,7 +49,7 @@ Template.dental_deposit.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.Deposit.findOne(this._id);
+    var data = this;
     data.amountVal = numeral(data.amount).format('0,0.00');
 
     alertify.alert(fa("eye", "Deposit"), renderTemplate(Template.dental_depositShow,

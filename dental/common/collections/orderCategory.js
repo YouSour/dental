@@ -38,6 +38,9 @@ Dental.Schema.OrderCategory = new SimpleSchema({
         }
       }
     }
+  },
+  branchId:{
+    type:String
   }
 });
 

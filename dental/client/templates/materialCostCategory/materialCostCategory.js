@@ -11,9 +11,7 @@ Template.dental_materialCostCategory.events({
       renderTemplate(Template.dental_materialCostCategoryInsert));
   },
   'click .update': function() {
-    var data = Dental.Collection.MaterialCostCategory.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.materialCostCategory(fa("pencil", "Material Category"),
       renderTemplate(Template.dental_materialCostCategoryUpdate, data));
   },
@@ -37,9 +35,7 @@ Template.dental_materialCostCategory.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.MaterialCostCategory.findOne({
-      _id: this._id
-    });
+    var data = this;
 
     alertify.alert(fa("eye", "Material Category"), renderTemplate(
       Template.dental_materialCostCategoryShow, data));
@@ -55,6 +51,7 @@ AutoForm.hooks({
       insert: function(doc) {
         doc._id = idGenerator.gen(Dental.Collection.MaterialCostCategory,
           3);
+        doc.branchId = Session.get('currentBranch');
         return doc;
       }
     },

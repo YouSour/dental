@@ -48,9 +48,7 @@ Template.dental_payment.events({
     }, 500);
   },
   'click .update': function() {
-    var data = Dental.Collection.Payment.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.payment(fa("pencil", "Payment"), renderTemplate(Template.dental_paymentUpdate,
       data));
   },
@@ -62,8 +60,8 @@ Template.dental_payment.events({
       function(result) {
         Dental.Collection.Payment.remove(self._id, function(error) {
           if (error) {
-            alertify.error(error.message);
           } else {
+            alertify.error(error.message);
             alertify.success("Success");
           }
         });

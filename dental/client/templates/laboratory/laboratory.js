@@ -10,7 +10,7 @@ Template.dental_laboratory.events({
         alertify.laboratory(fa("plus", "Laboratory Item"), renderTemplate(Template.dental_laboratoryInsert));
     },
     'click .update': function () {
-        var data = Dental.Collection.Laboratory.findOne({_id: this._id});
+        var data = this;
         alertify.laboratory(fa("pencil", "Laboratory Item"), renderTemplate(Template.dental_laboratoryUpdate, data));
     },
     'click .remove': function () {
@@ -32,7 +32,7 @@ Template.dental_laboratory.events({
         );
     },
     'click .show': function () {
-        var data = Dental.Collection.Laboratory.findOne({_id: this._id});
+        var data = this;
 
         alertify.alert(fa("eye", "Laboratory Item"), renderTemplate(Template.dental_laboratoryShow, data));
     }

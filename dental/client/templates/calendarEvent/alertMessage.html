@@ -2,9 +2,7 @@
     <li class="dropdown messages-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             {{fa "fa fa-bell"}}
-            {{#if data.count}}
-                <span class="label label-danger animated rubberBand" id="appointmentCount">{{data.count}}</span>
-            {{/if}}
+       <span class="label label-danger animated rubberBand" id="appointmentCount">{{getPublishedCount 'alertCalendarEvent'}}</span>
         </a>
         <ul class="dropdown-menu">
             <li>
