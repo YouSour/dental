@@ -1,7 +1,8 @@
 /**
  * Index
  */
-Template.dental_orderItem.onRendered(function () {
+Template.dental_orderItem.onCreated(function () {
+    Meteor.subscribe('dental_orderCategory');
     createNewAlertify(['orderItem','orderCategoryAddon']);
 });
 
@@ -10,7 +11,7 @@ Template.dental_orderItem.events({
         alertify.orderItem(fa("plus", "Order Item"), renderTemplate(Template.dental_orderItemInsert)).maximize();
     },
     'click .update': function () {
-        var data = Dental.Collection.OrderItem.findOne({_id: this._id});
+        var data = this;
         alertify.orderItem(fa("pencil", "Order Item"), renderTemplate(Template.dental_orderItemUpdate, data)).maximize();
     },
     'click .remove': function () {
@@ -32,8 +33,7 @@ Template.dental_orderItem.events({
         );
     },
     'click .show': function () {
-        var data = Dental.Collection.OrderItem.findOne({_id: this._id});
-
+        var data = this;
         alertify.alert(fa("eye", "Order Item"), renderTemplate(Template.dental_orderItemShow, data));
     }
 });
@@ -66,6 +66,7 @@ AutoForm.hooks({
         before: {
             insert: function (doc) {
                 doc._id = idGenerator.gen(Dental.Collection.OrderItem, 6);
+                doc.branchId = Session.get('currentBranch');
                 return doc;
             }
         },

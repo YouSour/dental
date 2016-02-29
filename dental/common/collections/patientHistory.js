@@ -34,6 +34,9 @@ Dental.Schema.PatientHistory = new SimpleSchema({
         }
       }
     }
+  },
+  branchId:{
+    type:String
   }
 });
 

@@ -32,6 +32,9 @@ Dental.Schema.OrderItem = new SimpleSchema({
                 return Dental.List.orderCategory();
             }
         }
+    },
+    branchId:{
+      type:String
     }
 });
 

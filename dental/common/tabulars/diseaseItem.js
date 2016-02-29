@@ -23,6 +23,7 @@ Dental.TabularTable.DiseaseItem = new Tabular.Table({
         {data: "_diseaseCategory.code", title: "Category"}
     ],
     order: [['1', 'desc']],
+    extraFields:["diseaseCategoryId"],
     autoWidth: false,
     columnDefs: [
         {"width": "12px", "targets": 0}

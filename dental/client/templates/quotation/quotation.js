@@ -1,7 +1,9 @@
 /**
  * Index
  */
-Template.dental_quotation.onRendered(function() {
+ Template.dental_quotation.onCreated(function() {
+  Meteor.subscribe('dental_patient');
+  Meteor.subscribe('dental_diseaseItem');
   createNewAlertify(['quotation', 'patientAddon']);
 });
 
@@ -11,9 +13,7 @@ Template.dental_quotation.events({
       .maximize();
   },
   'click .update': function() {
-    var data = Dental.Collection.Quotation.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.quotation(fa("pencil", "Quotation"), renderTemplate(Template
       .dental_quotationUpdate, data)).maximize();
   },

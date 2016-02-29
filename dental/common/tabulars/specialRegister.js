@@ -62,6 +62,7 @@ Dental.TabularTable.SpecialRegister = new Tabular.Table({
     ['2', 'desc']
   ],
   autoWidth: false,
+  extraFields:["des","doctorId","disease","subTotal","deposit","subDiscount","paymentMethod","paymentMethodTotal"],
   columnDefs: [{
     "width": "12px",
     "targets": 0

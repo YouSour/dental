@@ -11,9 +11,7 @@ Template.dental_orderCategory.events({
       Template.dental_orderCategoryInsert));
   },
   'click .update': function() {
-    var data = Dental.Collection.OrderCategory.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.orderCategory(fa("pencil", "Order Category"), renderTemplate(
       Template.dental_orderCategoryUpdate, data));
   },
@@ -36,9 +34,7 @@ Template.dental_orderCategory.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.OrderCategory.findOne({
-      _id: this._id
-    });
+    var data = this;
 
     alertify.alert(fa("eye", "Order Category"), renderTemplate(Template.dental_orderCategoryShow,
       data));
@@ -53,6 +49,7 @@ AutoForm.hooks({
     before: {
       insert: function(doc) {
         doc._id = idGenerator.gen(Dental.Collection.OrderCategory, 3);
+        doc.branchId = Session.get('currentBranch');
         return doc;
       }
     },

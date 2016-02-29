@@ -11,14 +11,13 @@ Template.dental_patientHistory.events({
       Template.dental_patientHistoryInsert));
   },
   'click .update': function() {
-    var data = Dental.Collection.PatientHistory.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.patientHistory(fa("pencil", "Patient History"),
       renderTemplate(Template.dental_patientHistoryUpdate, data));
   },
   'click .remove': function() {
     var self = this;
+
     alertify.confirm(
       fa("remove", "Patient History"),
       "Are you sure to delete [" + self._id + "] ?",
@@ -50,6 +49,7 @@ AutoForm.hooks({
     before: {
       insert: function(doc) {
         doc._id = idGenerator.gen(Dental.Collection.PatientHistory, 3);
+        doc.branchId = Session.get('currentBranch');
         return doc;
       }
     },

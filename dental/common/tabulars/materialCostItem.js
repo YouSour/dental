@@ -10,6 +10,7 @@ Dental.TabularTable.MaterialCostItem = new Tabular.Table({
         {data: "_materialCostCategory.name", title: "Category"}
     ],
     order: [["1", "desc"]],
+    extraFields:["materialCostCategoryId"],
     autoWidth: false,
     columnDefs: [{"width": "12px", "targets": 0}]
 });

@@ -7,9 +7,7 @@ Dental.TabularTable.Patient = new Tabular.Table({
         {data: "name", title: "Name"},
         {data: "gender", title: "Gender"},
         {data: "age", title: "Age"},
-        //{data: "address", title: "Address"},
         {data: "telephone", title: "Telephone"},
-        //{data: "history", title: "History"},
         {data: "member", title: "Member"},
         {
             data: "photo",
@@ -28,6 +26,7 @@ Dental.TabularTable.Patient = new Tabular.Table({
     ],
     autoWidth: false,
     order: [['1', 'desc']],
+    extraFields:['address','history','occupation','des'],
     columnDefs: [
         {"width": "12px", "targets": 0}
     ]

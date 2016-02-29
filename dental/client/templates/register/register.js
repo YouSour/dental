@@ -12,6 +12,13 @@ Dental.RegisterState = new ReactiveObj();
  * Index
  */
 Template.dental_register.onCreated(function() {
+  Meteor.subscribe('dental_doctor');
+  Meteor.subscribe('dental_staff');
+  Meteor.subscribe('dental_patientHistory');
+  Meteor.subscribe('dental_patient');
+  Meteor.subscribe('dental_diseaseItem');
+  Meteor.subscribe('dental_laboratory');
+
   createNewAlertify([
     'register',
     'patientAddon',
@@ -43,9 +50,7 @@ Template.dental_register.events({
       .maximize();
   },
   'click .update': function() {
-    var data = Dental.Collection.Register.findOne({
-      _id: this._id
-    });
+    var data = this;
 
     alertify.register(fa("pencil", "Register"), renderTemplate(Template.dental_registerUpdate,
       data)).maximize();
@@ -68,10 +73,7 @@ Template.dental_register.events({
     );
   },
   'click .show': function() {
-    var data = Dental.Collection.Register.findOne({
-      _id: this._id
-    });
-
+    var data = this;
     // Doctor
 
     var doctor = [];

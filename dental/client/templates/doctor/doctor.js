@@ -12,8 +12,7 @@ Template.dental_doctor.events({
       .maximize();
   },
   'click .update': function(e, t) {
-    var data = Dental.Collection.Doctor.findOne(this._id);
-
+    var data = this;
     alertify.doctor(fa("pencil", "Doctor"), renderTemplate(Template.dental_doctorUpdate,
       data)).maximize();
   },
@@ -36,7 +35,7 @@ Template.dental_doctor.events({
     );
   },
   'click .show': function(e, t) {
-    var data = Dental.Collection.Doctor.findOne(this._id);
+    var data = this;
     data.photoUrl = null;
     if (!_.isUndefined(data.photo)) {
       data.photoUrl = Files.findOne(data.photo).url();
@@ -55,34 +54,12 @@ Template.dental_doctorInsert.onRendered(function() {
 
 Template.dental_doctorInsert.rendered = function() {};
 
-//Template.dental_doctorInsert.events({
-//    'click .addressInsertAddon': function (e, t) {
-//
-//        alertify.addressAddon(renderTemplate(Template.sample_addressInsertAddon))
-//            .set({
-//                title: fa("plus", "Address")
-//            });
-//
-//    }
-//});
-
 /**
  * Update
  */
 Template.dental_doctorUpdate.onRendered(function() {
   datePicker();
 });
-
-//Template.sample_customerUpdate.events({
-//    'click .addressInsertAddon': function (e, t) {
-//
-//        alertify.addressAddon(renderTemplate(Template.sample_addressInsertAddon))
-//            .set({
-//                title: fa("plus", "Address")
-//            });
-//
-//    }
-//});
 
 /**
  * Hook

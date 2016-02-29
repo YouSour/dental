@@ -10,9 +10,7 @@ Template.dental_supplier.events({
     alertify.supplier(fa("plus", "Supplier"), renderTemplate(Template.dental_supplierInsert));
   },
   'click .update': function() {
-    var data = Dental.Collection.Supplier.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.supplier(fa("", "Supplier"), renderTemplate(Template.dental_supplierUpdate,
       data));
   },

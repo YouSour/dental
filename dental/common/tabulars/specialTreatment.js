@@ -39,7 +39,7 @@ Dental.TabularTable.SpecialTreatment = new Tabular.Table({
   order: [
     ["1", "desc"]
   ],
-  extraFields: ['patientId', 'specialRegisterId', 'des'],
+  extraFields: ['patientId','attachFile','specialRegisterId','des'],
   autoWidth: false,
   columnDefs: [{
     "width": "12px",

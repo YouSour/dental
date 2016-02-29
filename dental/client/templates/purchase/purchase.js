@@ -1,7 +1,10 @@
 /*
  *Index
  */
-Template.dental_purchase.onRendered(function() {
+ Template.dental_purchase.onCreated(function() {
+  Meteor.subscribe('dental_supplier');
+  Meteor.subscribe('dental_register');
+  Meteor.subscribe('dental_orderItem');
   createNewAlertify(['purchase', 'supplierAddon', 'registerAddon']);
 });
 
@@ -14,9 +17,7 @@ Template.dental_purchase.events({
       .maximize();
   },
   'click .update': function() {
-    var data = Dental.Collection.Purchase.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.purchase(fa("pencil", "Purchase"), renderTemplate(Template.dental_purchaseUpdate,
       data)).maximize();
   },

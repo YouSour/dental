@@ -10,6 +10,7 @@ Dental.TabularTable.OrderItem = new Tabular.Table({
         {data: "_orderCategory.name", title: "Category"}
     ],
     order: [["1", "desc"]],
+    extraFields:["orderCategoryId"],
     autoWidth: false,
     columnDefs: [{"width": "12px", "targets": 0}]
 });

@@ -3,6 +3,7 @@
  */
 Template.dental_patient.onCreated(function() {
   // Create new  alertify
+  Meteor.subscribe('dental_patientHistory');
   createNewAlertify("patient");
 });
 
@@ -21,9 +22,7 @@ Template.dental_patient.events({
       .maximize();
   },
   'click .update': function(e, t) {
-    var data = Dental.Collection.Patient.findOne({
-      _id: this._id
-    });
+    var data = this;
     alertify.patient(fa("pencil", "Patient"), renderTemplate(Template.dental_patientUpdate,
         data))
       .maximize();
@@ -48,7 +47,7 @@ Template.dental_patient.events({
     );
   },
   'click .show': function(e, t) {
-    var data = Dental.Collection.Patient.findOne(this._id);
+    var data = this;
     // History
     var history = [];
     _.each(data.history, function(val) {

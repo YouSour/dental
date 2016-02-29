@@ -24,6 +24,7 @@ Dental.TabularTable.Doctor = new Tabular.Table({
         {data: "_treatmentCount", title: "Treatment+"}
     ],
     order: [['1', 'desc']],
+    extraFields:["des"],
     autoWidth: false,
     columnDefs: [
         {"width": "12px", "targets": 0}

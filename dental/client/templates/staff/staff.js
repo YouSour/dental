@@ -11,8 +11,7 @@ Template.dental_staff.events({
         alertify.staff(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert)).maximize();
     },
     'click .update': function (e, t) {
-        var data = Dental.Collection.Staff.findOne(this._id);
-
+        var data = this;
         alertify.staff(fa("pencil", "Staff"), renderTemplate(Template.dental_staffUpdate, data)).maximize();
     },
     'click .remove': function (e, t) {
@@ -33,7 +32,7 @@ Template.dental_staff.events({
         );
     },
     'click .show': function (e, t) {
-        var data = Dental.Collection.Staff.findOne(this._id);
+        var data = this;
 
         alertify.alert(fa("eye", "Staff"), renderTemplate(Template.dental_staffShow, data));
     }
@@ -50,17 +49,6 @@ Template.dental_staffInsert.onRendered(function () {
 Template.dental_staffInsert.rendered = function () {
 };
 
-//Template.dental_staffInsert.events({
-//    'click .addressInsertAddon': function (e, t) {
-//
-//        alertify.addressAddon(renderTemplate(Template.sample_addressInsertAddon))
-//            .set({
-//                title: fa("plus", "Address")
-//            });
-//
-//    }
-//});
-
 /**
  * Update
  */
@@ -68,22 +56,10 @@ Template.dental_staffUpdate.onRendered(function () {
     datePicker();
 });
 
-//Template.sample_customerUpdate.events({
-//    'click .addressInsertAddon': function (e, t) {
-//
-//        alertify.addressAddon(renderTemplate(Template.sample_addressInsertAddon))
-//            .set({
-//                title: fa("plus", "Address")
-//            });
-//
-//    }
-//});
-
 /**
  * Hook
  */
 AutoForm.hooks({
-    // Customer
     dental_staffInsert: {
         before: {
             insert: function (doc) {
@@ -113,23 +89,6 @@ AutoForm.hooks({
             alertify.error(error.message);
         }
     }
-    //,
-    // Address addon
-    //sample_addressInsertAddon: {
-    //    before: {
-    //        insert: function (doc) {
-    //            doc._id = idGenerator.gen(Sample.Collection.Address, 3);
-    //            return doc;
-    //        }
-    //    },
-    //    onSuccess: function (formType, result) {
-    //        //alertify.addressAddon();
-    //        alertify.success('Success');
-    //    },
-    //    onError: function (formType, error) {
-    //        alertify.error(error.message);
-    //    }
-    //}
 });
 
 /**
