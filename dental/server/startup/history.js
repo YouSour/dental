@@ -3,16 +3,20 @@ Meteor.startup(function () {
         var data = [
             {
                 _id: "001",
-                name: "X"
+                name: "X",
+                branchId: '001'
             },
             {
                 _id: "002",
-                name: "Y"
+                name: "Y",
+                branchId: '001'
             },
             {
                 _id: "003",
-                name: "Z"
+                name: "Z",
+                branchId: '001'
             }
+
         ];
 
         _.each(data, function (obj) {
