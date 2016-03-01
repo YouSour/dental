@@ -46,8 +46,8 @@ AutoForm.hooks({
   dental_supplierInsert: {
     before: {
       insert: function(doc) {
-        doc._id = idGenerator.gen(Dental.Collection.Supplier, 3);
         doc.branchId = Session.get('currentBranch');
+        Meteor.call('dental');
         return doc;
       }
     },

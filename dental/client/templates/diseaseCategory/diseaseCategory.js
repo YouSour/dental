@@ -35,7 +35,7 @@ Template.dental_diseaseCategory.events({
     },
     'click .show': function (e, t) {
         var data = this;
-        alertify.alert(fa("eye", "Disease Category"),renderTemplate(Template.dental_diseaseCategoryShow, data));
+        alertify.alert(fa("eye", "Disease Category"), renderTemplate(Template.dental_diseaseCategoryShow, data));
     }
 });
 
@@ -46,8 +46,8 @@ AutoForm.hooks({
     dental_diseaseCategoryInsert: {
         before: {
             insert: function (doc) {
-                doc._id = idGenerator.gen(Dental.Collection.DiseaseCategory, 3);
                 doc.branchId = Session.get('currentBranch');
+                Meteor.call('dental');
                 return doc;
             }
         },

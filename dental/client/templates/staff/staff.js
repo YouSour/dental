@@ -63,9 +63,9 @@ AutoForm.hooks({
     dental_staffInsert: {
         before: {
             insert: function (doc) {
-                var branchPre = Session.get('currentBranch') + '-';
-                doc._id = idGenerator.genWithPrefix(Dental.Collection.Staff, branchPre, 4);
                 doc.branchId = Session.get('currentBranch');
+                var prefix = doc.branchId + '-';
+                Meteor.call('dental', prefix);
                 return doc;
             }
         },

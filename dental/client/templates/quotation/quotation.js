@@ -262,12 +262,9 @@ AutoForm.hooks({
   dental_quotationInsert: {
     before: {
       insert: function(doc) {
-        var prefix = Session.get('currentBranch');
-
-        doc._id = idGenerator.genWithPrefix(Dental.Collection.Quotation,
-          prefix + "-", 9);
-        doc.branchId = prefix;
-
+        doc.branchId = Session.get('currentBranch');
+        var prefix = doc.branchId + '-';
+        Meteor.call('dental', prefix);
         return doc;
       }
     },
