@@ -3,9 +3,8 @@ Dental.ListState = new ReactiveObj();
  * Index
  */
 Template.dental_payment.onRendered(function() {
-  createNewAlertify(['payment', 'registerAddon', 'staffAddon',
-    'patientAddon'
-  ]);
+  createNewAlertify(['payment', 'registerAddon','patientAddon']);
+    createNewAlertify('patientAddon');
 });
 
 Template.dental_payment.helpers({
@@ -132,12 +131,9 @@ AutoForm.hooks({
   dental_paymentInsert: {
     before: {
       insert: function(doc) {
-        var branchPre = Session.get('currentBranch') + '-' + moment().format(
-          "YYYYMMDD");
-        doc._id = idGenerator.genWithPrefix(Dental.Collection.Payment,
-          branchPre, 3);
         doc.branchId = Session.get('currentBranch');
-
+        var prefix = doc.branchId + '-';
+        Meteor.call('dental', prefix);
         return doc;
       }
     },

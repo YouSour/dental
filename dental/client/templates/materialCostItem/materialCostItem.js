@@ -66,9 +66,9 @@ AutoForm.hooks({
     dental_materialCostItemInsert: {
         before: {
             insert: function (doc) {
-                doc._id = idGenerator.gen(Dental.Collection.MaterialCostItem, 6);
                 doc.branchId = Session.get('currentBranch');
-                return doc;
+                Meteor.call('dental');
+                return doc
             }
         },
         onSuccess: function (fromType, result) {
