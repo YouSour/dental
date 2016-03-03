@@ -39,8 +39,7 @@ Dental.Schema.MaterialCost = new SimpleSchema({
   'items.$.materialCostItemId': {
     type: String,
     autoform: {
-      //type: "select",
-      type: "selectize",
+      type: "select",
       options: function() {
         return Dental.List.materialCostItem();
       }
