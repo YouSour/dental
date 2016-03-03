@@ -51,8 +51,7 @@ Dental.Schema.Purchase = new SimpleSchema({
   'items.$.orderItemId': {
     type: String,
     autoform: {
-      //type: "select",
-      type: "selectize",
+      type: "select",
       options: function() {
         return Dental.List.orderItem();
       }

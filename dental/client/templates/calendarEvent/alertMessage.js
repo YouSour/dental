@@ -1,19 +1,5 @@
-var state = new ReactiveObj();
-
-Template.dental_alertEventMsg.onRendered(function () {
-    //$('.menu').slimScroll({
-    //    height: '100%'
-    //});
-
-    var data = appointmentEvent();
-    state.set('data', data);
-});
-
-
 Template.dental_alertEventMsg.helpers({
-    data: function () {
-        return state.get('data');
-    }
+    data: appointmentEvent
 });
 
 Template.dental_alertEventMsg.events({

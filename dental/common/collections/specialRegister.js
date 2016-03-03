@@ -62,7 +62,7 @@ Dental.Schema.SpecialRegister = new SimpleSchema({
   'disease.$.item': {
     type: String,
     autoform: {
-      type: "selectize",
+      type: "select",
       options: function() {
         return Dental.List.diseaseItem();
       }

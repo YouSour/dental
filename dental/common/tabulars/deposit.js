@@ -18,6 +18,7 @@ Dental.TabularTable.Deposit = new Tabular.Table({
   order: [
     ["1", "desc"]
   ],
+  extraFields:['patientId','registerId'],
   autoWidth: false,
   columnDefs: [{
     "width": "12px",
