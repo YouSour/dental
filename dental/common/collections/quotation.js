@@ -76,7 +76,8 @@ Dental.Schema.Quotation = new SimpleSchema({
   },
   total: {
     type: Number,
-    decimal: true
+    decimal: true,
+    optional:true
   },
   branchId: {
     type: String

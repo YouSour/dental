@@ -7,10 +7,10 @@ Template.dental_calendarEvent.onCreated(function() {
 
 Template.dental_calendarEvent.helpers({
   register: function() {
-    return Dental.RegisterState.get('data');
+    return Dental.ListState.get('data');
   },
   selector: function() {
-    var registerId = Dental.RegisterState.get('data')._id;
+    var registerId = Dental.ListState.get('data')._id;
 
     return {
       registerId: registerId
@@ -24,7 +24,7 @@ Template.dental_calendarEvent.helpers({
 Template.dental_calendarEvent.events({
   'click .insert': function() {
     Session.set('closeAppointment', true);
-    var data = Dental.RegisterState.get('data');
+    var data = Dental.ListState.get('data');
     alertify.calendarEvent(fa("plus", "Calendar Event"), renderTemplate(
       Template.dental_calendarEventInsert, data));
   },

@@ -1,4 +1,4 @@
-Dental.RegisterState = new ReactiveObj();
+Dental.ListState = new ReactiveObj();
 
 //Template.afArrayField_customArrayFieldInvoiceForDiseaseItem.helpers({
 //    register: function () {
@@ -245,7 +245,7 @@ Template.dental_registerClosingDate.onRendered(function () {
  */
 Template.dental_registerInsert.onRendered(function () {
     //reset value sharingRemain
-    Dental.RegisterState.set('sharingRemain', 0);
+    Dental.ListState.set('sharingRemain', 0);
 
     datepicker();
     statusAutoSelected();
@@ -290,6 +290,7 @@ Template.dental_registerInsert.events({
             .maximize();
     },
     'click #saveAndPrint': function () {
+        Meteor.subscribe('dental_register');
         Session.set('printInvoice', true);
     }
 });
@@ -464,7 +465,7 @@ Template.afArrayField_customArrayFieldInvoiceForDiseaseItem.events({
  */
 Template.afArrayField_customArrayFieldInvoiceForDoctorShare.helpers({
     sharingRemain: function () {
-        return Dental.RegisterState.get('sharingRemain');
+        return Dental.ListState.get('sharingRemain');
     }
 });
 Template.afArrayField_customArrayFieldInvoiceForDoctorShare.events({
@@ -563,18 +564,20 @@ AutoForm.hooks({
             });
 
             //clear selectize
-            $('select.item')[0].selectize.clear(true);
-            $('select.doctor')[0].selectize.clear(true);
-            $('select.laboratory')[0].selectize.clear(true);
+            // $('select.item')[0].selectize.clear(true);
+            // $('select.doctor')[0].selectize.clear(true);
+            // $('select.laboratory')[0].selectize.clear(true);
 
             var printSession = Session.get('printInvoice');
-            var data = Dental.Collection.Register.findOne(result);
-            if (printSession) {
-                var q = 'patient=' + data.patientId + '&register=' + data._id;
-                var url = '/dental/invoiceReportGen?' + q;
-                window.open(url);
-            }
-            Session.set('printInvoice', false);
+            Meteor.call('getRegisterId', result, function (err, result) {
+              var data = Dental.Collection.Register.findOne(result);
+                if (printSession) {
+                  var q = 'patient=' + data.patientId + '&register=' + data._id;
+                  var url = '/dental/invoiceReportGen?' + q;
+                  window.open(url);
+                }
+              Session.set('printInvoice', false);
+            });
             alertify.success("Success");
         },
         onError: function (fromType, error) {
@@ -755,7 +758,7 @@ var registerState = function (param) {
     registerDoc._treatment = treatment;
 
     // Set state for treatment
-    Dental.RegisterState.set('data', registerDoc);
+    Dental.ListState.set('data', registerDoc);
 };
 
 var sharingRemain = function (minusValueDrShared,minusValueLabo) {
@@ -789,6 +792,6 @@ var sharingRemain = function (minusValueDrShared,minusValueLabo) {
     } else {
         totalAmount = totalRegister - (shareAmount + laboAmount);
     }
-    console.log(totalAmount);
-    return Dental.RegisterState.set('sharingRemain', totalAmount);
+
+    return Dental.ListState.set('sharingRemain', totalAmount);
 };

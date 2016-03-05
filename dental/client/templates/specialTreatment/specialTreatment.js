@@ -7,10 +7,10 @@ Template.dental_specialTreatment.onCreated(function () {
 
 Template.dental_specialTreatment.helpers({
     register: function () {
-        return Dental.RegisterState.get('data');
+        return Dental.ListState.get('data');
     },
     selector: function () {
-        var specialRegisterId = Dental.RegisterState.get('data')._id;
+        var specialRegisterId = Dental.ListState.get('data')._id;
         return {
             specialRegisterId: specialRegisterId
         };
@@ -20,7 +20,7 @@ Template.dental_specialTreatment.helpers({
 Template.dental_specialTreatment.events({
     'click .insert': function () {
         Session.set('closeTreatment', true);
-        var data = Dental.RegisterState.get('data');
+        var data = Dental.ListState.get('data');
         alertify.specialTreatment(fa("plus", "Special Treatment"),
             renderTemplate(Template.dental_specialTreatmentInsert,
                 data)).maximize();
@@ -89,6 +89,7 @@ Template.dental_specialTreatmentInsert.events({
         ).maximize();
     },
     'click #saveAndPrint': function (e, t) {
+        Meteor.subscribe('dental_specialTreatment');
         return Session.set('printSpecialTreatment', true);
     }
 });
@@ -132,13 +133,15 @@ AutoForm.hooks({
             });
 
             var printSession = Session.get('printSpecialTreatment');
-            var data = Dental.Collection.SpecialTreatment.findOne(result);
-            if (printSession) {
-                var q = 'patient=' + data.patientId + '&specialRegister=' + data.specialRegisterId;
-                var url = 'specialTreatmentReportGen?' + q;
-                window.open(url);
-            }
-            Session.set('printSpecialTreatment', false);
+            Meteor.call('getSpecialTreatmentId', result, function (err, result) {
+              var data = Dental.Collection.SpecialTreatment.findOne(result);
+                if (printSession) {
+                  var q = 'patient=' + data.patientId + '&specialRegister=' + data.specialRegisterId;
+                  var url = 'specialTreatmentReportGen?' + q;
+                  window.open(url);
+                }
+              Session.set('printSpecialTreatment', false);
+            });
             alertify.success("Success");
         },
         onError: function (formType, error) {
@@ -160,6 +163,6 @@ AutoForm.hooks({
  * Config date picker
  */
 var datepicker = function () {
-    var treatmentDate = $('[name="treatmentDate"]');
-    DateTimePicker.dateTime(treatmentDate);
+    var specialTreatmentDate = $('[name="specialTreatmentDate"]');
+    DateTimePicker.dateTime(specialTreatmentDate);
 };

@@ -8,10 +8,10 @@ Template.dental_treatment.onCreated(function () {
 
 Template.dental_treatment.helpers({
     register: function () {
-        return Dental.RegisterState.get('data');
+        return Dental.ListState.get('data');
     },
     selector: function () {
-        var registerId = Dental.RegisterState.get('data')._id;
+        var registerId = Dental.ListState.get('data')._id;
         return {
             registerId: registerId
         };
@@ -21,7 +21,7 @@ Template.dental_treatment.helpers({
 Template.dental_treatment.events({
     'click .insert': function () {
         Session.set('closeTreatment', true);
-        var data = Dental.RegisterState.get('data');
+        var data = Dental.ListState.get('data');
         alertify.treatment(fa("plus", "Treatment"), renderTemplate(Template.dental_treatmentInsert,
             data)).maximize();
     },
@@ -81,6 +81,7 @@ Template.dental_treatmentInsert.events({
         ).maximize();
     },
     'click #saveAndPrint': function (e, t) {
+        Meteor.subscribe('dental_treatment');
         return Session.set('printTreatment', true);
     }
 });
@@ -124,14 +125,15 @@ AutoForm.hooks({
             });
 
             var printSession = Session.get('printTreatment');
-            var data = Dental.Collection.Treatment.findOne(result);
-            if (printSession) {
-                var q = 'patient=' + data.patientId + '&register=' + data.registerId;
-                var url = 'treatmentReportGen?' + q;
-                window.open(url);
-            }
+            Meteor.call('getTreatmentId', result, function (err, result) {
+              var data = Dental.Collection.Treatment.findOne(result);
+                if (printSession) {
+                  var q = 'patient=' + data.patientId + '&register=' + data.registerId;
+                  var url = 'treatmentReportGen?' + q;
+                  window.open(url);
+                }
             Session.set('printTreatment', false);
-
+            });
             alertify.success("Success");
         },
         onError: function (formType, error) {

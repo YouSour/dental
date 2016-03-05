@@ -195,7 +195,7 @@
 
             <div class="col-md-9">
                 <!--Disease Item-->
-                {{> afArrayField name="disease" id="disease" template="customArrayFieldInvoiceForDiseaseItem" subtemplate="customObjectFieldInvoiceForDiseaseItem"}}
+                {{> afArrayField name="disease" id="disease" template="customArrayFieldInvoiceForSpecialDiseaseItem" subtemplate="customObjectFieldInvoiceForSpecialDiseaseItem"}}
 
                 <div class="row">
                     <!--<div class="col-sm-6">-->
@@ -340,7 +340,7 @@
             {{/if}}
 
             {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item" id="register">
+                <div class="row array-item specialRegister">
                     <div class="col-sm-2-custom">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
                               <div class="btn-group" role="group">
@@ -394,8 +394,11 @@
                 </div>
                 <!--Total-->
                 <div class="col-sm-3">
-                    {{> afQuickField name='total' readonly="true" id="totalRegister" template="bootstrap3" class="input-sm"}}
-                    <!--<p class="bg-primary"><strong class="total">0</strong></p>-->
+                  <div class="form-group" data-required="true">
+                     <label for="total" class="control-label">Total</label>
+                       <input type="number" placeholder="Total" class="input-sm form-control totalSpecialRegister" required="total" data-schema-key="total" step="0.01" readonly="true"/>
+                       <span class="help-block"></span>
+                  </div>
                 </div>
             </div>
 
@@ -419,159 +422,6 @@
     </div>
     <div class="col-sm-2">
         {{> afQuickField name=current.amount template="bootstrap3" label=false class="input-sm amount" readonly=true}}
-    </div>
-</template>
-
-<!--Custom array field for doctor share-->
-<template name="afArrayField_customArrayFieldInvoiceForSpecialDoctorShare">
-    <div class="panel panel-default">
-        <div class="panel-heading">{{fa "user-plus"}} {{afFieldLabelText name=this.atts.name}}</div>
-        <div class="panel-body">
-
-            <div class="row">
-                <div class="col-md-1">
-                    <p><b></b></p>
-                </div>
-                <div class="col-md-6">
-                    <p><b>Doctor</b></p>
-                </div>
-                <div class="col-md-5">
-                    <p><b>Amount</b></p>
-                </div>
-            </div>
-
-            {{#if afFieldIsInvalid name=this.atts.name}}
-                <div class="has-error">
-                    <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
-                </div>
-            {{/if}}
-
-            {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item">
-                    <div class="col-sm-1">
-                        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-                            <button type="button"
-                                    class="btn btn-sm btn-danger autoform-remove-item btnRemoveForDoctorShare">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                        {{/if}}
-                    </div>
-
-                    {{> UI.dynamic template=../atts.subtemplate}}
-                </div>
-            {{/afEachArrayItem}}
-
-            {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row">
-                    <!--Add more-->
-                    <div class="col-sm-1">
-                        <button type="button" class="btn btn-primary autoform-add-item btn-sm btnAddForDoctorShare"
-                                data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}"
-                                data-autoform-maxCount="{{this.atts.maxCount}}">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </div>
-
-                    <div class="col-sm-6 text-right">
-                        <strong>Total:</strong>
-                    </div>
-
-                    <!--Total-->
-                    <div class="col-sm-5">
-                        {{> afQuickField name='doctorShareTotal' label=false readonly="true" template="bootstrap3" class="input-sm"}}
-                    </div>
-
-                </div>
-
-            {{/if}}
-
-        </div>
-    </div>
-</template>
-
-<!---Custom object field for doctor share--->
-<template name="customObjectFieldInvoiceForSpecialDoctorShare">
-    <div class="col-sm-6">
-        {{> afQuickField name=current.doctor template="bootstrap3" label=false class="input-sm doctor"}}
-    </div>
-    <div class="col-sm-5">
-        {{> afQuickField name=current.amount template="bootstrap3" label=false class="input-sm doctor-share-amount"}}
-    </div>
-</template>
-
-<!--Custom array field for labo expense-->
-<template name="afArrayField_customArrayFieldInvoiceForSpecialLaboExpense">
-    <div class="panel panel-default">
-        <div class="panel-heading">{{fa "user-plus"}} {{afFieldLabelText name=this.atts.name}}</div>
-        <div class="panel-body">
-
-            <div class="row">
-                <div class="col-md-1">
-                    <p><b></b></p>
-                </div>
-                <div class="col-md-6">
-                    <p><b>Laboratory</b></p>
-                </div>
-                <div class="col-md-5">
-                    <p><b>Amount</b></p>
-                </div>
-            </div>
-
-            {{#if afFieldIsInvalid name=this.atts.name}}
-                <div class="has-error">
-                    <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
-                </div>
-            {{/if}}
-
-            {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item">
-                    <div class="col-sm-1">
-                        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-                            <button type="button"
-                                    class="btn btn-sm btn-danger autoform-remove-item btnRemoveForLaboExpense">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                        {{/if}}
-                    </div>
-
-                    {{> UI.dynamic template=../atts.subtemplate}}
-                </div>
-            {{/afEachArrayItem}}
-
-            {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row">
-                    <!--Add more-->
-                    <div class="col-sm-1">
-                        <button type="button" class="btn btn-primary autoform-add-item btn-sm btnAddForDoctorShare"
-                                data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}"
-                                data-autoform-maxCount="{{this.atts.maxCount}}">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </div>
-
-                    <div class="col-sm-6 text-right">
-                        <strong>Total:</strong>
-                    </div>
-
-                    <!--Total-->
-                    <div class="col-sm-5">
-                        {{> afQuickField name='laboExpenseTotal' label=false readonly="true" template="bootstrap3" class="input-sm"}}
-                    </div>
-                </div>
-
-            {{/if}}
-
-        </div>
-    </div>
-</template>
-
-<!---Custom object field for labo expense--->
-<template name="customObjectFieldInvoiceForSpecialLaboExpense">
-    <div class="col-sm-6">
-        {{> afQuickField name=current.laboratory template="bootstrap3" label=false class="input-sm laboratory"}}
-    </div>
-    <div class="col-sm-5">
-        {{> afQuickField name=current.amount template="bootstrap3" label=false class="input-sm labo-amount"}}
     </div>
 </template>
 
@@ -600,7 +450,7 @@
             {{/if}}
 
             {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item" id="paymentMethod">
+                <div class="row array-item paymentMethod">
                     <div class="col-sm-1">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
                             <button type="button"
@@ -631,7 +481,10 @@
 
                     <!--Total-->
                     <div class="col-sm-5">
-                        {{> afQuickField name='paymentMethodTotal' label=false readonly="true" template="bootstrap3" class="input-sm"}}
+                      <div class="form-group" data-required="true">
+                        <input type="number" placeholder="Payment method total" readonly="" class="input-sm form-control paymentMethodTotal" id="aM8tNiSQfLRAJo3FD" required="" data-schema-key="paymentMethodTotal" step="0.01">
+                        <span class="help-block"></span>
+                      </div>
                     </div>
                 </div>
 

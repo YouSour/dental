@@ -1,3 +1,4 @@
+Dental.ListState = new ReactiveObj();
 /*
  *Index
  */
@@ -7,7 +8,6 @@
   Meteor.subscribe('dental_orderItem');
   createNewAlertify(['purchase', 'supplierAddon', 'registerAddon']);
 });
-
 
 Template.dental_purchase.helpers({});
 
@@ -73,8 +73,8 @@ Template.dental_purchaseInsert.events({
     onChangeOrderItemId(e);
   },
   'click .btnRemove': function(e) {
-
-    setTimeout(function() {
+    var thisValuePurchase= $(e.currentTarget).closest('.purchase').find('.amount').val();
+    thisValuePurchase=parseFloat(thisValuePurchase);
       var enable = true;
       $('.amount').each(function() {
         var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -93,9 +93,7 @@ Template.dental_purchaseInsert.events({
 
       }
 
-      calculateTotal();
-    }, 300);
-
+      calculateTotal(thisValuePurchase);
   },
   'click .btnAdd': function(e) {
 
@@ -112,6 +110,7 @@ Template.dental_purchaseInsert.events({
     checkEventKeyupAndClick(e);
   },
   'click #saveAndPrint': function() {
+    Meteor.subscribe('dental_purchase');
     Session.set('printInvoicePurchase', true);
   }
 });
@@ -139,8 +138,8 @@ Template.dental_purchaseUpdate.events({
     onChangeOrderItemId(e);
   },
   'click .btnRemove': function(e) {
-
-    setTimeout(function() {
+    var thisValuePurchase= $(e.currentTarget).closest('.purchase').find('.amount').val();
+    thisValuePurchase=parseFloat(thisValuePurchase);
       var enable = true;
       $('.amount').each(function() {
         var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -156,12 +155,9 @@ Template.dental_purchaseUpdate.events({
         $('.btnAdd').attr('disabled', false);
       } else {
         $('.btnAdd').attr('disabled', true);
-
       }
 
-      calculateTotal();
-    }, 300);
-
+      calculateTotal(thisValuePurchase);
   },
   'click .btnAdd': function(e) {
     var orderItemId = $(e.currentTarget).val();
@@ -170,7 +166,6 @@ Template.dental_purchaseUpdate.events({
       $('.btnAdd').removeAttr('disabled');
     } else {
       $('.btnAdd').attr('disabled', "disabled");
-
     }
   },
   'keyup .price ,.qty , click .price ,.qty ': function(e) {
@@ -208,28 +203,31 @@ AutoForm.hooks({
     before: {
       insert: function(doc) {
         doc.branchId = Session.get('currentBranch');
+        doc.total = $('.total').val();
         var prefix = doc.branchId + '-';
         Meteor.call('dental', prefix);
         return doc;
       }
     },
     onSuccess: function(formType, result) {
+
       //clear select2
       $('select').each(function() {
         $(this).select2("val", "");
       });
       //clear selectize
-      $('select.orderItemId')[0].selectize.clear(true);
+      // $('select.orderItemId')[0].selectize.clear(true);
 
-      var printSession = Session.get('printInvoicePurchase');
-      var data = Dental.Collection.Purchase.findOne(result);
-      if (printSession) {
+        var printSession = Session.get('printInvoicePurchase');
+      Meteor.call('getPurchaseId', result, function (err, result) {
+        var data = Dental.Collection.Purchase.findOne(result);
+        if (printSession) {
         var q = 'supplier=' + data.supplierId + '&purchase=' + data._id;
         var url = 'purchaseReportGen?' + q;
         window.open(url);
-      }
-      Session.set('printInvoicePurchase', false);
-
+        }
+        Session.set('printInvoicePurchase', false);
+      });
       alertify.success('Success');
     },
     onError: function(formType, error) {
@@ -237,6 +235,12 @@ AutoForm.hooks({
     }
   },
   dental_purchaseUpdate: {
+    before:{
+      update:function (doc) {
+        doc.$set.total = $('.total').val();
+        return doc;
+      }
+    },
     onSuccess: function() {
       alertify.purchase().close();
       alertify.success('Success');
@@ -299,13 +303,16 @@ function checkEventKeyupAndClick(e) {
 /**
  * Calculate all amount to total
  */
-function calculateTotal() {
+function calculateTotal(minusValuePurchase) {
+  minusValuePurchase=minusValuePurchase==null?0:minusValuePurchase;
+  minusValuePurchase=math.round(minusValuePurchase, 2);
   var total = 0;
-  $('#purchase .amount').each(function() {
+  $('.purchase .amount').each(function() {
     var amount = $(this).val() == "" ? 0 : parseFloat($(this).val());
     total += amount;
   });
-  $('[name="total"]').val(total);
+  total = total - minusValuePurchase;
+  $('.total').val(total);
 
   var decimal_places = 2;
   var decimal_factor = decimal_places === 0 ? 1 : decimal_places * 10;
@@ -329,7 +336,7 @@ function calculateTotal() {
           target.text('$' + floored_number);
         }
       },
-      200
+      100
     );
 }
 

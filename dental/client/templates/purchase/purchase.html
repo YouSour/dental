@@ -186,7 +186,7 @@
             {{/if}}
 
             {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item" id="purchase">
+                <div class="row array-item purchase">
                     <div class="col-sm-1">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
                             <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
@@ -213,7 +213,7 @@
                         <strong>Total :</strong>
                     </div>
                     <div class="col-sm-2">
-                        {{> afFieldInput name='total'}}
+                        <input type="hidden" class="total">
                         <p class="bg-primary"><strong class="totalAmount">0</strong></p>
                     </div>
                 </div>

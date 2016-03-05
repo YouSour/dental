@@ -38,6 +38,7 @@ Template.dental_quotation.events({
       this));
   },
   'click .quotationPrintAction': function() {
+    Meteor.subscribe('dental_quotation');
     var q = 'patient=' + this.patientId + '&quotation=' + this._id;
     var url = 'quotationReportGen?' + q;
     window.open(url);
@@ -58,6 +59,8 @@ Template.dental_quotationInsert.onRendered(function() {
  */
 Template.dental_quotationUpdate.onRendered(function() {
   datepicker();
+  //run this function when on update get value for total
+  calculateTotal();
 });
 
 /**
@@ -107,7 +110,8 @@ Template.dental_quotationInsert.events({
     }
   },
   'click .btnRemove': function(e, t) {
-    setTimeout(function() {
+    var thisValueQuotation= $(e.currentTarget).closest('.quotation').find('.amount').val();
+    thisValueQuotation=parseFloat(thisValueQuotation);
       var enable = true;
       $('.amount').each(function() {
         var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -127,9 +131,7 @@ Template.dental_quotationInsert.events({
       }
 
       // Cal footer
-      calculateTotal();
-    }, 300);
-
+      calculateTotal(thisValueQuotation);
   },
   'keyup .qty,.discount, click .qty,.discount': function(e, t) {
 
@@ -142,6 +144,7 @@ Template.dental_quotationInsert.events({
     calculateTotal();
   },
   'click #saveAndPrint': function() {
+    Meteor.subscribe('dental_quotation');
     Session.set('printQuotation', true);
   }
 });
@@ -193,7 +196,8 @@ Template.dental_quotationUpdate.events({
     }
   },
   'click .btnRemove': function(e, t) {
-    setTimeout(function() {
+    var thisValueQuotation= $(e.currentTarget).closest('.quotation').find('.amount').val();
+    thisValueQuotation=parseFloat(thisValueQuotation);
       var enable = true;
       $('.amount').each(function() {
         var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -213,9 +217,7 @@ Template.dental_quotationUpdate.events({
       }
 
       // Cal footer
-      calculateTotal();
-    }, 300);
-
+      calculateTotal(thisValueQuotation);
   },
   'keyup .qty,.discount, click .qty,.discount': function(e, t) {
 
@@ -263,6 +265,7 @@ AutoForm.hooks({
     before: {
       insert: function(doc) {
         doc.branchId = Session.get('currentBranch');
+        doc.total = $('total').val();
         var prefix = doc.branchId + '-';
         Meteor.call('dental', prefix);
         return doc;
@@ -274,17 +277,18 @@ AutoForm.hooks({
         $(this).select2("val", "");
       });
       //clear selectize
-      $('select.item')[0].selectize.clear(true);
+      // $('select.item')[0].selectize.clear(true);
 
       var printSession = Session.get('printQuotation');
-      var data = Dental.Collection.Quotation.findOne(result);
-      if (printSession) {
-        var q = 'patient=' + data.patientId + '&quotation=' + data._id;
-        var url = 'quotationReportGen?' + q;
-        window.open(url);
-      }
-      Session.set('printQuotation', false);
-
+      Meteor.call('getQuotationId', result, function (err, result) {
+        var data = Dental.Collection.Quotation.findOne(result);
+        if (printSession) {
+          var q = 'patient=' + data.patientId + '&quotation=' + data._id;
+          var url = 'quotationReportGen?' + q;
+          window.open(url);
+        }
+        Session.set('printQuotation', false);
+      });
       alertify.success("Success");
     },
     onError: function(fromType, error) {
@@ -292,6 +296,12 @@ AutoForm.hooks({
     }
   },
   dental_quotationUpdate: {
+    before:{
+      update:function (doc) {
+        doc.$set.total = $('.total').val();
+        return doc;
+      }
+    },
     onSuccess: function(formType, result) {
       alertify.quotation().close();
       alertify.success('Success');
@@ -334,14 +344,17 @@ function CalculateTotalAndAmount(e) {
 /**
  * Calculate total for disease items
  */
-function calculateTotal() {
+function calculateTotal(minusValueQuotation) {
+  minusValueQuotation=minusValueQuotation==null?0:minusValueQuotation;
+  minusValueQuotation=math.round(minusValueQuotation, 2);
   // Cal subtotal by items amount
   var subtotal = 0;
-  $('#quotation .amount').each(function() {
+  $('.quotation .amount').each(function() {
     var amount = _.isEmpty($(this).val()) ? 0 : parseFloat($(this).val());
     subtotal += amount;
   });
 
+  subtotal= subtotal - minusValueQuotation;
   // Set value on subtotal textbox
   $('[name="subtotal"]').val(subtotal);
 
@@ -351,35 +364,8 @@ function calculateTotal() {
   var subDiscount = _.isEmpty($('#subDiscount').val()) ? 0 : parseFloat($(
     '#subDiscount').val());
 
-  subDiscount = math.round((subtotal - deposit) - subDiscount, 2);
-
-  var total = math.round(subDiscount, 2);
+    var total = math.round((subtotal - deposit) - subDiscount, 2);
 
   // Set value on total
-  $('#total').val(total);
-
-  // Set value on total animate
-  var decimal_places = 2;
-  var decimal_factor = decimal_places === 0 ? 1 : decimal_places * 10;
-  $('.total')
-    .animateNumber({
-        number: total * decimal_factor,
-
-        numberStep: function(now, tween) {
-          var floored_number = Math.floor(now) / decimal_factor,
-            target = $(tween.elem);
-
-          if (decimal_places > 0) {
-            // force decimal places even if they are 0
-            floored_number = floored_number.toFixed(decimal_places);
-
-            // replace '.' separator with ','
-            floored_number = floored_number.toString().replace('.', ',');
-          }
-
-          target.text('$' + floored_number);
-        }
-      },
-      200
-    );
+  $('.total').val(total);
 }

@@ -1,3 +1,4 @@
+Dental.ListState = new ReactiveObj();
 /*
  *Index
  */
@@ -6,7 +7,6 @@ Template.dental_materialCost.onCreated(function () {
     Meteor.subscribe('dental_materialCostItem');
     createNewAlertify(['materialCost', 'doctorAddon']);
 });
-
 
 Template.dental_materialCost.helpers({});
 
@@ -68,8 +68,8 @@ Template.dental_materialCostInsert.events({
         onChangeMaterialCostItemId(e);
     },
     'click .btnRemove': function (e) {
-
-        setTimeout(function () {
+      var thisValueMaterialCost= $(e.currentTarget).closest('.materialCost').find('.amount').val();
+      thisValueMaterialCost=parseFloat(thisValueMaterialCost);
             var enable = true;
             $('.amount').each(function () {
                 var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -88,9 +88,7 @@ Template.dental_materialCostInsert.events({
 
             }
 
-            calculateTotal();
-        }, 300);
-
+            calculateTotal(thisValueMaterialCost);
     },
     'click .btnAdd': function (e) {
 
@@ -107,6 +105,7 @@ Template.dental_materialCostInsert.events({
         checkEventKeyupAndClick(e);
     },
     'click #saveAndPrint': function () {
+      Meteor.subscribe('dental_materialCost');
         Session.set('printInvoiceMaterialCost', true);
     }
 
@@ -131,8 +130,8 @@ Template.dental_materialCostUpdate.events({
         onChangeMaterialCostItemId(e);
     },
     'click .btnRemove': function (e) {
-
-        setTimeout(function () {
+      var thisValueMaterialCost= $(e.currentTarget).closest('.materialCost').find('.amount').val();
+      thisValueMaterialCost=parseFloat(thisValueMaterialCost);
             var enable = true;
             $('.amount').each(function () {
                 var amount = $(this).val() == "" ? 0 : parseFloat($(this)
@@ -151,9 +150,7 @@ Template.dental_materialCostUpdate.events({
 
             }
 
-            calculateTotal();
-        }, 300);
-
+            calculateTotal(thisValueMaterialCost);
     },
     'click .btnAdd': function (e) {
         var materialCostItemId = $(e.currentTarget).val();
@@ -201,6 +198,7 @@ AutoForm.hooks({
         before: {
             insert: function (doc) {
                 doc.branchId = Session.get('currentBranch');
+                doc.total = $('.total').val();
                 var prefix = doc.branchId + '-';
                 Meteor.call('dental', prefix);
                 return doc;
@@ -212,17 +210,18 @@ AutoForm.hooks({
                 $(this).select2("val", "");
             });
             //clear selectize
-            $('select.materialCostItemId')[0].selectize.clear(true);
+            // $('select.materialCostItemId')[0].selectize.clear(true);
 
             var printSession = Session.get('printInvoiceMaterialCost');
-            var data = Dental.Collection.MaterialCost.findOne(result);
-            if (printSession) {
-                var q = 'doctor=' + data.doctorId + '&materialCost=' + data._id;
-                var url = 'materialCostReportGen?' + q;
-                window.open(url);
-            }
-            Session.set('printInvoiceMaterialCost', false);
-
+              Meteor.call('getMaterialCostId', result, function (err, result) {
+                var data = Dental.Collection.MaterialCost.findOne(result);
+                if (printSession) {
+                  var q = 'doctor=' + data.doctorId + '&materialCost=' + data._id;
+                  var url = 'materialCostReportGen?' + q;
+                  window.open(url);
+                }
+                Session.set('printInvoiceMaterialCost', false);
+              });
             alertify.success('Success');
         },
         onError: function (formType, error) {
@@ -230,6 +229,12 @@ AutoForm.hooks({
         }
     },
     dental_materialCostUpdate: {
+      before:{
+        update:function (doc) {
+          doc.$set.total = $('.total').val();
+          return doc;
+        }
+      },
         onSuccess: function () {
             alertify.materialCost().close();
             alertify.success('Success');
@@ -292,13 +297,16 @@ function checkEventKeyupAndClick(e) {
 /**
  * Calculate all amount to total
  */
-function calculateTotal() {
+function calculateTotal(minusValueMaterialCost) {
+    minusValueMaterialCost=minusValueMaterialCost==null?0:minusValueMaterialCost;
+    minusValueMaterialCost=math.round(minusValueMaterialCost, 2);
     var total = 0;
-    $('#materialCost .amount').each(function () {
+    $('.materialCost .amount').each(function () {
         var amount = $(this).val() == "" ? 0 : parseFloat($(this).val());
         total += amount;
     });
-    $('[name="total"]').val(total);
+    total = total - minusValueMaterialCost;
+    $('.total').val(total);
 
     var decimal_places = 2;
     var decimal_factor = decimal_places === 0 ? 1 : decimal_places * 10;
@@ -322,7 +330,7 @@ function calculateTotal() {
                     target.text('$' + floored_number);
                 }
             },
-            200
+            100
         );
 }
 

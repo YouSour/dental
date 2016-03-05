@@ -57,7 +57,7 @@ Meteor.methods({
       .KHR).format('0,0.00');
     data.footer.totalThb = "THB" + numeral(quotationDoc.total * exchange.rates
       .THB).format('0,0.00');
-
+      console.log(content.length);
     if (content.length > 0) {
       data.content = content;
 

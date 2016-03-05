@@ -1,3 +1,4 @@
+Dental.ListState = new ReactiveObj();
 /*
  * Index
  */
@@ -7,10 +8,10 @@ Template.dental_deposit.onCreated(function () {
 
 Template.dental_deposit.helpers({
     register: function () {
-        return Dental.RegisterState.get('data');
+        return Dental.ListState.get('data');
     },
     selector: function () {
-        var registerId = Dental.RegisterState.get('data')._id;
+        var registerId = Dental.ListState.get('data')._id;
 
         return {
             registerId: registerId
@@ -21,7 +22,7 @@ Template.dental_deposit.helpers({
 Template.dental_deposit.events({
     'click .insert': function () {
         Session.set('closeDeposit', true);
-        var data = Dental.RegisterState.get('data');
+        var data = Dental.ListState.get('data');
         alertify.deposit(fa("plus", "Deposit"), renderTemplate(Template.dental_depositInsert,
             data));
     },
@@ -66,6 +67,7 @@ Template.dental_depositInsert.onRendered(function () {
 
 Template.dental_depositInsert.events({
     'click #saveAndPrint': function () {
+        Meteor.subscribe('dental_deposit');
         Session.set('printInvoiceDeposit', true);
     }
 });
@@ -96,13 +98,15 @@ AutoForm.hooks({
             }
 
             var printSession = Session.get('printInvoiceDeposit');
-            var data = Dental.Collection.Deposit.findOne(result);
-            if (printSession) {
-                var q = 'patient=' + data.patientId + '&register=' + data.registerId;
-                var url = '/dental/invoiceReportGen?' + q;
-                window.open(url);
-            }
-            Session.set('printInvoiceDeposit', false);
+              Meteor.call('getDepositId', result, function (err, result) {
+                var data = Dental.Collection.Deposit.findOne(result);
+                  if (printSession) {
+                    var q = 'patient=' + data.patientId + '&register=' + data.registerId;
+                    var url = '/dental/invoiceReportGen?' + q;
+                    window.open(url);
+                  }
+              Session.set('printInvoiceDeposit', false);
+            });
             alertify.success("Success");
         },
         onError: function (formType, error) {
