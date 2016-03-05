@@ -344,7 +344,7 @@ Dental.List = {
         value: ""
       });
     }
-    var specialPaymentDoc = Dental.RegisterState.get('data');
+    var specialPaymentDoc = Dental.ListState.get('data');
     var specialPayment = Dental.Collection.SpecialPayment.find({specialRegisterId: specialPaymentDoc._id}).fetch();
     var lastIndex = undefined;
     if(specialPayment){

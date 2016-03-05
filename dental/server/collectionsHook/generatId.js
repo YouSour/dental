@@ -1,7 +1,6 @@
 /**
-/**
  * Created by piseth on 11/30/15.
- // */
+  */
 
 //patient
 Dental.Collection.Patient.before.insert(function (userId, doc) {
@@ -71,19 +70,25 @@ Dental.Collection.OrderItem.before.insert(function (userId, doc) {
 //Register
 Dental.Collection.Register.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.Register, prefix, 9);
+    Dental.ListState.set(id, doc._id);
 });
 
-//Register
+//Treatment
 Dental.Collection.Treatment.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.Treatment, prefix, 12);
+    Dental.ListState.set(id ,doc._id);
 });
 
-//Register
+//Despost
 Dental.Collection.Deposit.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.Deposit, prefix, 12);
+    Dental.ListState.set(id, doc._id);
 });
 
 //Appointment
@@ -96,45 +101,57 @@ Dental.Collection.CalendarEvent.before.insert(function (userId, doc) {
 Dental.Collection.Payment.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
     var dt = moment().format("YYYYMMDD");
-    var hello = prefix + dt;
-    doc._id = idGenerator.genWithPrefix(Dental.Collection.Payment, hello, 3);
+    var idPrefix = prefix + dt;
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.Payment, idPrefix, 3);
+    Dental.ListState.set(id, doc._id);
 });
 
 //SpecialRegister
 Dental.Collection.SpecialRegister.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialRegister, prefix, 9);
+    Dental.ListState.set(id, doc._id);
 });
 
 //SpecialTra
 Dental.Collection.SpecialTreatment.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialTreatment, prefix, 12);
+    Dental.ListState.set(id, doc._id);
 });
 
 //SpecialPayment
 Dental.Collection.SpecialPayment.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
     var dt = moment().format("YYYYMMDD");
-    var hello = prefix + dt;
-    doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialPayment, hello, 3);
+    var idPrefix = prefix + dt;
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.SpecialPayment, idPrefix, 3);
+    Dental.ListState.set(id, doc._id);
 });
 
 //Quotation
 Dental.Collection.Quotation.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
+    var id = doc._id;
     doc._id = idGenerator.genWithPrefix(Dental.Collection.Quotation, prefix, 9);
+    Dental.ListState.set(id, doc._id);
 });
 
 //MaterialCost
 Dental.Collection.MaterialCost.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
     var dt = moment().format("YYYYMMDD");
-    var hello = prefix + dt;
-    doc._id = idGenerator.genWithPrefix(Dental.Collection.MaterialCost, hello, 3);
+    var idPrefix = prefix + dt;
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.MaterialCost, idPrefix, 3);
+    Dental.ListState.set(id, doc._id);
 });
 
-//MaterialCost
+//MaterialCostItem
 Dental.Collection.MaterialCostItem.before.insert(function (userId, doc) {
     var prefix = "";
     doc._id = idGenerator.genWithPrefix(Dental.Collection.MaterialCostItem, prefix, 6);
@@ -144,6 +161,8 @@ Dental.Collection.MaterialCostItem.before.insert(function (userId, doc) {
 Dental.Collection.Purchase.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');
     var dt = moment().format("YYYYMMDD");
-    var hello = prefix + dt;
-    doc._id = idGenerator.genWithPrefix(Dental.Collection.Purchase, hello, 3);
+    var idPrefix = prefix + dt;
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.Purchase, idPrefix, 3);
+    Dental.ListState.set(id, doc._id);
 });
