@@ -38,7 +38,6 @@ Template.dental_quotation.events({
       this));
   },
   'click .quotationPrintAction': function() {
-    Meteor.subscribe('dental_quotation');
     var q = 'patient=' + this.patientId + '&quotation=' + this._id;
     var url = 'quotationReportGen?' + q;
     window.open(url);
@@ -265,7 +264,7 @@ AutoForm.hooks({
     before: {
       insert: function(doc) {
         doc.branchId = Session.get('currentBranch');
-        doc.total = $('total').val();
+        doc.total = $('.total').val();
         var prefix = doc.branchId + '-';
         Meteor.call('dental', prefix);
         return doc;
