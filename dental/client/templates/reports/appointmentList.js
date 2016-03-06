@@ -1,5 +1,6 @@
 /************ Form *************/
 Template.dental_appointmentListReport.onRendered(function () {
+    Meteor.subscribe('dental_doctor');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
 });

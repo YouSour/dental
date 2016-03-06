@@ -1,10 +1,9 @@
 /************ Form *************/
-
 Template.dental_registerByDiseaseListReport.onRendered(function() {
+  Meteor.subscribe('dental_diseaseItem');
   var name = $('[name="date"]');
   DateTimePicker.dateRange(name);
 });
-
 
 /************ Generate *************/
 Template.dental_registerByDiseaseListReportGen.helpers({

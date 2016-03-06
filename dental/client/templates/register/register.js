@@ -253,8 +253,6 @@ Template.dental_registerInsert.onRendered(function () {
 
 });
 
-Template.dental_registerInsert.helpers({});
-
 Template.dental_registerInsert.events({
     'click .btnAdd': function (e) {
         var orderItemId = $(e.currentTarget).val();
@@ -594,14 +592,14 @@ AutoForm.hooks({
         }
     },
     dental_registerUpdate: {
-      before:{
-        update:function(doc){
-          doc.$set.total = $('.total').val();
-          doc.$set.doctorShareTotal = $('.doctorShareTotal').val();
-          doc.$set.laboExpenseTotal = $('.laboExpenseTotal').val();
+        before:{
+          update:function(doc){
+            doc.$set.total = $('.total').val();
+            doc.$set.doctorShareTotal = $('.doctorShareTotal').val();
+            doc.$set.laboExpenseTotal = $('.laboExpenseTotal').val();
           return doc;
-        }
-      },
+          }
+        },
         onSuccess: function (formType, result) {
             alertify.register().close();
             alertify.success('Success');
