@@ -4,6 +4,7 @@ Template.dental_purchaseListReport.onCreated(function () {
 });
 
 Template.dental_purchaseListReport.onRendered(function () {
+    Meteor.subscribe('dental_supplier');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
 });

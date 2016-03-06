@@ -58,8 +58,6 @@ Template.dental_purchaseInsert.onRendered(function() {
   $('.btnAdd').attr('disabled', "disabled");
 });
 
-Template.dental_purchaseInsert.helpers({});
-
 Template.dental_purchaseInsert.events({
   'click .supplierAddon': function() {
     alertify.supplierAddon(fa("plus", "Supplier"), renderTemplate(

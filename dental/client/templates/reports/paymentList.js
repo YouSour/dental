@@ -1,5 +1,6 @@
 /************ Form *************/
 Template.dental_paymentListReport.onCreated(function () {
+    Meteor.subscribe('dental_staff');
     createNewAlertify('exchange');
 });
 

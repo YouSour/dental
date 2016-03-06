@@ -4,6 +4,7 @@ Template.dental_materialCostListReport.onCreated(function () {
 });
 
 Template.dental_materialCostListReport.onRendered(function () {
+    Meteor.subscribe('dental_doctor');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
 });

@@ -57,8 +57,6 @@ Template.dental_materialCostInsert.onRendered(function () {
     $('.btnAdd').attr('disabled', "disabled");
 });
 
-Template.dental_materialCostInsert.helpers({});
-
 Template.dental_materialCostInsert.events({
     'click .doctorAddon': function () {
         alertify.doctorAddon(fa("plus", "Doctor"), renderTemplate(Template.dental_doctorInsert))
@@ -105,7 +103,7 @@ Template.dental_materialCostInsert.events({
         checkEventKeyupAndClick(e);
     },
     'click #saveAndPrint': function () {
-      Meteor.subscribe('dental_materialCost');
+        Meteor.subscribe('dental_materialCost');
         Session.set('printInvoiceMaterialCost', true);
     }
 
@@ -229,12 +227,12 @@ AutoForm.hooks({
         }
     },
     dental_materialCostUpdate: {
-      before:{
-        update:function (doc) {
-          doc.$set.total = $('.total').val();
+        before:{
+          update:function (doc) {
+            doc.$set.total = $('.total').val();
           return doc;
-        }
-      },
+          }
+        },
         onSuccess: function () {
             alertify.materialCost().close();
             alertify.success('Success');
