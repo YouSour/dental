@@ -1,5 +1,5 @@
 Meteor.methods({
-    searchPatient: function (query, options) {
+    searchItem: function (query, options) {
         if (!Meteor.userId()) {
             throw new Meteor.Error("not-authorized");
         }
@@ -12,20 +12,9 @@ Meteor.methods({
         }
         // TODO fix regexp to support multiple tokens
         var regex = new RegExp(query, 'i');
-        var patient = Dental.Collection.Patient.find({
-            $or: [{_id: {$regex: regex}}, {name: {$regex: regex}},{age:{$regex: regex}},{gender:{$regex: regex}}]
-        }, options);
-        var arr = [];
-        patient.forEach(function (o) {
-            if (o.photo) {
-
-                o.url = Files.findOne(o.photo).url();
-            } else {
-                o.url = '/no_image.jpg';
-            }
-            arr.push(o);
-        });
-        return arr;
+        return Dental.Collection.DiseaseItem.find({
+            $or: [{_id: {$regex: regex}}, {name: {$regex: regex}}, {code: {$regex: regex}}, {price: {$regex: regex}}, {memberPrice: {$regex: regex}}]
+        }, options).fetch();
     }
     //search: function (collectionName, query, options) {
     //    if (!Meteor.userId()) {

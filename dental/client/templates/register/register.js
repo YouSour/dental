@@ -99,7 +99,7 @@ Template.dental_register.events({
             data._patient.photoUrl = Files.findOne(data._patient.photo).url();
         }
 
-        alertify.alert(fa("eye", "Register"), renderTemplate(Template.dental_registerShow,
+        alertify.register(fa("eye", "Register"), renderTemplate(Template.dental_registerShow,
             data));
     },
     'click .statusAction': function () {
@@ -256,12 +256,6 @@ Template.dental_registerInsert.onRendered(function () {
 
 });
 
-Nba = new Meteor.Collection("nba");
-
-if (Meteor.isServer) {
-    Nba.insert({name: 'Boston Celtics'});
-    // fill Nba collection
-}
 
 Template.dental_registerInsert.helpers({
     search: function (query, sync, callback) {
@@ -285,6 +279,30 @@ Template.dental_registerInsert.helpers({
         if (patient) {
             $('.item').removeAttr('disabled');
         }
+
+
+    },
+    item: function (query, sync, callback) {
+        Meteor.call('searchItem', query, {}, function (err, res) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            callback(res);
+        });
+    },
+    Item: function (event, suggestion, dataSetName) {
+        // event - the jQuery event object
+        // suggestion - the suggestion object
+        // datasetName - the name of the dataset the suggestion belongs to
+        // TODO your event handler here
+        //var id = suggestion._id;
+        $('[name="item"]').typeahead('val', suggestion._id + ' | ' + suggestion.name)
+        //$('.patientId').val(id);
+        //var patient = $('.patientId').val(id);
+        //if (patient) {
+        //    $('.item').removeAttr('disabled');d
+        //}
 
 
     }
@@ -333,13 +351,10 @@ Template.dental_registerInsert.events({
  * Update
  */
 Template.dental_registerUpdate.onRendered(function () {
-    $('[name="search"]').val(this.data.patientId);
-    Meteor.setTimeout(function () {
-        Meteor.typeahead.inject();
-        //$('[name="search"]').typeahead('val', this.data.patientId);
-    }, 500);
-    ////$('.patientId').hide();
 
+    //typeaheadupdate
+    Meteor.typeahead.inject();
+    $('[name="search"]').typeahead('val', this.data.patientId + " | " + this.data._patient.name + " | " + this.data._patient.gender);
 
     datepicker();
 
@@ -353,9 +368,9 @@ Template.dental_registerUpdate.onRendered(function () {
 
 //helper by piseth
 Template.dental_registerUpdate.helpers({
-    typeAhead: function () {
-        return data.patientId
-    },
+    //typeAhead: function () {
+    //    return data.patientId
+    //},
 
     search: function (query, sync, callback) {
         Meteor.call('searchPatient', query, {}, function (err, res) {
@@ -394,16 +409,9 @@ Template.dental_registerUpdate.events({
 
         }
     },
-    'change .patientId': function (e) {
-        var patient = $(e.currentTarget).val();
-        Session.set('patientId', patient);
-
-        var index = 0;
-        $('div.array-item').each(function () {
-            //clear selectize
-            $('select.item')[index].selectize.clear(true);
-            index++;
-        });
+    'keyup .patientId': function (e) {
+        $('[name="search"]').show();
+        $('.patientId').hide();
 
     },
     'keyup .doctorShareAmount,.laboAmount': function (e, t) {

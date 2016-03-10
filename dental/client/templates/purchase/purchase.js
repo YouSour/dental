@@ -40,7 +40,7 @@ Template.dental_purchase.events({
     );
   },
   'click .show': function() {
-    alertify.alert(fa("eye", "Purchase"), renderTemplate(Template.dental_purchaseShow,
+    alertify.purchase(fa("eye", "Purchase"), renderTemplate(Template.dental_purchaseShow,
       this));
   },
   'click .purchasePrintAction': function() {

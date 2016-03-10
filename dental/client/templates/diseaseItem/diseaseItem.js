@@ -38,7 +38,7 @@ Template.dental_diseaseItem.events({
     },
     'click .show': function (e, t) {
         var data = this;
-        alertify.alert(fa("eye", "Disease Item"), renderTemplate(Template.dental_diseaseItemShow,
+        alertify.diseaseItem(fa("eye", "Disease Item"), renderTemplate(Template.dental_diseaseItemShow,
             data));
     }
 });

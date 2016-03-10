@@ -50,7 +50,7 @@ Template.dental_treatment.events({
     },
     'click .show': function () {
         var data = this;
-        alertify.alert(fa("eye", "Treatment"), renderTemplate(Template.dental_treatmentShow,
+        alertify.treatment(fa("eye", "Treatment"), renderTemplate(Template.dental_treatmentShow,
             data));
     },
     'click .showDescription': function () {

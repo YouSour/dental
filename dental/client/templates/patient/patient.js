@@ -62,7 +62,7 @@ Template.dental_patient.events({
             data.photoUrl = Files.findOne(data.photo).url();
         }
 
-        alertify.alert(fa("eye", "Patient"), renderTemplate(Template.dental_patientShow,
+        alertify.patient(fa("eye", "Patient"), renderTemplate(Template.dental_patientShow,
             data));
     }
 });

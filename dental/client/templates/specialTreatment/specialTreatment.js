@@ -57,7 +57,7 @@ Template.dental_specialTreatment.events({
         // if (!_.isUndefined(data.attachFile)) {
         //   data.attachFileUrl = Files.findOne(data.attachFile).url();
         // }
-        alertify.alert(fa("eye", "Special Treatment"), renderTemplate(
+        alertify.specialTreatment(fa("eye", "Special Treatment"), renderTemplate(
             Template.dental_specialTreatmentShow,
             data));
     },

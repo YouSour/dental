@@ -34,7 +34,7 @@ Template.dental_staff.events({
     'click .show': function (e, t) {
         var data = this;
 
-        alertify.alert(fa("eye", "Staff"), renderTemplate(Template.dental_staffShow, data));
+        alertify.staff(fa("eye", "Staff"), renderTemplate(Template.dental_staffShow, data));
     }
 })
 ;
