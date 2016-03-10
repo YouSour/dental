@@ -1,3 +1,18 @@
+<!--show while type by piseth-->
+<template name="repo">
+    <div class="row">
+        <div class="col-lg-3">
+            <img src="{{url}}" width="40px" height="40px" class="img-circle">
+        </div>
+        <div class="col-lg-9">
+            <p><b style="font-size: 14px;">{{_id}}||{{name}} ({{gender}}) || {{age}}</b></p>
+            <p>
+            </p>
+        </div>
+    </div>
+</template>
+
+
 <!--Index-->
 <template name="dental_register">
     <div class="animated bounceInRight">
@@ -75,6 +90,7 @@
 
 <!--Insert-->
 <template name="dental_registerInsert">
+
     {{#autoForm collection=Dental.Collection.Register id="dental_registerInsert" type="insert" afFieldInput-placeholder="schemaLabel"}}
         <div class="row">
             <div class="col-md-3">
@@ -83,12 +99,17 @@
                     <div class="panel-body">
                         {{> afQuickField name="registerDate"}}
 
-                        <div class="form-group{{#if afFieldIsInvalid name='patientId'}} has-error{{/if}}"
+                        <div class="form-group{{#if afFieldIsInvalid name='patientId' }} has-error{{/if}}"
                              data-required="true">
                             <label class="control-label" for="patientId">Patient</label>
 
                             <div class="input-group  select2-bootstrap-append">
-                                {{> afFieldInput name='patientId'  class='patientId'}}
+                                <!--type a head form by piseth-->
+                                <input class="form-control typeahead input-sm" name="search" type="text"
+                                       placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
+                                       data-source="search" data-select='selected' data-highlight=true value='typeAhead'
+                                       data-template='repo' style="width: 287px;height: 37px;"/>
+                                {{> afFieldInput name='patientId' class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                     <a href="#" class="patientAddon btn btn-default">
                                         {{fa "plus"}}
@@ -111,14 +132,14 @@
                 {{> afArrayField name="disease" id="disease" template="customArrayFieldInvoiceForDiseaseItem" subtemplate="customObjectFieldInvoiceForDiseaseItem"}}
 
                 <div class="row">
-                  <div class="col-sm-6">
-                    <!--Labo Expense-->
-                    {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
-                  </div>
-                  <div class="col-sm-6">
-                    <!--Doctor Share-->
-                    {{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}
-                  </div>
+                    <div class="col-sm-6">
+                        <!--Labo Expense-->
+                        {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
+                    </div>
+                    <div class="col-sm-6">
+                        <!--Doctor Share-->
+                        {{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}
+                    </div>
                 </div>
 
                 <div class="text-right">
@@ -148,7 +169,11 @@
                             <label class="control-label" for="patientId">Patient</label>
 
                             <div class="input-group  select2-bootstrap-append">
-                                {{> afFieldInput name='patientId'  class='patientId'}}
+                                <input class="form-control typeahead input-sm" name="search" type="text"
+                                       placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
+                                       data-source="search" data-select='selected' data-highlight=true
+                                       data-template='repo' style="width: 287px;height: 37px;"/>
+                                {{> afFieldInput name='patientId' class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                 <a href="#" class="patientAddon btn btn-default">
                                     {{fa "plus"}}
@@ -174,12 +199,12 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                      <!--Labo Expense-->
-                      {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
+                        <!--Labo Expense-->
+                        {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
                     </div>
                     <div class="col-sm-6">
-                      <!--Doctor Share-->
-                      {{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}
+                        <!--Doctor Share-->
+                        {{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}
                     </div>
                 </div>
 
@@ -316,16 +341,16 @@
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
 
                             <div class="btn-group" role="group">
-                              <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-success btnFree">
-                              <span class="glyphicon glyphicon-gift"></span>
-                          </button>
-                          <button type="button" class="btn btn-sm btn-warning btnNonFree">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                          </div>
+                                <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success btnFree">
+                                    <span class="glyphicon glyphicon-gift"></span>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-warning btnNonFree">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </div>
                         {{/if}}
                     </div>
 
@@ -366,11 +391,12 @@
                 </div>
                 <!--Total-->
                 <div class="col-sm-3">
-                  <div class="form-group" data-required="true">
-                     <label for="total" class="control-label">Total</label>
-                       <input type="number" placeholder="Total" class="input-sm form-control total" required="total" data-schema-key="total" step="0.01" readonly="true"/>
-                       <span class="help-block"></span>
-                  </div>
+                    <div class="form-group" data-required="true">
+                        <label for="total" class="control-label">Total</label>
+                        <input type="number" placeholder="Total" class="input-sm form-control total" required="total"
+                               data-schema-key="total" step="0.01" readonly="true"/>
+                        <span class="help-block"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -400,8 +426,9 @@
 <template name="afArrayField_customArrayFieldInvoiceForDoctorShare">
     <div class="panel panel-default">
         <div class="panel-heading">
-          {{fa "user-plus"}} {{afFieldLabelText name=this.atts.name}}
-          <span class="label label-primary pull-right" style="font-size:14px">Sharing Remain {{fa "angle-double-right fa-1"}} {{sharingRemain}}</span>
+            {{fa "user-plus"}} {{afFieldLabelText name=this.atts.name}}
+            <span class="label label-primary pull-right"
+                  style="font-size:14px">Sharing Remain {{fa "angle-double-right fa-1"}} {{sharingRemain}}</span>
         </div>
 
         <div class="panel-body">
@@ -456,10 +483,12 @@
 
                     <!--Total-->
                     <div class="col-sm-5">
-                      <div class="form-group" data-required="true">
-                          <input type="number" placeholder="Doctor share total" readonly="" class="input-sm doctorShareTotal form-control" id="qqr4xzoDawnJGfPzQ" required="" data-schema-key="doctorShareTotal" step="0.01">
-                          <span class="help-block"></span>
-                      </div>
+                        <div class="form-group" data-required="true">
+                            <input type="number" placeholder="Doctor share total" readonly=""
+                                   class="input-sm doctorShareTotal form-control" id="qqr4xzoDawnJGfPzQ" required=""
+                                   data-schema-key="doctorShareTotal" step="0.01">
+                            <span class="help-block"></span>
+                        </div>
                     </div>
 
                 </div>
@@ -536,10 +565,12 @@
 
                     <!--Total-->
                     <div class="col-sm-5">
-                      <div class="form-group" data-required="true">
-                        <input type="number" placeholder="Labo expense total" readonly="true" class="input-sm laboExpenseTotal form-control"  required="" data-schema-key="laboExpenseTotal" step="0.01">
-                          <span class="help-block"></span>
-                      </div>
+                        <div class="form-group" data-required="true">
+                            <input type="number" placeholder="Labo expense total" readonly="true"
+                                   class="input-sm laboExpenseTotal form-control" required=""
+                                   data-schema-key="laboExpenseTotal" step="0.01">
+                            <span class="help-block"></span>
+                        </div>
                     </div>
                 </div>
 
