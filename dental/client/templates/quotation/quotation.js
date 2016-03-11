@@ -49,7 +49,7 @@ Template.dental_quotation.events({
  */
 Template.dental_quotationInsert.onRendered(function () {
     Meteor.typeahead.inject();
-    $('.item').attr('disabled', "disabled");
+    // $('.item').attr('disabled', "disabled");
     datepicker();
     $('.btnAdd').attr('disabled', "disabled");
 });
@@ -86,10 +86,10 @@ Template.dental_quotationInsert.helpers({
         var id = suggestion._id;
         $('[name="search"]').typeahead('val', suggestion._id + ' | ' + suggestion.name + " | " + suggestion.age);
         $('.patientId').val(id);
-        var patient = $('.patientId').val(id);
-        if (patient) {
-            $('.item').removeAttr('disabled');
-        }
+        // var patient = $('.patientId').val(id);
+        // if (patient) {
+        //     $('.item').removeAttr('disabled');
+        // }
 
 
     }

@@ -182,7 +182,6 @@ Dental.List = {
     return list;
   },
   diseaseItem: function() {
-
     var list = [];
     // list.push({
     //   label: "(Select One)",
@@ -242,13 +241,29 @@ Dental.List = {
 
     return list;
   },
-
   doctor: function() {
     var list = [];
     // list.push({
     //   label: "(Select One)",
     //   value: ""
     // });
+    var branchSession = Session.get('currentBranch');
+    Dental.Collection.Doctor.find({branchId:branchSession})
+      .forEach(function(obj) {
+        list.push({
+          label: obj._id + " : " + obj.name + ' (' + obj.gender + ')',
+          value: obj._id
+        });
+      });
+
+    return list;
+  },
+  doctorForOther: function() {
+    var list = [];
+    list.push({
+      label: "(Select One)",
+      value: ""
+    });
     var branchSession = Session.get('currentBranch');
     Dental.Collection.Doctor.find({branchId:branchSession})
       .forEach(function(obj) {

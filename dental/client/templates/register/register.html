@@ -102,12 +102,12 @@
                              data-required="true">
                             <label class="control-label" for="patientId">Patient</label>
 
-                            <div class="input-group  select2-bootstrap-append">
+                            <div class="input-group select2-bootstrap-append">
                                 <!--type a head form by piseth-->
                                 <input class="form-control typeahead input-sm" name="search" type="text"
                                        placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
                                        data-source="search" data-select='selected' data-highlight=true
-                                       data-template='repo' style="width: 287px;height: 37px;"/>
+                                       data-template='repo'/>
 
                                 <!--<input type="text" placeholder="Total" class="input-sm form-control total" required="total"-->
                                 <!--data-schema-key="total" step="0.01" readonly="true"/>-->
@@ -136,10 +136,11 @@
                 {{> afArrayField name="disease" id="disease" template="customArrayFieldInvoiceForDiseaseItem" subtemplate="customObjectFieldInvoiceForDiseaseItem"}}
 
                 <div class="row">
-                    <div class="col-sm-6">
-                        <!--Labo Expense-->
-                        {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
-                    </div>
+                  <div class="col-sm-6">
+                      <!--Labo Expense-->
+                      {{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}
+                  </div>
+
                     <div class="col-sm-6">
                         <!--Doctor Share-->
                         {{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}
@@ -176,9 +177,9 @@
                                 <input class="form-control typeahead input-sm" name="search" type="text"
                                        placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
                                        data-source="search" data-select='selected' data-highlight=true
-                                       data-template='repo' style="width: 287px;height: 37px;"/>
+                                       data-template='repo'/>
                                 <!--<input name="search" type="text"/>-->
-                                {{> afFieldInput name='patientId' class='patientId' type=hidden}}
+                                {{> afFieldInput name='patientId' class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                 <a href="#" class="patientAddon btn btn-default">
                                     {{fa "plus"}}

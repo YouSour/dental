@@ -21,7 +21,7 @@ Meteor.methods({
 
                 o.url = Files.findOne(o.photo).url();
             } else {
-                o.url = '/no_image.jpg';
+                o.url = '/no-image.png';
             }
             arr.push(o);
         });

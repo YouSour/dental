@@ -37,7 +37,7 @@ Template.dental_materialCostCategory.events({
     'click .show': function () {
         var data = this;
 
-        alertify.alert(fa("eye", "Material Category"), renderTemplate(
+        alertify.materialCostCategory(fa("eye", "Material Category"), renderTemplate(
             Template.dental_materialCostCategoryShow, data));
     }
 });
