@@ -75,7 +75,13 @@
                             <label class="control-label" for="patientId">Patient</label>
 
                             <div class="input-group  select2-bootstrap-append">
-                                {{> afFieldInput name='patientId'  class='patientId'}}
+                                <input class="form-control typeahead input-sm" name="search" type="text"
+                                       placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
+                                       data-source="search" data-select='selected' data-highlight=true
+                                       data-template='repo' style="width: 287px;height: 37px;"/>
+
+
+                                {{> afFieldInput name='patientId'  class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                     <a href="#" class="patientAddon btn btn-default">
                                         {{fa "plus"}}
@@ -115,16 +121,16 @@
 
                 <div class="row">
                     <!--<div class="col-sm-6">-->
-                        <!--&lt;!&ndash;Doctor Share&ndash;&gt;-->
-                        <!--{{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}-->
+                    <!--&lt;!&ndash;Doctor Share&ndash;&gt;-->
+                    <!--{{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}-->
                     <!--</div>-->
                     <div class="col-sm-6">
                         <!--Labo Expense-->
                         <!--{{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}-->
                     </div>
                     <div class="col-sm-12">
-                    <!--Payment Method-->
-                    {{> afArrayField name="paymentMethod" id="paymentMethod" template="customArrayFieldInvoiceForPaymentMethod" subtemplate="customObjectFieldInvoiceForPaymentMethod"}}
+                        <!--Payment Method-->
+                        {{> afArrayField name="paymentMethod" id="paymentMethod" template="customArrayFieldInvoiceForPaymentMethod" subtemplate="customObjectFieldInvoiceForPaymentMethod"}}
                     </div>
                 </div>
 
@@ -133,7 +139,7 @@
                     <button type="submit" class="btn btn-info" id="saveAndPrint">{{fa "floppy-o"}} Save & Print</button>
                     <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
                 </div>
-              </div>
+            </div>
 
         </div>
     {{/autoForm}}
@@ -155,7 +161,13 @@
                             <label class="control-label" for="patientId">Patient</label>
 
                             <div class="input-group  select2-bootstrap-append">
-                                {{> afFieldInput name='patientId'  class='patientId'}}
+                                <input class="form-control typeahead input-sm" name="search" type="text"
+                                       placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
+                                       data-source="search" data-select='selected' data-highlight=true
+                                       data-template='repo' style="width: 287px;height: 37px;"/>
+
+
+                                {{> afFieldInput name='patientId'  class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                 <a href="#" class="patientAddon btn btn-default">
                                     {{fa "plus"}}
@@ -189,7 +201,7 @@
                 </div>
 
                 <!-- {{> dental_treatmentInfo registerId=_id}}
-                {{> dental_appointmentInfo registerId=_id}} -->
+                    {{> dental_appointmentInfo registerId=_id}} -->
 
             </div>
 
@@ -199,12 +211,12 @@
 
                 <div class="row">
                     <!--<div class="col-sm-6">-->
-                        <!--&lt;!&ndash;Doctor Share&ndash;&gt;-->
-                        <!--{{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}-->
+                    <!--&lt;!&ndash;Doctor Share&ndash;&gt;-->
+                    <!--{{> afArrayField name="doctorShare" id="doctorShare" template="customArrayFieldInvoiceForDoctorShare" subtemplate="customObjectFieldInvoiceForDoctorShare"}}-->
                     <!--</div>-->
                     <!--<div class="col-sm-6">-->
-                        <!--&lt;!&ndash;Labo Expense&ndash;&gt;-->
-                        <!--{{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}-->
+                    <!--&lt;!&ndash;Labo Expense&ndash;&gt;-->
+                    <!--{{> afArrayField name="laboExpense" id="laboExpense" template="customArrayFieldInvoiceForLaboExpense" subtemplate="customObjectFieldInvoiceForLaboExpense"}}-->
                     <!--</div>-->
 
                     <div class="col-sm-12">
@@ -343,17 +355,17 @@
                 <div class="row array-item specialRegister">
                     <div class="col-sm-2-custom">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-                              <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
-                                <span class="glyphicon glyphicon-minus"></span>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-success btnFree">
-                              <span class="glyphicon glyphicon-gift"></span>
-                          </button>
-                          <button type="button" class="btn btn-sm btn-warning btnNonFree">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success btnFree">
+                                    <span class="glyphicon glyphicon-gift"></span>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-warning btnNonFree">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </div>
                         {{/if}}
                     </div>
 
@@ -394,11 +406,12 @@
                 </div>
                 <!--Total-->
                 <div class="col-sm-3">
-                  <div class="form-group" data-required="true">
-                     <label for="total" class="control-label">Total</label>
-                       <input type="number" placeholder="Total" class="input-sm form-control totalSpecialRegister" required="total" data-schema-key="total" step="0.01" readonly="true"/>
-                       <span class="help-block"></span>
-                  </div>
+                    <div class="form-group" data-required="true">
+                        <label for="total" class="control-label">Total</label>
+                        <input type="number" placeholder="Total" class="input-sm form-control totalSpecialRegister"
+                               required="total" data-schema-key="total" step="0.01" readonly="true"/>
+                        <span class="help-block"></span>
+                    </div>
                 </div>
             </div>
 
@@ -481,10 +494,12 @@
 
                     <!--Total-->
                     <div class="col-sm-5">
-                      <div class="form-group" data-required="true">
-                        <input type="number" placeholder="Payment method total" readonly="" class="input-sm form-control paymentMethodTotal" id="aM8tNiSQfLRAJo3FD" required="" data-schema-key="paymentMethodTotal" step="0.01">
-                        <span class="help-block"></span>
-                      </div>
+                        <div class="form-group" data-required="true">
+                            <input type="number" placeholder="Payment method total" readonly=""
+                                   class="input-sm form-control paymentMethodTotal" id="aM8tNiSQfLRAJo3FD" required=""
+                                   data-schema-key="paymentMethodTotal" step="0.01">
+                            <span class="help-block"></span>
+                        </div>
                     </div>
                 </div>
 

@@ -12,7 +12,6 @@
     </div>
 </template>
 
-
 <!--Index-->
 <template name="dental_register">
     <div class="animated bounceInRight">
@@ -107,8 +106,13 @@
                                 <!--type a head form by piseth-->
                                 <input class="form-control typeahead input-sm" name="search" type="text"
                                        placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
-                                       data-source="search" data-select='selected' data-highlight=true value='typeAhead'
+                                       data-source="search" data-select='selected' data-highlight=true
                                        data-template='repo' style="width: 287px;height: 37px;"/>
+
+                                <!--<input type="text" placeholder="Total" class="input-sm form-control total" required="total"-->
+                                <!--data-schema-key="total" step="0.01" readonly="true"/>-->
+                                <!--<span class="help-block"></span>-->
+
                                 {{> afFieldInput name='patientId' class='patientId' type="hidden"}}
                                 <span class="input-group-btn">
                                     <a href="#" class="patientAddon btn btn-default">
@@ -173,7 +177,8 @@
                                        placeholder="Type Patient's Name" autocomplete="on" spellcheck="off"
                                        data-source="search" data-select='selected' data-highlight=true
                                        data-template='repo' style="width: 287px;height: 37px;"/>
-                                {{> afFieldInput name='patientId' class='patientId' type="hidden"}}
+                                <!--<input name="search" type="text"/>-->
+                                {{> afFieldInput name='patientId' class='patientId' type=hidden}}
                                 <span class="input-group-btn">
                                 <a href="#" class="patientAddon btn btn-default">
                                     {{fa "plus"}}

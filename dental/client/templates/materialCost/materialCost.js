@@ -39,7 +39,7 @@ Template.dental_materialCost.events({
         );
     },
     'click .show': function () {
-        alertify.alert(fa("eye", "Material Cost"), renderTemplate(Template.dental_materialCostShow,
+        alertify.materialCost(fa("eye", "Material Cost"), renderTemplate(Template.dental_materialCostShow,
             this));
     },
     'click .materialCostPrintAction': function () {

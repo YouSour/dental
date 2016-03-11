@@ -40,7 +40,7 @@ Template.dental_doctor.events({
         if (!_.isUndefined(data.photo)) {
             data.photoUrl = Files.findOne(data.photo).url();
         }
-        alertify.alert(fa("eye", "Doctor"), renderTemplate(Template.dental_doctorShow,
+        alertify.doctor(fa("eye", "Doctor"), renderTemplate(Template.dental_doctorShow,
             data));
     }
 });

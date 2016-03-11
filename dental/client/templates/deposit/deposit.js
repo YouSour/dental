@@ -53,7 +53,7 @@ Template.dental_deposit.events({
         var data = this;
         data.amountVal = numeral(data.amount).format('0,0.00');
 
-        alertify.alert(fa("eye", "Deposit"), renderTemplate(Template.dental_depositShow,
+        alertify.deposit(fa("eye", "Deposit"), renderTemplate(Template.dental_depositShow,
             data));
     }
 });

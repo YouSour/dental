@@ -34,7 +34,7 @@ Template.dental_orderItem.events({
     },
     'click .show': function () {
         var data = this;
-        alertify.alert(fa("eye", "Order Item"), renderTemplate(Template.dental_orderItemShow, data));
+        alertify.orderItem(fa("eye", "Order Item"), renderTemplate(Template.dental_orderItemShow, data));
     }
 });
 

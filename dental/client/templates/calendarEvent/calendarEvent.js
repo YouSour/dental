@@ -61,7 +61,7 @@ Template.dental_calendarEvent.events({
       data.patientPhoto = image;
     }
 
-    alertify.alert(fa("eye", "Calendar Event"), renderTemplate(Template.dental_calendarEventShow,
+    alertify.calendarEvent(fa("eye", "Calendar Event"), renderTemplate(Template.dental_calendarEventShow,
       data));
   }
 });
