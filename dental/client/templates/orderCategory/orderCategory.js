@@ -36,7 +36,7 @@ Template.dental_orderCategory.events({
     'click .show': function () {
         var data = this;
 
-        alertify.alert(fa("eye", "Order Category"), renderTemplate(Template.dental_orderCategoryShow,
+        alertify.orderCategory(fa("eye", "Order Category"), renderTemplate(Template.dental_orderCategoryShow,
             data));
     }
 });

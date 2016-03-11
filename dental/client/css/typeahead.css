@@ -10,7 +10,7 @@
     border: 1px solid #888;
     /*color: #000;*/
     /*font-size: 15px;*/
-    width: 287px;
+    width: 100%;
     /*margin-left: -125px;*/
     /*z-index: 9999;*/
     /*border-radius: 9px;*/
@@ -20,7 +20,7 @@
 }
 
 .tt-input {
-
+  height: 37px;
 }
 
 .tt-selectable {
@@ -43,6 +43,6 @@
     color: #000;
 }
 
-.typeahead {
-    width: 100%;
+.twitter-typeahead{
+width:100%;
 }

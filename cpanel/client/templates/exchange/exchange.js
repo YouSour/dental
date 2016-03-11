@@ -36,7 +36,7 @@ Template.cpanel_exchange.events({
     },
     'click .show': function (e, t) {
         this.ratesVal = JSON.stringify(this.rates);
-        alertify.alert(fa("eye", "Exchange"), renderTemplate(Template.cpanel_exchangeShow, this));
+        alertify.exchange(fa("eye", "Exchange"), renderTemplate(Template.cpanel_exchangeShow, this));
     }
 });
 

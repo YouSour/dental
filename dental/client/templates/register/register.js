@@ -246,7 +246,7 @@ Template.dental_registerClosingDate.onRendered(function () {
 Template.dental_registerInsert.onRendered(function () {
     Meteor.typeahead.inject();
     //$('.patientId').hide();
-    $('.item').attr('disabled', "disabled");
+    // $('.item').attr('disabled', "disabled");
     //reset value sharingRemain
     Dental.ListState.set('sharingRemain', 0);
 
@@ -279,7 +279,6 @@ Template.dental_registerInsert.helpers({
         if (patient) {
             $('.item').removeAttr('disabled');
         }
-
 
     },
     item: function (query, sync, callback) {
@@ -334,7 +333,13 @@ Template.dental_registerInsert.events({
         sharingRemain();
     },
     'change .item': function (e, t) {
+      var patient = $('.patientId').val();
+      if(patient ==''){
+        alertify.error('Please , Select Patient !');
+        $('[name="search"]').focus();
+      }else{
         sharingRemain();
+      }
     },
     'click .patientAddon': function (e, t) {
         alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))
@@ -418,7 +423,12 @@ Template.dental_registerUpdate.events({
         sharingRemain();
     },
     'change .item': function (e, t) {
+      if(patient ==''){
+        alertify.error('Please , Select Patient !');
+        $('[name="search"]').focus();
+      }else{
         sharingRemain();
+      }
     },
     'click .patientAddon': function (e, t) {
         alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))

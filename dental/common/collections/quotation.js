@@ -38,7 +38,7 @@ Dental.Schema.Quotation = new SimpleSchema({
   'disease.$.item': {
     type: String,
     autoform: {
-      type: "select",
+      type: "selectize",
       options: function() {
         return Dental.List.diseaseItem();
       }

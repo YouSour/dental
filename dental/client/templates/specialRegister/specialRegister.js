@@ -182,7 +182,7 @@ Template.dental_specialRegisterClosingDate.onRendered(function () {
 Template.dental_specialRegisterInsert.onRendered(function () {
     Meteor.typeahead.inject();
     //$('.patientId').hide();
-    $('.item').attr('disabled', "disabled");
+    // $('.item').attr('disabled', "disabled");
     datepicker();
     statusAutoSelected();
     $('.btnAdd').attr('disabled', "disabled");
@@ -239,6 +239,15 @@ Template.dental_specialRegisterInsert.events({
             index++;
         });
 
+    },
+    'change .item': function (e, t) {
+      var patient = $('.patientId').val();
+      if(patient ==''){
+        alertify.error('Please , Select Patient !');
+        $('[name="search"]').focus();
+      }else{
+        sharingRemain();
+      }
     },
     'click .patientAddon': function (e, t) {
         alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))
@@ -318,6 +327,15 @@ Template.dental_specialRegisterUpdate.events({
             index++;
         });
 
+    },
+    'change .item': function (e, t) {
+      var patient = $('.patientId').val();
+      if(patient ==''){
+        alertify.error('Please , Select Patient !');
+        $('[name="search"]').focus();
+      }else{
+        sharingRemain();
+      }
     },
     'click .patientAddon': function (e, t) {
         alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))

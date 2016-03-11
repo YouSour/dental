@@ -76,7 +76,7 @@ Template.cpanel_user.events({
             this.roles = "";
         }
 
-        alertify.alert(fa("eye", "User"), renderTemplate(Template.cpanel_userShow, this));
+        alertify.user(fa("eye", "User"), renderTemplate(Template.cpanel_userShow, this));
     }
 });
 

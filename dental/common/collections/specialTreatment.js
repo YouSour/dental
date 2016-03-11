@@ -30,7 +30,7 @@ Dental.Schema.SpecialTreatment = new SimpleSchema({
     autoform: {
       type: "select2",
       options: function() {
-        return Dental.List.doctor();
+        return Dental.List.doctorForOther();
       }
     }
   },

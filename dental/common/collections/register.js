@@ -53,7 +53,7 @@ Dental.Schema.Register = new SimpleSchema({
     'disease.$.item': {
         type: String,
         autoform: {
-            type: "select",
+            type: "selectize",
             options: function () {
                 return Dental.List.diseaseItem();
             }
@@ -90,7 +90,7 @@ Dental.Schema.Register = new SimpleSchema({
     'doctorShare.$.doctor': {
         type: String,
         autoform: {
-            type: "select",
+            type: "selectize",
             options: function () {
                 return Dental.List.doctor();
             }
@@ -123,7 +123,7 @@ Dental.Schema.Register = new SimpleSchema({
     'laboExpense.$.laboratory': {
         type: String,
         autoform: {
-            type: "select",
+            type: "selectize",
             options: function () {
                 return Dental.List.laboratoryItem();
             }

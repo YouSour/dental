@@ -34,7 +34,7 @@ Template.cpanel_branch.events({
             null);
     },
     'click .show': function (e, t) {
-        alertify.alert(fa("eye", "Branch"), renderTemplate(Template.cpanel_branchShow, this));
+        alertify.branch(fa("eye", "Branch"), renderTemplate(Template.cpanel_branchShow, this));
     }
 });
 
