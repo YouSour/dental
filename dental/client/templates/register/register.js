@@ -12,12 +12,15 @@ Dental.ListState = new ReactiveObj();
  * Index
  */
 Template.dental_register.onCreated(function () {
-    Meteor.subscribe('dental_doctor');
-    Meteor.subscribe('dental_staff');
-    Meteor.subscribe('dental_patientHistory');
-    Meteor.subscribe('dental_patient');
-    Meteor.subscribe('dental_diseaseItem');
-    Meteor.subscribe('dental_laboratory');
+  Meteor.subscribe('dental_doctor');
+  Meteor.subscribe('dental_register');
+  Meteor.subscribe('dental_treatment');
+  Meteor.subscribe('dental_deposit');
+  Meteor.subscribe('dental_staff');
+  Meteor.subscribe('dental_patientHistory');
+  Meteor.subscribe('dental_patient');
+  Meteor.subscribe('dental_diseaseItem');
+  Meteor.subscribe('dental_laboratory');
 
     createNewAlertify([
         'register',
