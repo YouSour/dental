@@ -30,8 +30,8 @@ Template.dental_specialPayment.events({
     var data = Dental.ListState.get('data');
 
     // Check last balance
-    var paymentLast = Dental.Collection.Payment.findOne({
-      registerId: data._id
+    var paymentLast = Dental.Collection.SpecialPayment.findOne({
+      specialRegisterId: data._id
     }, {
       sort: {
         _id: -1

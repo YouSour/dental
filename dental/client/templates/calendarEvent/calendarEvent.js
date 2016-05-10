@@ -25,21 +25,21 @@ Template.dental_calendarEvent.events({
   'click .insert': function() {
     Session.set('closeAppointment', true);
     var data = Dental.ListState.get('data');
-    alertify.calendarEvent(fa("plus", "Calendar Event"), renderTemplate(
+    alertify.calendarEvent(fa("plus", "Appointment"), renderTemplate(
       Template.dental_calendarEventInsert, data));
   },
   'click .update': function() {
     var data = Dental.Collection.CalendarEvent.findOne({
       _id: this._id
     });
-    alertify.calendarEvent(fa("pencil", "Calendar Event"), renderTemplate(
+    alertify.calendarEvent(fa("pencil", "Appointment"), renderTemplate(
       Template.dental_calendarEventUpdate, data));
   },
   'click .remove': function() {
     var self = this;
 
     alertify.confirm(
-      fa("remove", "Calendar Event"),
+      fa("remove", "Appointment"),
       "Are you sure to delete [" + self._id + "]?",
       function() {
         Dental.Collection.CalendarEvent.remove(self._id, function(error) {
@@ -61,7 +61,7 @@ Template.dental_calendarEvent.events({
       data.patientPhoto = image;
     }
 
-    alertify.calendarEvent(fa("eye", "Calendar Event"), renderTemplate(Template.dental_calendarEventShow,
+    alertify.calendarEvent(fa("eye", "Appointment"), renderTemplate(Template.dental_calendarEventShow,
       data));
   }
 });

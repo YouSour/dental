@@ -4,5 +4,5 @@ Router.route('dental/specialPayment', function () {
     name: 'dental.specialPayment',
     title: 'Special Payment',
     header: {title: 'special payment', sub: '', icon: "fa fa-credit-card"},
-    breadcrumb: {title: 'Special Payment', parent: 'dental.home'}
+    breadcrumb: {title: 'Special Payment', parent: 'dental.specialRegister'}
 });

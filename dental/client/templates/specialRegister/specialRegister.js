@@ -124,10 +124,9 @@ Template.dental_specialRegister.events({
     'click .specialTreatmentAction': function () {
         if (this.status == "Active") {
             registerState(this);
-            alertify.specialTreatmentAction(
-                fa("medkit", "Special Treatment"),
-                renderTemplate(Template.dental_specialTreatment)
-            ).maximize();
+            Router.go('dental.specialTreatment',{
+              specialRegisterId: this._id
+            });
         }
     },
     'click .appointmentAction': function () {
@@ -150,10 +149,9 @@ Template.dental_specialRegister.events({
     },
     'click .paymentAction': function () {
         registerState(this);
-        alertify.paymentAction(
-            fa("credit-card", "Special Payment"),
-            renderTemplate(Template.dental_specialPayment)
-        ).maximize();
+        Router.go('dental.specialPayment',{
+           specialRegisterId: this._id
+        });
     },
     // Print action
     'click .specialTreatmentPrintAction': function () {
