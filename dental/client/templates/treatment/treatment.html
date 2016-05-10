@@ -1,14 +1,12 @@
 <!--Index-->
 <template name="dental_treatment">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <p style="margin-bottom: 10px">
                 <button type="button" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+                {{> dental_registerInfo register}}
             </p>
             {{> tabular table=Dental.TabularTable.Treatment selector=selector class="table table-striped table-bordered table-condensed table-hover"}}
-        </div>
-        <div class="col-md-3">
-            {{> dental_registerInfo register}}
         </div>
     </div>
 </template>

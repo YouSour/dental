@@ -145,10 +145,9 @@ Template.dental_register.events({
         if (data.status == "Active") {
             if (e.ctrlKey) {
                 registerState(this);
-                alertify.treatmentAction(
-                    fa("medkit", "Treatment"),
-                    renderTemplate(Template.dental_treatment)
-                ).maximize();
+                Router.go('dental.treatment', {
+                  registerId: this._id
+                });
             } else {
                 alertify.treatmentAction(
                     fa("plus", "Treatment"),
@@ -163,10 +162,9 @@ Template.dental_register.events({
         if (data.status == "Active") {
             if (e.ctrlKey) {
                 registerState(this);
-                alertify.appointmentAction(
-                    fa("clock-o", "Appointment"),
-                    renderTemplate(Template.dental_calendarEvent)
-                ).maximize();
+                Router.go('dental.calendarEvent', {
+                  registerId: this._id
+                });
             } else {
                 alertify.appointmentAction(
                     fa("plus", "Appointment"),
@@ -181,10 +179,9 @@ Template.dental_register.events({
         if (data.status == "Active") {
             if (e.ctrlKey) {
                 registerState(this);
-                alertify.depositAction(
-                    fa("ticket", "Deposit"),
-                    renderTemplate(Template.dental_deposit)
-                ).maximize();
+                Router.go('dental.deposit', {
+                          registerId: this._id
+                });
             } else {
                 alertify.depositAction(
                     fa("plus", "Deposit"),
@@ -199,10 +196,9 @@ Template.dental_register.events({
         if (data.status == "Close") {
             if (e.ctrlKey) {
                 registerState(this);
-                alertify.paymentAction(
-                    fa("credit-card", "Payment"),
-                    renderTemplate(Template.dental_payment)
-                ).maximize();
+                Router.go('dental.payment', {
+                  registerId: this._id
+                });
             } else {
                 // Check last balance
                 var paymentLast = Dental.Collection.Payment.findOne({
