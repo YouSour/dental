@@ -47,7 +47,7 @@
 
                 {{> afQuickField name="patientId" type="hidden" value=patientId}}
                 {{> afQuickField name="registerId"  type="hidden" value=_id}}
-                {{> afQuickField name="paymentDate"}}
+                {{> afQuickField name="paymentDate" value=paymentDate}}
 
                 <div class="form-group{{#if afFieldIsInvalid name='dueAmount'}} has-error{{/if}}">
                     <label class="control-label" for="dueAmount">Due Amount</label>
