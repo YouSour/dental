@@ -428,6 +428,7 @@ Template.dental_registerUpdate.events({
         sharingRemain();
     },
     'change .item': function (e, t) {
+      var patient = $('.patientId').val();
       if(patient ==''){
         alertify.error('Please , Select Patient !');
         $('[name="search"]').focus();
