@@ -37,6 +37,10 @@ Template.dental_specialPayment.events({
         _id: -1
       }
     });
+
+    //get date time from system
+    data.paymentDate = moment(Date()).format("YYYY-MM-DD HH:mm:ss");
+
     if (!_.isUndefined(paymentLast)) {
       data.total = paymentLast.balance;
     }
