@@ -72,25 +72,23 @@ Meteor.methods({
       // Footer
       var footer = {};
       var totalPaidAmount = 0;
+      var totalTemp = 0;
       Dental.Collection.Payment.find({
         registerId: self.register
       }).forEach(function(objPayment) {
         totalPaidAmount += objPayment.paidAmount;
       });
 
+      totalTemp = (getRegister.total - totalPaidAmount) - getRegister.deposit;
+      
       footer.subTotal = numeral(getRegister.subTotal).format('$0,0.00');
       footer.deposit = numeral(getRegister.deposit).format('$0,0.00');
       footer.subDiscount = numeral(getRegister.subDiscount).format(
         '$0,0.00');
       footer.paidAmount = numeral(totalPaidAmount).format('$0,0.00');
-      footer.total = numeral(getRegister.total - totalPaidAmount).format(
-        '$0,0.00');
-      footer.totalKhr = "R" + numeral((getRegister.total -
-        totalPaidAmount) * exchange.rates.KHR).format('0,0.00');
-      footer
-        .totalThb = "THB" + numeral((getRegister.total -
-            totalPaidAmount) * exchange.rates
-          .THB).format('0,0.00');
+      footer.total = numeral(totalTemp).format('$0,0.00');
+      footer.totalKhr = "R" + numeral(totalTemp * exchange.rates.KHR).format('0,0.00');
+      footer.totalThb = "THB" + numeral(totalTemp * exchange.rates.THB).format('0,0.00');
       data.footer = footer;
 
       return data;

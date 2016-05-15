@@ -84,7 +84,7 @@ Meteor.methods({
         obj.subTotalFm = numeral(obj.subTotal).format('0,0.00');
         obj.subDiscountFm = numeral(obj.subDiscount).format('0,0.00');
         obj.depositFm = numeral(obj.deposit).format('0,0.00');
-        obj.totalFm = numeral(obj.total).format('0,0.00');
+        obj.totalFm = numeral(obj.credit).format('0,0.00');
 
         if (!_.isUndefined(obj._patient.age)) {
           obj.age = obj._patient.age;

@@ -53,7 +53,7 @@
                     <label class="control-label" for="dueAmount">Due Amount</label>
 
                     <div class="input-group">
-                        {{> afFieldInput name='dueAmount' value=total class="dueAmount" readonly=true}}
+                        {{> afFieldInput name='dueAmount' value=credit class="dueAmount" readonly=true}}
                         <span class="input-group-addon">USD</span>
                     </div>
                     {{#if afFieldIsInvalid name='dueAmount'}}
@@ -65,7 +65,7 @@
                     <label class="control-label" for="paidAmount">Paid Amount</label>
 
                     <div class="input-group">
-                        {{> afFieldInput name='paidAmount' value=total class="paidAmount" }}
+                        {{> afFieldInput name='paidAmount' value=credit class="paidAmount" }}
                         <span class="input-group-addon">USD</span>
                     </div>
                     {{#if afFieldIsInvalid name='paidAmount' class="paidAmount"}}

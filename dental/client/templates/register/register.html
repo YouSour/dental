@@ -388,12 +388,21 @@
                     {{> afQuickField name='subTotal' readonly="true" template="bootstrap3" class="input-sm subTotal"}}
                 </div>
                 <!--Deposit-->
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     {{> afQuickField name='deposit' readonly="true" template="bootstrap3" class="input-sm"}}
                 </div>
                 <!--Sub Discount-->
                 <div class="col-sm-2">
                     {{> afQuickField name='subDiscount' id="subDiscountRegister" template="bootstrap3" class="input-sm"}}
+                </div>
+                <!--Credit-->
+                <div class="col-sm-2">
+                    <div class="form-group" data-required="true">
+                        <label for="credit" class="control-label">Credit</label>
+                        <input type="number" placeholder="Credit" class="input-sm form-control credit" required="credit"
+                               data-schema-key="credit" step="0.01" readonly="true"/>
+                        <span class="help-block"></span>
+                    </div>
                 </div>
                 <!--Total-->
                 <div class="col-sm-3">
