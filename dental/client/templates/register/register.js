@@ -57,7 +57,6 @@ Template.dental_register.events({
     },
     'click .update': function () {
         var data = this;
-        Dental.ListState.set('updateWork', true);
         alertify.register(fa("pencil", "Register"), renderTemplate(Template.dental_registerUpdate,
             data)).maximize();
     },
@@ -215,7 +214,7 @@ Template.dental_register.events({
                 data.paymentDate = moment(Date()).format("YYYY-MM-DD HH:mm:ss");
 
                 if (!_.isUndefined(paymentLast)) {
-                    data.total = paymentLast.balance;
+                    data.credit = paymentLast.balance;
                 }
                 alertify.paymentAction(
                     fa("plus", "Payment"),
@@ -646,6 +645,7 @@ AutoForm.hooks({
                 doc.status = "Active";
                 doc.closingDate = 'none';
                 doc.branchId = Session.get('currentBranch');
+                doc.credit = $('.credit').val();
                 doc.total = $('.total').val();
                 doc.doctorShareTotal = $('.doctorShareTotal').val();
                 doc.laboExpenseTotal = $('.laboExpenseTotal').val();
@@ -693,6 +693,7 @@ AutoForm.hooks({
     dental_registerUpdate: {
         before: {
             update: function (doc) {
+                doc.$set.credit = $('.credit').val();
                 doc.$set.total = $('.total').val();
                 doc.$set.doctorShareTotal = $('.doctorShareTotal').val();
                 doc.$set.laboExpenseTotal = $('.laboExpenseTotal').val();
@@ -760,11 +761,13 @@ function calculateTotal(minusValue) {
     var subDiscount = _.isEmpty($('[name="subDiscount"]').val()) ? 0 : parseFloat(
         $('[name="subDiscount"]').val());
 
-    var total = math.round((subtotal - deposit) - subDiscount, 2);
+    var credit = math.round((subtotal - deposit) - subDiscount, 2);
+    var total = math.round((subtotal - subDiscount), 2);
 
     // Set value on subtotal textbox
     $('[name="subTotal"]').val(subtotal);
     // Set value on total
+    $('.credit').val(credit);
     $('.total').val(total);
 }
 
@@ -888,11 +891,7 @@ var sharingRemain = function (minusValueDrShared, minusValueLabo) {
     if (totalRegister == 0) {
         totalAmount = (shareAmount + laboAmount) - totalRegister;
     } else {
-      if (Dental.ListState.get('updateWork')) {
-          totalAmount = subtotalRegister - (shareAmount + laboAmount);
-        } else {
-          totalAmount = totalRegister - (shareAmount + laboAmount);
-      }
+        totalAmount = totalRegister - (shareAmount + laboAmount);
     }
 
     return Dental.ListState.set('sharingRemain', totalAmount);

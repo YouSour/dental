@@ -61,7 +61,7 @@ Dental.TabularTable.Register = new Tabular.Table({
     ['2', 'desc']
   ],
   autoWidth: false,
-  extraFields:["des","disease","subTotal","deposit","subDiscount","doctorShareTotal","laboExpenseTotal","_patient","laboExpense","doctorShare"],
+  extraFields:["des","disease","subTotal","deposit","subDiscount","doctorShareTotal","laboExpenseTotal","_patient","laboExpense","doctorShare","credit"],
   columnDefs: [{
     "width": "12px",
     "targets": 0

@@ -161,6 +161,10 @@ Dental.Schema.Register = new SimpleSchema({
         defaultValue: 0,
         label: "Sub Discount ($)"
     },
+    credit: {
+     type: Number,
+     decimal: true
+    },
     total: {
         type: Number,
         decimal: true
