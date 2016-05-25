@@ -55,7 +55,7 @@ Template.dental_purchase.events({
  */
 Template.dental_purchaseInsert.onRendered(function() {
   datepicker();
-  $('.btnAdd').attr('disabled', "disabled");
+  // $('.btnAdd').attr('disabled', "disabled");
 });
 
 Template.dental_purchaseInsert.events({
@@ -73,37 +73,37 @@ Template.dental_purchaseInsert.events({
   'click .btnRemove': function(e) {
     var thisValuePurchase= $(e.currentTarget).closest('.purchase').find('.amount').val();
     thisValuePurchase=parseFloat(thisValuePurchase);
-      var enable = true;
-      $('.amount').each(function() {
-        var amount = $(this).val() == "" ? 0 : parseFloat($(this)
-          .val());
-        if (amount == 0) {
-          enable = false;
-          return false;
-        }
-        enable = true;
-      });
-
-      if (enable) {
-        $('.btnAdd').attr('disabled', false);
-      } else {
-        $('.btnAdd').attr('disabled', true);
-
-      }
+      // var enable = true;
+      // $('.amount').each(function() {
+      //   var amount = $(this).val() == "" ? 0 : parseFloat($(this)
+      //     .val());
+      //   if (amount == 0) {
+      //     enable = false;
+      //     return false;
+      //   }
+      //   enable = true;
+      // });
+      //
+      // if (enable) {
+      //   $('.btnAdd').attr('disabled', false);
+      // } else {
+      //   $('.btnAdd').attr('disabled', true);
+      //
+      // }
 
       calculateTotal(thisValuePurchase);
   },
-  'click .btnAdd': function(e) {
-
-    var orderItemId = $(e.currentTarget).val();
-
-    if (orderItemId != "") {
-      $('.btnAdd').removeAttr('disabled');
-    } else {
-      $('.btnAdd').attr('disabled', "disabled");
-
-    }
-  },
+  // 'click .btnAdd': function(e) {
+  //
+  //   var orderItemId = $(e.currentTarget).val();
+  //
+  //   if (orderItemId != "") {
+  //     $('.btnAdd').removeAttr('disabled');
+  //   } else {
+  //     $('.btnAdd').attr('disabled', "disabled");
+  //
+  //   }
+  // },
   'keyup .price ,.qty , click .price ,.qty ': function(e) {
     checkEventKeyupAndClick(e);
   },
@@ -138,34 +138,34 @@ Template.dental_purchaseUpdate.events({
   'click .btnRemove': function(e) {
     var thisValuePurchase= $(e.currentTarget).closest('.purchase').find('.amount').val();
     thisValuePurchase=parseFloat(thisValuePurchase);
-      var enable = true;
-      $('.amount').each(function() {
-        var amount = $(this).val() == "" ? 0 : parseFloat($(this)
-          .val());
-        if (amount == 0) {
-          enable = false;
-          return false;
-        }
-        enable = true;
-      });
-
-      if (enable) {
-        $('.btnAdd').attr('disabled', false);
-      } else {
-        $('.btnAdd').attr('disabled', true);
-      }
+      // var enable = true;
+      // $('.amount').each(function() {
+      //   var amount = $(this).val() == "" ? 0 : parseFloat($(this)
+      //     .val());
+      //   if (amount == 0) {
+      //     enable = false;
+      //     return false;
+      //   }
+      //   enable = true;
+      // });
+      //
+      // if (enable) {
+      //   $('.btnAdd').attr('disabled', false);
+      // } else {
+      //   $('.btnAdd').attr('disabled', true);
+      // }
 
       calculateTotal(thisValuePurchase);
   },
-  'click .btnAdd': function(e) {
-    var orderItemId = $(e.currentTarget).val();
-
-    if (orderItemId != "") {
-      $('.btnAdd').removeAttr('disabled');
-    } else {
-      $('.btnAdd').attr('disabled', "disabled");
-    }
-  },
+  // 'click .btnAdd': function(e) {
+  //   var orderItemId = $(e.currentTarget).val();
+  //
+  //   if (orderItemId != "") {
+  //     $('.btnAdd').removeAttr('disabled');
+  //   } else {
+  //     $('.btnAdd').attr('disabled', "disabled");
+  //   }
+  // },
   'keyup .price ,.qty , click .price ,.qty ': function(e) {
     checkEventKeyupAndClick(e);
   }
@@ -266,10 +266,11 @@ function onChangeOrderItemId(e) {
     price = math.round(orderItemDoc.price, 2);
     amount = math.round(qty * price, 2);
 
-    $('.btnAdd').attr('disabled', false);
-  } else {
-    $('.btnAdd').attr('disabled', true);
+    // $('.btnAdd').attr('disabled', false);
   }
+  // else {
+  //   $('.btnAdd').attr('disabled', true);
+  // }
 
   thisObj.parents('div.array-item').find('.qty').val(qty);
   thisObj.parents('div.array-item').find('.price').val(price);
@@ -291,11 +292,11 @@ function checkEventKeyupAndClick(e) {
   calculateTotal();
 
 
-  if (price != 0 && qty != 0) {
-    $('.btnAdd').removeAttr('disabled');
-  } else {
-    $('.btnAdd').attr('disabled', "disabled");
-  }
+  // if (price != 0 && qty != 0) {
+  //   $('.btnAdd').removeAttr('disabled');
+  // } else {
+  //   $('.btnAdd').attr('disabled', "disabled");
+  // }
 }
 
 /**

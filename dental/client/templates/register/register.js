@@ -249,14 +249,12 @@ Template.dental_registerClosingDate.onRendered(function () {
  */
 Template.dental_registerInsert.onRendered(function () {
     Meteor.typeahead.inject();
-    //$('.patientId').hide();
-    // $('.item').attr('disabled', "disabled");
     //reset value sharingRemain
     Dental.ListState.set('sharingRemain', 0);
 
     datepicker();
     statusAutoSelected();
-    $('.btnAdd').attr('disabled', "disabled");
+    // $('.btnAdd').attr('disabled', "disabled");
 
 });
 
@@ -279,10 +277,10 @@ Template.dental_registerInsert.helpers({
         var id = suggestion._id;
         $('[name="search"]').typeahead('val', suggestion._id + ' | ' + suggestion.name + " | " + suggestion.age);
         $('.patientId').val(id);
-        var patient = $('.patientId').val(id);
-        if (patient) {
-            $('.item').removeAttr('disabled');
-        }
+        // var patient = $('.patientId').val(id);
+        // if (patient) {
+        //     $('.item').removeAttr('disabled');
+        // }
 
     },
     item: function (query, sync, callback) {
@@ -312,16 +310,16 @@ Template.dental_registerInsert.helpers({
 
 });
 Template.dental_registerInsert.events({
-    'click .btnAdd': function (e) {
-        var orderItemId = $(e.currentTarget).val();
-
-        if (orderItemId != "") {
-            $('.btnAdd').removeAttr('disabled');
-        } else {
-            $('.btnAdd').attr('disabled', "disabled");
-
-        }
-    },
+    // 'click .btnAdd': function (e) {
+    //     var orderItemId = $(e.currentTarget).val();
+    //
+    //     if (orderItemId != "") {
+    //         $('.btnAdd').removeAttr('disabled');
+    //     } else {
+    //         $('.btnAdd').attr('disabled', "disabled");
+    //
+    //     }
+    // },
     'change .patientId': function (e) {
         var patient = $(e.currentTarget).val();
         Session.set('patientId', patient);
@@ -398,26 +396,26 @@ Template.dental_registerUpdate.helpers({
         var id = suggestion._id;
         $('[name="search"]').typeahead('val', suggestion._id + ' | ' + suggestion.name + " | " + suggestion.age);
         $('.patientId').val(id);
-        var patient = $('.patientId').val(id);
-        if (patient) {
-            $('.item').removeAttr('disabled');
-        }
+        // var patient = $('.patientId').val(id);
+        // if (patient) {
+        //     $('.item').removeAttr('disabled');
+        // }
 
 
     }
 });
 
 Template.dental_registerUpdate.events({
-    'click .btnAdd': function (e) {
-        var orderItemId = $(e.currentTarget).val();
-
-        if (orderItemId != "") {
-            $('.btnAdd').removeAttr('disabled');
-        } else {
-            $('.btnAdd').attr('disabled', "disabled");
-
-        }
-    },
+    // 'click .btnAdd': function (e) {
+    //     var orderItemId = $(e.currentTarget).val();
+    //
+    //     if (orderItemId != "") {
+    //         $('.btnAdd').removeAttr('disabled');
+    //     } else {
+    //         $('.btnAdd').attr('disabled', "disabled");
+    //
+    //     }
+    // },
     'keyup .patientId': function (e) {
         $('[name="search"]').show();
         $('.patientId').hide();
@@ -478,10 +476,11 @@ Template.afArrayField_customArrayFieldInvoiceForDiseaseItem.events({
             discount = 0;
             amount = math.round(qty * price, 2);
 
-            $('.btnAdd').attr('disabled', false);
-        } else {
-            $('.btnAdd').attr('disabled', true);
+            // $('.btnAdd').attr('disabled', false);
         }
+        // else {
+        //     $('.btnAdd').attr('disabled', true);
+        // }
 
         thisObj.parents('div.array-item').find('.qty').val(qty);
         thisObj.parents('div.array-item').find('.price').val(price);
@@ -495,23 +494,23 @@ Template.afArrayField_customArrayFieldInvoiceForDiseaseItem.events({
         var thisValue = $(e.currentTarget).closest('.register').find('.amount').val();
         thisValue = parseFloat(thisValue);
 
-        var enable = true;
-        $('.amount').each(function () {
-            var amount = $(this).val() == "" ? 0 : parseFloat($(this)
-                .val());
-            if (amount == 0) {
-                enable = false;
-                return false;
-            }
-            enable = true;
-        });
+        // var enable = true;
+        // $('.amount').each(function () {
+        //     var amount = $(this).val() == "" ? 0 : parseFloat($(this)
+        //         .val());
+        //     if (amount == 0) {
+        //         enable = false;
+        //         return false;
+        //     }
+        //     enable = true;
+        // });
 
-        if (enable) {
-            $('.btnAdd').attr('disabled', false);
-        } else {
-            $('.btnAdd').attr('disabled', true);
-
-        }
+        // if (enable) {
+        //     $('.btnAdd').attr('disabled', false);
+        // } else {
+        //     $('.btnAdd').attr('disabled', true);
+        //
+        // }
 
         // Cal footer
         calculateTotal(thisValue);
@@ -734,11 +733,11 @@ function CalculateTotalAndAmount(e) {
 
     thisObj.parents('div.array-item').find('.amount').val(amountAfterDiscount);
 
-    if (qty > 0 && (discount >= 0 && discount <= 100)) {
-        $('.btnAdd').removeAttr('disabled');
-    } else {
-        $('.btnAdd').attr('disabled', "disabled");
-    }
+    // if (qty > 0 && (discount >= 0 && discount <= 100)) {
+    //     $('.btnAdd').removeAttr('disabled');
+    // } else {
+    //     $('.btnAdd').attr('disabled', "disabled");
+    // }
 }
 
 /**
