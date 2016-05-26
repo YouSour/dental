@@ -19,7 +19,7 @@ Dental.Schema.Deposit = new SimpleSchema({
     type: String,
     defaultValue: function() {
       var currentDate = moment(ReactiveMethod.call("currentDate"),
-        'YYYY-MM-DD H:mm:ss').format('YYYY-MM-DD H:mm:ss');
+        'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
       return currentDate;
     },
     label: "Deposit Date"
