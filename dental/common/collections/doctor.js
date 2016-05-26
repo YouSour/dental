@@ -29,7 +29,7 @@ Dental.Schema.Doctor = new SimpleSchema({
     type: String,
     defaultValue: function() {
       var currentDate = moment(ReactiveMethod.call("currentDate"),
-        'YYYY-MM-DD H:mm:ss').format('YYYY-MM-DD');
+        'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
       return currentDate;
     },
     label: "Start Date"
