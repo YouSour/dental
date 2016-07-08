@@ -80,7 +80,7 @@ Meteor.methods({
       });
 
       totalTemp = (getRegister.total - totalPaidAmount) - getRegister.deposit;
-      
+
       footer.subTotal = numeral(getRegister.subTotal).format('$0,0.00');
       footer.deposit = numeral(getRegister.deposit).format('$0,0.00');
       footer.subDiscount = numeral(getRegister.subDiscount).format(

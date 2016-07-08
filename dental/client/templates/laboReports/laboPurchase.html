@@ -1,0 +1,97 @@
+<!--Generate-->
+<template name="dental_laboPurchaseReportGen">
+    {{#if data}}
+        {{#with data}}
+            <!--Title-->
+            <table class="report-title">
+                <tr>
+                    <td>
+                        <img src="/hengly/logo.png">
+                    </td>
+                    <td>
+                      <div class="header-style" style="margin-left:40px;">
+                      <span class="report-company-name"
+                            style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                      <span class="report-company-name">{{title.company.enName}}</span><br>
+                      <u>វិក្កយបត្រទិញរបស់ទីពិសោធន៍ (Labo Purchase Invoice)</u>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+
+            <!--Header-->
+            <div style="width: 100%">
+                {{#with header}}
+                    <div style="width: 50%; padding-top: 12px; float: left;">
+                        <ul class="list-unstyled">
+                            <li><strong>លេខកូដ :</strong> {{_id}}</li>
+                            <li><strong>ឈ្មោះ : </strong>{{_supplier.name}}</li>
+                            <li><strong>លេខទូរស័ព្ទ : </strong> {{_supplier.telephone}}</li>
+                        </ul>
+                    </div>
+                    <div style="width: 50%; padding-top: 12px; float: left;">
+                        <ul class="list-unstyled">
+                            <li><strong>អាស័យដ្ធាន : </strong> {{_supplier.address}}</li>
+                            <li><strong>កាលបរិច្ឆេទ​ : </strong> {{purchaseDate}}</li>
+                            <li><strong>អត្រាប្តូរប្រាក់ :</strong> {{exchange}}</li>
+                        </ul>
+                    </div>
+                {{/with}}
+            </div>
+
+            <!--Content-->
+            <table class="report-content">
+                <thead class="report-content-header">
+                <tr>
+                    <th>ល.រ</th>
+                    <th>បរិយាយ</th>
+                    <th>ចំនួន</th>
+                    <th>តម្លៃ</th>
+                    <th>ទឹកប្រាក់</th>
+                </tr>
+                </thead>
+
+                <tbody class="report-content-body">
+                {{#each content}}
+                    <tr class="td-custom">
+                        <td class="index-style">{{index}}</td>
+                        <td  class="items-style">{{itemName}}</td>
+                        <td class="qty-style">{{qty}}</td>
+                        <td>{{price}}</td>
+                        <td>{{amount}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+
+            <!--Sign-->
+                      <div style="width: 50%; float: left; margin-top: 20px">
+                        <strong>រៀបចំដោយ :</strong> __________________
+                      </div>
+
+            <!--Footer-->
+            <div style="width: 50%; float: right; margin-top: 20px">
+                {{#with footer}}
+                    <ul class="list-unstyled text-right">
+                        <li>
+                            <strong>ប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+                        </li>
+                        <li><strong>ប្រាក់បង់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+                        </li>
+                        <li><strong>ប្រាក់បង់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+                        </li>
+                    </ul>
+                {{/with}}
+            </div>
+
+            <!--Address-->
+           <div style="clear: both; width: 100%; text-align: center; margin-top: 20px">
+             <strong>{{title.company.khAddress}}</strong><br>
+             <strong>ទូរស័ព្ទ៖ {{title.company.telephone}}</strong>
+           </div>
+
+        {{/with}}
+    {{else}}
+        {{> loading}}
+    {{/if}}
+</template>

@@ -1,0 +1,63 @@
+<!--Index-->
+<template name="dental_laboDepartment">
+    <div class="animated bounceInRight">
+        <p>
+            <button type="button" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+        </p>
+
+        {{> tabular table=Dental.TabularTable.LaboDepartment class="table table-striped table-bordered table-condensed table-hover"}}
+    </div>
+</template>
+
+<!--Action-->
+<template name="dental_laboDepartmentAction">
+    {{#tabularAction}}
+        <li><a href="#" class="update">{{fa "pencil"}} Update</a></li>
+        <li><a href="#" class="remove">{{fa "remove"}} Remove</a></li>
+        <li><a href="#" class="show">{{fa "eye"}} Show</a></li>
+    {{/tabularAction}}
+</template>
+
+<!--Insert-->
+<template name="dental_laboDepartmentInsert">
+    {{#autoForm collection=Dental.Collection.LaboDepartment id="dental_laboDepartmentInsert" type="insert"}}
+        <div class="row">
+            <div class="col-md-12">
+                {{> afQuickField name='name'}}
+                {{> afQuickField name='des'}}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+</template>
+
+<!--Update-->
+<template name="dental_laboDepartmentUpdate">
+
+    {{#autoForm collection=Dental.Collection.LaboDepartment id="dental_laboDepartmentUpdate" doc=this type="update"}}
+        <div class="row">
+            <div class="col-md-12">
+                {{> afQuickField name='name'}}
+                {{> afQuickField name='des'}}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+
+</template>
+
+<!--Show-->
+<template name="dental_laboDepartmentShow">
+    <dl class="dl-horizontal">
+        <dt>Id</dt>
+        <dd>{{_id}}</dd>
+        <dt>Name</dt>
+        <dd>{{name}}</dd>
+        <dt>Description</dt>
+        <dd>{{{des}}}</dd>
+    </dl>
+</template>

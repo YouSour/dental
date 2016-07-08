@@ -246,10 +246,126 @@ Dental.Collection.Quotation.permit(['insert'])
   .dental_ifDataInsert()
   .apply();
 
-Dental.Collection.Quotation.permit(['update', ])
+Dental.Collection.Quotation.permit(['update'])
   .dental_ifDataUpdate()
   .apply();
 
 Dental.Collection.Quotation.permit(['remove'])
   .dental_ifDataRemove()
   .apply();
+
+/*
+ * LaboUnit
+ */
+  Dental.Collection.LaboUnit.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboMaterialCategory
+ */
+  Dental.Collection.LaboMaterialCategory.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboMaterial
+ */
+  Dental.Collection.LaboMaterial.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboDepartment
+ */
+  Dental.Collection.LaboDepartment.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboCustomerCompany
+ */
+  Dental.Collection.LaboCustomerCompany.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboCustomer
+ */
+  Dental.Collection.LaboCustomer.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboSupplier
+ */
+  Dental.Collection.LaboSupplier.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboItemCategories
+ */
+  Dental.Collection.LaboItemCategories.permit(['insert', 'update', 'remove'])
+    .dental_ifSetting()
+    .apply();
+
+/*
+ * LaboItem
+ */
+  Dental.Collection.LaboItem.permit(['insert'])
+    .dental_ifDataInsert()
+    .apply();
+
+  Dental.Collection.LaboItem.permit(['update'])
+    .dental_ifDataUpdate()
+    .apply();
+
+  Dental.Collection.LaboItem.permit(['remove'])
+    .dental_ifDataRemove()
+    .apply();
+
+/*
+ * LaboPurchase
+ */
+  Dental.Collection.LaboPurchase.permit(['insert'])
+    .dental_ifDataInsert()
+    .apply();
+
+  Dental.Collection.LaboPurchase.permit(['update'])
+    .dental_ifDataUpdate()
+    .apply();
+
+  Dental.Collection.LaboPurchase.permit(['remove'])
+    .dental_ifDataRemove()
+    .apply();
+
+/*
+ * LaboSalesOrder
+ */
+  Dental.Collection.LaboSalesOrder.permit(['insert'])
+      .dental_ifDataInsert()
+      .apply();
+
+  Dental.Collection.LaboSalesOrder.permit(['update'])
+      .dental_ifDataUpdate()
+      .apply();
+
+  Dental.Collection.LaboSalesOrder.permit(['remove'])
+      .dental_ifDataRemove()
+      .apply();
+
+/*
+ * LaboSalesOrderPayment
+ */
+  Dental.Collection.LaboSalesOrderPayment.permit(['insert'])
+      .dental_ifDataInsert()
+      .apply();
+
+  Dental.Collection.LaboSalesOrderPayment.permit(['update'])
+      .dental_ifDataUpdate()
+      .apply();
+
+  Dental.Collection.LaboSalesOrderPayment.permit(['remove'])
+      .dental_ifDataRemove()
+      .apply();

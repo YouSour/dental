@@ -166,3 +166,85 @@ Dental.Collection.Purchase.before.insert(function (userId, doc) {
     doc._id = idGenerator.genWithPrefix(Dental.Collection.Purchase, idPrefix, 3);
     Dental.ListState.set(id, doc._id);
 });
+
+//laboUnit
+Dental.Collection.LaboUnit.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboUnit, prefix, 3);
+});
+
+//laboMaterialCategory
+Dental.Collection.LaboMaterialCategory.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboMaterialCategory, prefix, 3);
+});
+
+//laboMaterial
+Dental.Collection.LaboMaterial.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboMaterial, prefix, 4);
+});
+
+//laboDepartment
+Dental.Collection.LaboDepartment.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboDepartment, prefix, 3);
+});
+
+//laboCustomerCompany
+Dental.Collection.LaboCustomerCompany.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboCustomerCompany, prefix, 3);
+});
+
+//laboCustomer
+Dental.Collection.LaboCustomer.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboCustomer, prefix, 6);
+});
+
+//LaboSupplier
+Dental.Collection.LaboSupplier.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboSupplier, prefix, 3);
+});
+
+//LaboItemCategories
+Dental.Collection.LaboItemCategories.before.insert(function (userId, doc) {
+    var prefix = '';
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboItemCategories, prefix, 3);
+});
+
+//LaboItem
+Dental.Collection.LaboItem.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboItem, prefix, 9);
+    Dental.ListState.set(id, doc._id);
+});
+
+//LaboPurchase
+Dental.Collection.LaboPurchase.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboPurchase, prefix, 9);
+    Dental.ListState.set(id, doc._id);
+});
+
+//LaboSalesOrder
+Dental.Collection.LaboSalesOrder.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboSalesOrder, prefix, 9);
+    Dental.ListState.set(id, doc._id);
+});
+
+//payment
+Dental.Collection.LaboSalesOrderPayment.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    var dt = moment().format("YYYYMMDD");
+    var idPrefix = prefix + dt;
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboSalesOrderPayment, idPrefix, 3);
+    Dental.ListState.set(id, doc._id);
+});

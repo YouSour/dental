@@ -1,0 +1,193 @@
+<!--index-->
+<template name="dental_laboSaleOrderPayment">
+    <div class="row">
+        <div class="col-md-12">
+            <p style="margin-bottom: 10px">
+                <button type="submit" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+                {{> dental_laboSalesOrderInfo saleOrder}}
+            </p>
+            {{> tabular table=Dental.TabularTable.LaboSalesOrderPayment selector=selector class="table table-striped table-bordered table-condensed table-hover"}}
+        </div>
+    </div>
+</template>
+
+<!--Action-->
+<template name="dental_laboSaleOrderPaymentAction">
+    {{#tabularAction}}
+        <li><a href="#" class="update">{{fa "pencil"}} Update</a></li>
+        <li><a href="#" class="remove">{{fa "remove"}} Remove</a></li>
+        <li><a href="#" class="show">{{fa "eye"}} Show</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a style="cursor: pointer" class="salesOrderPaymentPrintAction">{{fa "print"}} Print</a></li>
+    {{/tabularAction}}
+</template>
+
+<!--Insert-->
+<template name="dental_laboSaleOrderPaymentInsert">
+    {{#autoForm collection=Dental.Collection.LaboSalesOrderPayment id="dental_laboSaleOrderPaymentInsert" type="insert"}}
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group{{#if afFieldIsInvalid name='staffId'}} has-error{{/if}}" data-required="true">
+                    <label class="control-label" for="staffId">Staff</label>
+
+                    <div class="input-group  select2-bootstrap-append">
+                        {{> afFieldInput name='staffId' class="staffId"}}
+                        <span class="input-group-btn">
+                            <a href="#" class="staffAddon btn btn-default">
+                                {{fa "plus"}}
+                            </a>
+                        </span>
+                    </div>
+                    {{#if afFieldIsInvalid name='staffId'}}
+                        <span class="help-block">{{afFieldMessage name='staffId'}}</span>
+                    {{/if}}
+                </div>
+
+                {{> afQuickField name="customerId" type="hidden" value=customerId}}
+                {{> afQuickField name="saleOrderId"  type="hidden" value=_id}}
+                {{> afQuickField name="paymentDate" value=paymentDate}}
+
+                <div class="form-group{{#if afFieldIsInvalid name='dueAmount'}} has-error{{/if}}">
+                    <label class="control-label" for="dueAmount">Due Amount</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='dueAmount' value=total class="dueAmount" readonly=true}}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='dueAmount'}}
+                        <span class="help-block">{{afFieldMessage name='dueAmount'}}</span>
+                    {{/if}}
+                </div>
+
+                <div class="form-group{{#if afFieldIsInvalid name='paidAmount'}} has-error{{/if}}">
+                    <label class="control-label" for="paidAmount">Paid Amount</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='paidAmount' value=total class="paidAmount" }}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='paidAmount' class="paidAmount"}}
+                        <span class="help-block">{{afFieldMessage name='paidAmount'}}</span>
+                    {{/if}}
+                </div>
+
+                <div class="form-group{{#if afFieldIsInvalid name='balance'}} has-error{{/if}}">
+                    <label class="control-label" for="balance">Balance</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='balance' value=0 class="balance" readonly=true}}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='paidAmount' class="balance"}}
+                        <span class="help-block">{{afFieldMessage name='balance'}}</span>
+                    {{/if}}
+                </div>
+                {{> afQuickField name="des"}}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+        <button type="submit" class="btn btn-info" id="saveAndPrint">{{fa "floppy-o"}} Save & Print</button>
+        <button type="button" class="btn btn-success btnFree">{{fa "star"}} Free</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+</template>
+
+<!--Update-->
+<template name="dental_laboSaleOrderPaymentUpdate">
+    {{#autoForm collection=Dental.Collection.LaboSalesOrderPayment id="dental_laboSaleOrderPaymentUpdate" doc=this type="update"}}
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group{{#if afFieldIsInvalid name='staffId'}} has-error{{/if}}" data-required="true">
+                    <label class="control-label" for="staffId">Staff</label>
+
+                    <div class="input-group  select2-bootstrap-append">
+                        {{> afFieldInput name='staffId' class="staffId"}}
+                        <span class="input-group-btn">
+                            <a href="#" class="staffAddon btn btn-default">
+                                {{fa "plus"}}
+                            </a>
+                        </span>
+                    </div>
+                    {{#if afFieldIsInvalid name='staffId'}}
+                        <span class="help-block">{{afFieldMessage name='staffId'}}</span>
+                    {{/if}}
+                </div>
+
+                {{> afQuickField name="customerId"}}
+                {{> afQuickField name="saleOrderId"}}
+
+                {{> afQuickField name="paymentDate" readonly=true}}
+
+
+                <div class="form-group{{#if afFieldIsInvalid name='dueAmount'}} has-error{{/if}}">
+                    <label class="control-label" for="dueAmount">Due Amount</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='dueAmount' class="dueAmount" readonly=true}}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='dueAmount'}}
+                        <span class="help-block">{{afFieldMessage name='dueAmount'}}</span>
+                    {{/if}}
+                </div>
+
+                <div class="form-group{{#if afFieldIsInvalid name='paidAmount'}} has-error{{/if}}">
+                    <label class="control-label" for="paidAmount">Paid Amount</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='paidAmount' class="paidAmount" }}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='paidAmount' class="paidAmount"}}
+                        <span class="help-block">{{afFieldMessage name='paidAmount'}}</span>
+                    {{/if}}
+                </div>
+
+                <div class="form-group{{#if afFieldIsInvalid name='balance'}} has-error{{/if}}">
+                    <label class="control-label" for="balance">Balance</label>
+
+                    <div class="input-group">
+                        {{> afFieldInput name='balance' class="balance" readonly=true}}
+                        <span class="input-group-addon">USD</span>
+                    </div>
+                    {{#if afFieldIsInvalid name='paidAmount' class="balance"}}
+                        <span class="help-block">{{afFieldMessage name='balance'}}</span>
+                    {{/if}}
+                </div>
+
+                {{> afQuickField name="des"}}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+        <button type="button" class="btn btn-success btnFree">{{fa "star"}} Free</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+</template>
+
+<!--Show-->
+<template name="dental_laboSaleOrderPaymentShow">
+    <dl class="dl-horizontal">
+        <dt>ID</dt>
+        <dd>{{_id}}</dd>
+        <dt>Payment Date</dt>
+        <dd>{{paymentDate}}</dd>
+        <dt>Sale Order ID</dt>
+        <dd>{{saleOrderId}}</dd>
+        <dt>Staff</dt>
+        <dd>{{staffId}}</dd>
+        <dt>Due Amount</dt>
+        <dd>{{dueAmount}}</dd>
+        <dt>Paid Amount</dt>
+        <dd>{{paidAmount}}</dd>
+        <dt>Balance</dt>
+        <dd>{{balance}}</dd>
+        <dt>Status</dt>
+        <dd>{{status}}</dd>
+        <dt>Description</dt>
+        <dd>{{{des}}}</dd>
+    </dl>
+</template>

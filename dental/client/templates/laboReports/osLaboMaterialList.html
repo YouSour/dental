@@ -1,0 +1,96 @@
+<!--Form-->
+<template name="dental_osLaboMaterialListReport">
+    {{#autoForm schema=Dental.Schema.OsLaboMaterialListReport id="dental_osLaboMaterialListReport" action="osLaboMaterialListReportGen" target="_blank"}}
+        <div class="row">
+            <div class="col-md-6">
+                {{> afQuickField name='branchId'}}
+            </div>
+            <div class="col-md-6">
+                {{> afQuickField name='material'}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+</template>
+
+<!--Generate-->
+<template name="dental_osLaboMaterialListReportGen">
+    {{#if data}}
+        {{#with data}}
+            <!--Title-->
+            <table class="report-title" style="width:100%;">
+                <tr align="center">
+
+                  <td colspan="2">
+                    <td>
+                        <img src="/hengly/logo.png">
+                    </td>
+                    <td>
+                      <span class="report-company-name"
+                            style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                      <span class="report-company-name">{{title.company.enName}}</span><br>
+                      <!-- Date: {{title.date}}<br> -->
+                      <u>OS Laboratory Material Report</u><br>
+                      {{title.company.khAddress}}, {{title.company.telephone}}
+                    </td>
+
+                  </td>
+                </tr>
+            </table>
+
+            <!--Header-->
+            <table width="100%" border="0">
+                {{#each header}}
+                    <tr>
+                        <td class="td-cus-style">{{{col1}}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+
+            <!--Content-->
+
+            <table class="report-content">
+                <thead class="report-content-header">
+                <tr>
+                    <th>N<sup>o</sup></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Unit</th>
+                    <th>Average Price</th>
+                    <th>Balance Quantity</th>
+                    <th>Materila Category</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+
+                <tbody class="report-content-body">
+                {{#each content}}
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{_id}}</td>
+                        <td>{{name}}</td>
+                        <td>{{price}}</td>
+                        <td>{{_unit.name}}</td>
+                        <td>{{avgPrice}}</td>
+                        <td>{{balanceQty}}</td>
+                        <td>{{_materialCategory.name}}</td>
+                        <td>{{description}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+
+
+            <!--Footer-->
+            <p></p>
+        {{/with}}
+
+        <!--Sign-->
+        {{>signFooter}}
+
+    {{else}}
+        {{> loading}}
+    {{/if}}
+</template>

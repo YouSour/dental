@@ -28,5 +28,11 @@ Meteor.methods({
       },
       getPurchaseId: function (purchaseId) {
         return Dental.ListState.get(purchaseId);
+      },
+      getLaboPurchaseId: function (purchaseId) {
+        return Dental.ListState.get(purchaseId);
+      },
+      getLaboSalesOrderId:function (salesOrderId) {
+        return Dental.ListState.get(salesOrderId);
       }
 });
