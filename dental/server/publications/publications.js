@@ -170,3 +170,94 @@ Meteor.publish('dental_specialPayment', function() {
 Meteor.publish('dental_quotation', function() {
   return Dental.Collection.Quotation.find();
 });
+
+/*
+ * LaboUnit
+ */
+Meteor.publish('dental_laboUnit', function() {
+  return Dental.Collection.LaboUnit.find();
+});
+
+/*
+ * laboMaterialCategory
+ */
+Meteor.publish('dental_laboMaterialCategory', function() {
+  return Dental.Collection.LaboMaterialCategory.find();
+});
+
+/*
+ * laboMaterial
+ */
+Meteor.publish('dental_laboMaterial', function() {
+  return Dental.Collection.LaboMaterial.find();
+});
+
+/*
+ * laboDepartment
+ */
+Meteor.publish('dental_laboDepartment', function() {
+  return Dental.Collection.LaboDepartment.find();
+});
+
+/*
+ * laboCustomerCompany
+ */
+Meteor.publish('dental_laboCustomerCompany', function() {
+  return Dental.Collection.LaboCustomerCompany.find();
+});
+
+/*
+ * laboCustomer
+ */
+Meteor.publish('dental_laboCustomer', function() {
+  return Dental.Collection.LaboCustomer.find();
+});
+
+/*
+ * laboSupplier
+ */
+Meteor.publish('dental_laboSupplier', function() {
+  return Dental.Collection.LaboSupplier.find();
+});
+
+/*
+ * LaboItemCategories
+ */
+Meteor.publish('dental_laboItemCategories', function() {
+  return Dental.Collection.LaboItemCategories.find();
+});
+
+/*
+ * LaboItem
+ */
+Meteor.publish('dental_laboItem', function() {
+  return Dental.Collection.LaboItem.find();
+});
+
+/*
+ * LaboPurchase
+ */
+Meteor.publish('dental_laboPurchase', function() {
+  return Dental.Collection.LaboPurchase.find();
+});
+
+/*
+ * LaboAverageStock
+ */
+Meteor.publish('dental_laboAverageStock', function() {
+  return Dental.Collection.LaboAverageStock.find();
+});
+
+/*
+ * LaboSalesOrder
+ */
+Meteor.publish('dental_laboSalesOrder', function() {
+  return Dental.Collection.LaboSalesOrder.find();
+});
+
+/*
+ * LaboSalesOrderPayment
+ */
+Meteor.publish('dental_laboSalesOrderPayment', function() {
+  return Dental.Collection.LaboSalesOrderPayment.find();
+});

@@ -1,0 +1,30 @@
+<template name="dental_laboSalesOrderInfo">
+  <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    {{fa "info-circle"}} Infomation
+  </button>
+  <p>
+      <div class="collapse" id="collapseExample">
+        <div class="bs-callout bs-callout-info" id="callout-overview-not-both">
+          <h4>{{fa "sticky-note"}} Sales Order</h4>
+            <hr>
+            <ul>
+                <li class="space-li"><strong>ID:</strong> {{_id}}</li>
+                <li class="space-li"><strong>Sale Order Date:</strong> {{salesOrderDate}}</li>
+                <li class="space-li"><strong>Description:</strong> {{des}}</li>
+            </ul>
+            <h4>{{fa "user"}} Customer</h4>
+            <hr>
+            <ul>
+              <li class="space-li"><strong>Customer ID:</strong> {{customerId}}</li>
+              {{#with _customer}}
+                  <li class="space-li"><strong>Name:</strong> {{name}}</li>
+                  <li class="space-li"><strong>Gender:</strong> {{gender}}</li>
+                  <li class="space-li"><strong>Address:</strong> {{address}}</li>
+                  <li class="space-li"><strong>Member:</strong> {{telephone}}</li>
+                  <li class="space-li"><strong>Occupation:</strong> {{_customerCompany.name}}</li>
+              {{/with}}
+            </ul>
+</div>
+      </div>
+    </p>
+</template>

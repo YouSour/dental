@@ -33,6 +33,21 @@
                 <li class="{{isActiveRoute name='cpanel.exchange'}}">
                     <a href="{{pathFor 'cpanel.exchange'}}">Exchange</a>
                 </li>
+
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Laboratory</li>
+                <li class="{{isActiveRoute name='dental.laboCustomer'}}">
+                    <a href="{{pathFor 'dental.laboCustomer'}}">Customer</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboItem'}}">
+                    <a href="{{pathFor 'dental.laboItem'}}">Item</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboPurchase'}}">
+                    <a href="{{pathFor 'dental.laboPurchase'}}">Purchase</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboSalesOrder'}}">
+                    <a href="{{pathFor 'dental.laboSalesOrder'}}">Sales Order</a>
+                </li>
             </ul>
         </li>
 
@@ -120,6 +135,45 @@
         </li>
 {{/if}}
 
+<!--Labo Reports-->
+{{#if isInRole 'reporter' 'Dental'}}
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+        Labo Reports <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu multi-level" role="menu">
+        <li class="{{isActiveRoute name='dental.laboPurchaseListReport'}}">
+          <a href="{{pathFor 'dental.laboPurchaseListReport'}}">Purchase</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.laboSalesOrderListReport'}}">
+            <a href="{{pathFor 'dental.laboSalesOrderListReport'}}">Sale Order</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.laboSalesOrderCheckOutListReport'}}">
+            <a href="{{pathFor 'dental.laboSalesOrderCheckOutListReport'}}">Sale Order CheckOut</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.laboSalesOrderPaymentListReport'}}">
+            <a href="{{pathFor 'dental.laboSalesOrderPaymentListReport'}}">Sale Order Payment</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.laboDepartmentListReport'}}">
+            <a href="{{pathFor 'dental.laboDepartmentListReport'}}">Department</a>
+        </li>
+
+        <li role="separator" class="divider"></li>
+        <li class="dropdown-header">Outstanding</li>
+        <li class="{{isActiveRoute name='dental.osLaboMaterialListReport'}}">
+          <a href="{{pathFor 'dental.osLaboMaterialListReport'}}">Material</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.osForActiveLaboSalesOrderReport'}}">
+            <a href="{{pathFor 'dental.osForActiveLaboSalesOrderReport'}}">Sales Order Active</a>
+        </li>
+        <li class="{{isActiveRoute name='dental.osForCheckOutLaboSalesOrderReport'}}">
+            <a href="{{pathFor 'dental.osForCheckOutLaboSalesOrderReport'}}">Sales Order CheckOut</a>
+        </li>
+
+    </ul>
+</li>
+{{/if}}
+
 <!--Setting-->
  {{#if isInRole 'setting' 'Dental'}}
         <li class="dropdown">
@@ -176,4 +230,37 @@
             </ul>
         </li>
 {{/if}}
+
+<!--Labo Setting-->
+ {{#if isInRole 'labo-setting' 'Dental'}}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                Labo Setting <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="{{isActiveRoute name='dental.laboUnit'}}">
+                    <a href="{{pathFor 'dental.laboUnit'}}">Unit</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboMaterialCategories'}}">
+                    <a href="{{pathFor 'dental.laboMaterialCategories'}}">Material Categories</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboMaterial'}}">
+                    <a href="{{pathFor 'dental.laboMaterial'}}">Material</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboDepartment'}}">
+                    <a href="{{pathFor 'dental.laboDepartment'}}">Department</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboCustomerCompany'}}">
+                    <a href="{{pathFor 'dental.laboCustomerCompany'}}">Customer Company</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboSupplier'}}">
+                    <a href="{{pathFor 'dental.laboSupplier'}}">Suppiler</a>
+                </li>
+                <li class="{{isActiveRoute name='dental.laboItemCategories'}}">
+                    <a href="{{pathFor 'dental.laboItemCategories'}}">Item Categories</a>
+                </li>
+            </ul>
+        </li>
+{{/if}}
+
 </template>

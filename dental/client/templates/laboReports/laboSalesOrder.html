@@ -1,0 +1,133 @@
+<!--Generate-->
+<template name="dental_laboSalesOrderReportGen">
+  {{#if data}} {{#with data}}
+  <!--Title-->
+  <table class="report-title">
+    <tr>
+      <td>
+        <img src="/hengly/logo.png">
+      </td>
+      <td>
+        <div class="header-style" style="margin-left:40px;">
+          <span class="report-company-name" style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span>
+          <br>
+          <span class="report-company-name">{{title.company.enName}}</span>
+          <br>
+          <u>វិក្កយបត្រលក់របស់ទីពិសោធន៍ (Labo Sale Order Invoice)</u>
+          <br>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!--Header-->
+  <div style="width: 100%">
+    {{#with header}}
+    <div style="width: 50%; padding-top: 12px; float: left;">
+      <ul class="list-unstyled">
+        <li>
+          <strong>លេខកូដអតិថិជន :</strong> {{customerId}}</li>
+        <li>
+          <strong>ឈ្មោះ :</strong> {{_customer.name}}</li>
+        <li>
+          <strong>ភេទ :</strong> {{_customer.gender}}</li>
+        <li>
+          <strong>ទូរស័ព្ទលេខ:</strong> {{_customer.telephone}}</li>
+      </ul>
+    </div>
+    <div style="width: 50%; padding-top: 12px; float: right;">
+      <ul class="list-unstyled">
+        <li>
+          <strong>លេខកូដទិញលក់ : </strong> {{_id}}</li>
+        <li>
+          <strong>កាលបរិច្ឆេទ: </strong> {{salesOrderDate}}</li>
+        <li>
+          <strong>ពិពណ៌នា :</strong> {{des}}</li>
+        <li>
+          <strong>អត្រាប្តូរប្រាក់ :</strong> {{exchange}}</li>
+      </ul>
+    </div>
+    {{/with}}
+  </div>
+
+  <!--Content-->
+  <img src="/hengly/tooth_invoice.jpg" class="border-img">
+  <table class="report-content">
+    <thead class="report-content-header">
+      <tr>
+        <th>ល.រ</th>
+        <th>បរិយាយ</th>
+        <th>ចំនួន</th>
+        <th>តម្លៃ</th>
+        <th data-toggle="tooltip" data-placement="left" title="បញ្ចុះតម្លៃរាយ">បញ្ចុះ</th>
+        <th>ទឹកប្រាក់</th>
+      </tr>
+    </thead>
+
+    <tbody class="report-content-body">
+      {{#each content}}
+      <tr class="td-custom">
+        <td class="index-style">{{index}}</td>
+        <td class="items-style">{{itemName}}</td>
+        <td class="qty-style">{{qty}}</td>
+        <td>{{price}}</td>
+        <td class="dis-style">{{discount}}</td>
+        <td>{{amount}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+
+  <div style="width: 48%; float: left; margin-top: 20px;">
+    {{#with footer}}
+    <ul class="list-unstyled text-left">
+      <li>
+        <strong>ប្រាក់សរុប :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subTotal}}
+      </li>
+      <li>
+        <strong>បញ្ចុះតម្លៃ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{subDiscount}}
+      </li>
+      <li>
+        <strong>ប្រាក់បានបង់ :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{paidAmount}}
+      </li>
+    </ul>
+    {{/with}}
+  </div>
+
+  <div style="width: 48%; float: right; margin-top: 20px;">
+    {{#with footer}}
+    <ul class="list-unstyled text-right">
+      <li>
+        <strong>ប្រាក់នៅសល់(ដុល្លារ) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total}}
+      </li>
+      <li>
+        <strong>ប្រាក់នៅសល់(រៀល) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalKhr}}
+      </li>
+      <li>
+        <strong>ប្រាក់នៅសល់(បាត) :</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{totalThb}}
+      </li>
+    </ul>
+    {{/with}}
+  </div>
+
+  <!--Note-->
+  <div style="clear: both; width: 58%; float:left;  text-align: center; margin-top: 10px">
+    <strong>{{title.company.khAddress}}</strong><br>
+    <strong>ទូរស័ព្ទ៖ {{title.company.telephone}}</strong>
+    <br>
+    <strong><u>Note:</u></strong> All payments will not refundable (ទឹកប្រាក់ដែលបានបង់ មិនអាចយកវិញបានទេ).
+  </div>
+
+  <div style="width: 31%; margin: 10px 10px 0px 0px; float:right; text-align:center;">
+    <ul class="list-unstyled">
+      <li>
+        <strong>ថ្ងៃទី៌____ខែ______ឆ្នាំ______</strong><br><br>
+        <strong>រៀបចំដោយ</strong><br><br>_________________
+      </li>
+    </ul>
+  </div>
+
+  {{/with}}
+  {{else}} {{> loading}} {{/if}}
+</template>

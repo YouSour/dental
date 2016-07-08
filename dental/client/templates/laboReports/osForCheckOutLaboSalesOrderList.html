@@ -1,0 +1,125 @@
+<!--Form-->
+<template name="dental_osForCheckOutLaboSalesOrderReport">
+    {{#autoForm schema=Dental.Schema.OsForCheckOutLaboSalesOrderListReport id="dental_osForCheckOutLaboSalesOrderReport" action="osForCheckOutLaboSalesOrderReportGen" target="_blank"}}
+        <div class="row">
+            <div class="col-md-6">
+                {{> afQuickField name='branchId'}}
+                {{> afQuickField name='date'}}
+            </div>
+            <div class="col-md-6">
+                {{> afQuickField name='exchange'}}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
+        <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+    {{/autoForm}}
+</template>
+
+
+<!--Generate-->
+<template name="dental_osForCheckOutLaboSalesOrderReportGen">
+    {{#if data}}
+        {{#with data}}
+            <!--Title-->
+            <table class="report-title" style="width:100%;">
+                <tr align="center">
+
+                  <td colspan="2">
+                    <td>
+                      <img src="/hengly/logo.png">
+                    </td>
+
+                    <td>
+                      <span class="report-company-name"
+                            style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
+                      <span class="report-company-name">{{title.company.enName}}</span><br>
+                      Date: {{title.date}}<br>
+                      <u>OS Check Out Laboratory Sales Order Report</u><br>
+                      {{title.company.khAddress}}, {{title.company.telephone}}
+                    </td>
+
+                  </td>
+                </tr>
+            </table>
+
+            <!--Header-->
+            <table width="100%" border="0">
+                {{#each header}}
+                    <tr>
+                      <td class="td-cus-style">{{{col1}}}</td>
+                      <td class="td-cus-style" align="right">{{{col2}}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+
+            <!--Content-->
+
+            <table class="report-content">
+                <thead class="report-content-header">
+                <tr>
+                    <th>N<sup>o</sup></th>
+                    <th>Sale Order ID</th>
+                    <th>Sale Order Date</th>
+                    <th>Staff</th>
+                    <th>Customer ID</th>
+                    <th>Company</th>
+                    <th>Customer</th>
+                    <th>Telephone</th>
+                    <th>Due Amount</th>
+                    <th>Paid Amount</th>
+                    <th>Out Amount</th>
+                </tr>
+                </thead>
+
+                <tbody class="report-content-body">
+                {{#each content}}
+                    <tr>
+                        <td>{{index}}</td>
+                        <td>{{_id}}</td>
+                        <td>{{salesOrderDate}}</td>
+                        <td>{{staffGender}}</td>
+                        <td>{{customerId}}</td>
+                        <td>{{_customer._customerCompany.name}}</td>
+                        <td>{{customerGender}}</td>
+                        <td>{{telephone}}</td>
+                        <td>{{totalFm}}</td>
+                        <td>{{totalDueFm}}</td>
+                        <td>{{balanceFm}}</td>
+                    </tr>
+                {{/each}}
+
+                <tr>
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                        <b>Grand Total USD</b>
+                    </td>
+                    <td>{{footer.grandTotalUsd}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                        <b>KHR</b>
+                    </td>
+                    <td>{{footer.grandTotalKhr}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                        <b>THB</b>
+                    </td>
+                    <td>{{footer.grandTotalThb}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <!--Footer-->
+            <p></p>
+        {{/with}}
+
+        <!--Sign-->
+        {{> signFooter}}
+
+    {{else}}
+        {{> loading}}
+    {{/if}}
+</template>
