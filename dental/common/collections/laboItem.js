@@ -51,6 +51,9 @@ Dental.Schema.LaboItem = new SimpleSchema({
       type: "selectize",
       options: function() {
         return Dental.List.laboMaterial();
+      },
+      selectizeOptions: {
+        hideSelected: true
       }
     }
   },
@@ -78,6 +81,9 @@ Dental.Schema.LaboItem = new SimpleSchema({
       type: "selectize",
       options: function() {
         return Dental.List.laboDepartment();
+      },
+      selectizeOptions: {
+        hideSelected: true
       }
     }
   },

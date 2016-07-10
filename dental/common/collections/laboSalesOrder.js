@@ -57,6 +57,9 @@ Dental.Schema.LaboSalesOrder = new SimpleSchema({
       type: "selectize",
       options: function() {
         return Dental.List.laboItems();
+      },
+      selectizeOptions: {
+        hideSelected: true
       }
     }
   },

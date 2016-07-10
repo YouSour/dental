@@ -83,7 +83,28 @@ Template.dental_laboPurchaseInsert.events({
       Template.dental_staffInsert)).maximize();
   },
   'change .materialId': function(e) {
-    onChangeMaterialId(e);
+
+        var arr = [];
+        $('.purchase .materialId').each(function() {
+          var material = $(this).val();
+          if(material != ""){
+          arr.push(material);
+          }
+        });
+
+        if(hasDuplicate(arr)){
+          var thisObj = $(e.currentTarget);
+          thisObj.parents('div.array-item').find('.price').val('').attr("readonly","true");
+          thisObj.parents('div.array-item').find('.qty').val('').attr("readonly","true");
+          thisObj.parents('div.array-item').find('.amount').val('').attr("readonly","true");
+          alertify.error("Sorry , Duplicate Material !");
+        }else{
+          var thisObj = $(e.currentTarget);
+          thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
+          thisObj.parents('div.array-item').find('.qty').removeAttr("readonly");
+          onChangeMaterialId(e);
+        }
+
   },
   'click .btnRemove': function(e) {
     var thisValuePurchase = $(e.currentTarget).closest('.purchase').find('.amount').val();
@@ -130,7 +151,26 @@ Template.dental_laboPurchaseUpdate.events({
       Template.dental_registerInsert)).maximize();
   },
   'change .materialId': function(e) {
-    onChangeMaterialId(e);
+    var arr = [];
+    $('.purchase .materialId').each(function() {
+      var material = $(this).val();
+      if(material != ""){
+      arr.push(material);
+      }
+    });
+
+    if(hasDuplicate(arr)){
+      var thisObj = $(e.currentTarget);
+      thisObj.parents('div.array-item').find('.price').val('').attr("readonly","true");
+      thisObj.parents('div.array-item').find('.qty').val('').attr("readonly","true");
+      thisObj.parents('div.array-item').find('.amount').val('').attr("readonly","true");
+      alertify.error("Sorry , Duplicate Material !");
+    }else{
+      var thisObj = $(e.currentTarget);
+      thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
+      thisObj.parents('div.array-item').find('.qty').removeAttr("readonly");
+      onChangeMaterialId(e);
+    }
   },
   'click .btnRemove': function(e) {
     var thisValuePurchase = $(e.currentTarget).closest('.purchase').find('.amount').val();
@@ -357,4 +397,9 @@ var checkMaterialUsingBySalesOrder = function(data) {
   }
 
   return result;
+}
+
+// check array material duplicate
+function hasDuplicate(arr) {
+  return (arr.length != _.uniq(arr).length);
 }

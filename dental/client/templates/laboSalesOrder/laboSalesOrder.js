@@ -109,64 +109,24 @@ Template.dental_laboSalesOrderInsert.onRendered(function() {
 
 Template.dental_laboSalesOrderInsert.events({
   'change .item': function (e, t) {
-      var thisObj = $(e.currentTarget);
-      var itemId = $(e.currentTarget).val();
-      var qty, price, discount, amount;
 
-      if (itemId != "") {
-          var itemDoc = Dental.Collection.LaboItem.findOne({
-              _id: itemId
-          });
+      var arr = [];
+      $('.salesOrder .item').each(function() {
+        var item = $(this).val();
+        if(item != ""){
+        arr.push(item);
+        }
+      });
 
-          qty = 1;
-          price = math.round(itemDoc.price, 2);
-          discount = 0;
-          amount = math.round(qty * price, 2);
-
-          // $('.btnAdd').attr('disabled', false);
+      if(hasDuplicate(arr)){
+        alertify.error("Sorry , Duplicate Item !");
+      }else{
+        onChangeItem(e);
       }
-      // else {
-      //     $('.btnAdd').attr('disabled', true);
-      // }
-
-      thisObj.parents('div.array-item').find('.qty').val(qty);
-      thisObj.parents('div.array-item').find('.price').val(price);
-      thisObj.parents('div.array-item').find('.discount').val(discount);
-      thisObj.parents('div.array-item').find('.amount').val(amount);
-
-      // Cal footer
-      calculateTotal();
   },
-  // 'click .btnAdd': function (e) {
-  //     var orderItemId = $(e.currentTarget).val();
-  //
-  //     if (orderItemId != "") {
-  //         $('.btnAdd').removeAttr('disabled');
-  //     } else {
-  //         $('.btnAdd').attr('disabled', "disabled");
-  //
-  //     }
-  // },
   'click .btnRemove': function (e, t) {
       var thisValueQuotation = $(e.currentTarget).closest('.salesOrder').find('.amount').val();
       thisValueQuotation = parseFloat(thisValueQuotation);
-      // var enable = true;
-      // $('.amount').each(function () {
-      //     var amount = $(this).val() == "" ? 0 : parseFloat($(this)
-      //         .val());
-      //     if (amount == 0) {
-      //         enable = false;
-      //         return false;
-      //     }
-      //     enable = true;
-      // });
-      //
-      // if (enable) {
-      //     $('.btnAdd').attr('disabled', false);
-      // } else {
-      //     $('.btnAdd').attr('disabled', true);
-      //
-      // }
 
       // Cal footer
       calculateTotal(thisValueQuotation);
@@ -205,44 +165,25 @@ Template.dental_laboSalesOrderUpdate.helpers({});
 
 Template.dental_laboSalesOrderUpdate.events({
   'change .item': function (e, t) {
-      var thisObj = $(e.currentTarget);
-      var itemId = $(e.currentTarget).val();
-      var qty, price, discount, amount;
-
-      if (itemId != "") {
-          var itemDoc = Dental.Collection.LaboItem.findOne({
-              _id: itemId
-          });
-
-          qty = 1;
-          price = math.round(itemDoc.price, 2);
-          discount = 0;
-          amount = math.round(qty * price, 2);
-
-          // $('.btnAdd').attr('disabled', false);
+    var arr = [];
+    $('.salesOrder .item').each(function() {
+      var item = $(this).val();
+      if(item != ""){
+      arr.push(item);
       }
-      // else {
-      //     $('.btnAdd').attr('disabled', true);
-      // }
+    });
 
-      thisObj.parents('div.array-item').find('.qty').val(qty);
-      thisObj.parents('div.array-item').find('.price').val(price);
-      thisObj.parents('div.array-item').find('.discount').val(discount);
-      thisObj.parents('div.array-item').find('.amount').val(amount);
-
-      // Cal footer
-      calculateTotal();
+    if(hasDuplicate(arr)){
+      var thisObj = $(e.currentTarget);
+      var price = thisObj.parents('div.array-item').find('.price').val('');
+      var qty = thisObj.parents('div.array-item').find('.qty').val('');
+      var qty = thisObj.parents('div.array-item').find('.discount').val('');
+      var qty = thisObj.parents('div.array-item').find('.amount').val('');
+      alertify.error("Sorry , Duplicate Item !");
+    }else{
+      onChangeItem(e);
+    }
   },
-  // 'click .btnAdd': function (e) {
-  //     var orderItemId = $(e.currentTarget).val();
-  //
-  //     if (orderItemId != "") {
-  //         $('.btnAdd').removeAttr('disabled');
-  //     } else {
-  //         $('.btnAdd').attr('disabled', "disabled");
-  //
-  //     }
-  // },
   'click .btnRemove': function (e, t) {
       var thisValueQuotation = $(e.currentTarget).closest('.salesOrder').find('.amount').val();
       thisValueQuotation = parseFloat(thisValueQuotation);
@@ -461,4 +402,37 @@ var checkMaterialUsingByPurchase = function(data) {
   }
 
   return result;
+}
+
+/**
+ * onChange material
+ */
+function onChangeItem(e) {
+  var thisObj = $(e.currentTarget);
+  var itemId = $(e.currentTarget).val();
+  var qty, price, discount, amount;
+
+  if (itemId != "") {
+      var itemDoc = Dental.Collection.LaboItem.findOne({
+          _id: itemId
+      });
+
+      qty = 1;
+      price = math.round(itemDoc.price, 2);
+      discount = 0;
+      amount = math.round(qty * price, 2);
+  }
+
+  thisObj.parents('div.array-item').find('.qty').val(qty);
+  thisObj.parents('div.array-item').find('.price').val(price);
+  thisObj.parents('div.array-item').find('.discount').val(discount);
+  thisObj.parents('div.array-item').find('.amount').val(amount);
+
+  // Cal footer
+  calculateTotal();
+}
+
+// check array item duplicate
+function hasDuplicate(arr) {
+  return (arr.length != _.uniq(arr).length);
 }

@@ -99,8 +99,44 @@ Template.dental_laboItemShow.helpers({
   */
  Template.customObjectFieldForMaterialMap.events({
    'change .material': function(e) {
-     onChangeMaterial(e);
+     var arr = [];
+     $('.materialItem .material').each(function() {
+       var material = $(this).val();
+       if(material != ""){
+       arr.push(material);
+       }
+     });
+
+     if(hasDuplicate(arr)){
+       var thisObj = $(e.currentTarget);
+       var qty = thisObj.parents('div.array-item').find('.qty').val('');
+       var price = thisObj.parents('div.array-item').find('.price').val('')
+       alertify.error("Sorry , Duplicate Material !");
+     }else{
+       onChangeMaterial(e);
+     }
    },
+ });
+
+ /**
+  * DepartmentMap Events
+  */
+ Template.customObjectFieldForDepartmentMap.events({
+   'change .department': function(e) {
+     var arr = [];
+     $('.departments .department').each(function() {
+       var department = $(this).val();
+       if(department != ""){
+       arr.push(department);
+       }
+     });
+
+     if(hasDuplicate(arr)){
+       var thisObj = $(e.currentTarget);
+       var price = thisObj.parents('div.array-item').find('.price').val('');
+       alertify.error("Sorry , Duplicate Department !");
+     }
+   }
  });
 
  /**
@@ -159,3 +195,8 @@ AutoForm.hooks({
         }
     }
 });
+
+// check array material duplicate
+function hasDuplicate(arr) {
+  return (arr.length != _.uniq(arr).length);
+}

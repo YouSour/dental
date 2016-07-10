@@ -57,8 +57,11 @@ Dental.Schema.LaboPurchase = new SimpleSchema({
       type: "selectize",
       options: function() {
         return Dental.List.laboMaterial();
+      },
+      selectizeOptions: {
+        hideSelected: true
       }
-    }
+    },
   },
   'purchaseDetail.$.qty': {
     type: Number,
