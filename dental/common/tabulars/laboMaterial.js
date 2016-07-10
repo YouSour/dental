@@ -10,7 +10,7 @@ Dental.TabularTable.LaboMaterial = new Tabular.Table({
         {
           data: "avgPrice", title: "Average Price",
           render:function (val,type,doc) {
-            if(_.isUndefined(val) || _.isNull(val)){
+            if(_.isUndefined(val) || _.isNull(val) || _.isNaN(val)){
               return "None";
             }
             return numeral(val).format('0,0.00');

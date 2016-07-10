@@ -189,7 +189,7 @@
             {{/if}}
 
             {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item quotation">
+                <div class="row array-item materialItem">
                     <div class="col-sm-1">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
                             <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
@@ -232,7 +232,7 @@
     </div>
     <div class="col-sm-5">
         {{> afQuickField name=current.qty template="bootstrap3" label=false class="input-sm qty"}}
-        {{> afQuickField type="hidden" name=current.price template="bootstrap3" label=false class="input-sm price"}}
+        {{> afQuickField type="hidden"  name=current.price template="bootstrap3" label=false class="input-sm price"}}
     </div>
 </template>
 
@@ -261,7 +261,7 @@
             {{/if}}
 
             {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row array-item quotation">
+                <div class="row array-item departments">
                     <div class="col-sm-1">
                         {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
                             <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
