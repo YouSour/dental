@@ -11,7 +11,7 @@ Dental.Schema.LaboMaterial = new SimpleSchema({
   },
   price: {
     type: Number,
-    label: "Price",
+    label: "Price ($)",
     decimal: true
   },
   des: {

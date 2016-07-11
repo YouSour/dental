@@ -277,6 +277,12 @@ width: 150px;
   line-height: 17px;
 }
 
+/*footer-style-labo-osmaterial*/
+.footer-osmaterial-style{
+  margin-top:10px;
+  font-size: 14px;
+}
+
 @media (min-width: 768px) {
   .col-sm-2-custom, .col-md-2-custom {
     float: left;

@@ -6,7 +6,7 @@ Meteor.methods({
       title: {},
       header: [],
       content: [],
-      footer: [],
+      footer: {},
       deposit: []
     };
 
@@ -46,13 +46,15 @@ Meteor.methods({
     var getMaterial = Dental.Collection.LaboMaterial.find(selector,{sort:{_id:1}});
 
     var index = 1;
-
+    var grandTotalBalanceQty = 0;
+    var grandTotalAvgPrice = 0;
     if (!_.isUndefined(getMaterial)) {
       getMaterial.forEach(function(obj) {
         obj.index = index;
 
         if (!_.isNull(obj.avgPrice)) {
           obj.avgPrice = obj.avgPrice;
+          grandTotalAvgPrice += obj.avgPrice;
         } else {
           obj.avgPrice = "None";
         }
@@ -63,11 +65,17 @@ Meteor.methods({
           obj.description = "None";
         }
 
+        if(obj.balanceQty > 0){
+          grandTotalBalanceQty += obj.balanceQty;
+        }
         content.push(obj);
 
         index += 1;
       });
     }
+
+    data.footer.grandTotalAvgPrice = numeral(grandTotalAvgPrice).format('0,0.00 $');
+    data.footer.grandTotalBalanceQty = grandTotalBalanceQty;
 
     if (content.length > 0) {
       data.content = content;
