@@ -15,8 +15,9 @@ Dental.Schema.LaboItem = new SimpleSchema({
   },
   price: {
     type: Number,
-    label: "Price",
-    decimal: true
+    label: "Price ($)",
+    decimal: true,
+
   },
   unitId: {
     type: String,
