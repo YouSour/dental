@@ -53,7 +53,7 @@ Meteor.methods({
         obj.index = index;
 
         if (!_.isNull(obj.avgPrice)) {
-          obj.avgPrice = obj.avgPrice;
+          obj.avgPriceFm = numeral(obj.avgPrice).format('0,0.00');
           grandTotalAvgPrice += obj.avgPrice;
         } else {
           obj.avgPrice = "None";
