@@ -68,7 +68,6 @@
                     <th>Telephone</th>
                     <th>Sub Total</th>
                     <th>Sub Discount</th>
-                    <th>Deposit</th>
                     <th>Total</th>
                 </tr>
                 </thead>
@@ -86,27 +85,26 @@
                         <td>{{telephone}}</td>
                         <td>{{subTotalFm}}</td>
                         <td>{{subDiscountFm}}</td>
-                        <td>{{depositFm}}</td>
                         <td>{{totalFm}}</td>
                     </tr>
                 {{/each}}
 
                 <tr>
-                    <td colspan="11" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
                         <b>Grand Total USD</b>
                     </td>
                     <td>{{footer.grandTotalUsd}}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="11" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
                         <b>KHR</b>
                     </td>
                     <td>{{footer.grandTotalKhr}}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="11" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
+                    <td colspan="10" style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;">
                         <b>THB</b>
                     </td>
                     <td>{{footer.grandTotalThb}}</td>
