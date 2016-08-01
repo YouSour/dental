@@ -7,7 +7,10 @@ Dental.TabularTable.LaboSalesOrder = new Tabular.Table({
         {data: "salesOrderDate", title: "Date"},
         {data: "_customer.name", title: "Customer"},
         {data: "_staff.name", title: "Staff"},
-        {data: "status", title: "Status"},
+        {
+          data: "status", title: "Status",
+          tmpl: Meteor.isClient && Template.dental_statusSaleOrderLinkAction
+        },
         {
           data: "salesOrderDetail", title: "Sale Order Detail",
           render:function (val,type,doc) {

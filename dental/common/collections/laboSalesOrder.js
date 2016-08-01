@@ -33,14 +33,23 @@ Dental.Schema.LaboSalesOrder = new SimpleSchema({
     }
   },
   status: {
-    type: String,
-    label: "Status",
-    autoform: {
-      type: "select2",
-      options: function() {
-        return Dental.List.laboStatusSalesOrder();
-      }
-    }
+    type: Object,
+  },
+  "status.activeDate": {
+      type: String,
+      optional: true
+  },
+  "status.readyDate": {
+      type: String,
+        optional: true
+  },
+  "status.checkOutDate": {
+      type: String,
+        optional: true
+  },
+  "status.closingDate": {
+      type: String,
+        optional: true
   },
   salesOrderDetail: {
     type: Array,

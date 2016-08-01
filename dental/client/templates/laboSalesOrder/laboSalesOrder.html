@@ -19,6 +19,11 @@
     {{/tabularAction}}
 </template>
 
+<!--Status-Link-Action-->
+<template name="dental_statusSaleOrderLinkAction">
+    <button type="button" class="btn btn-default btn-sm statusSaleOrderAction" value={{statusTitle}}>{{statusTitle}}</button>
+</template>
+
 <!--Payment-Link-Action-->
 <template name="dental_salesOrderPaymentLinkAction">
     <button type="button" class="btn btn-default btn-sm salesOrderPaymentAction">
@@ -35,10 +40,10 @@
 
     {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_laboSalesOrderInsert" type="insert" afFieldInput-placeholder="schemaLabel"}}
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 {{> afQuickField name='salesOrderDate' class='SalesOrderDate'}}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group{{#if afFieldIsInvalid name='customerId'}} has-error{{/if}}" data-required="true">
                     <label class="control-label" for="customerId">Customer</label>
 
@@ -55,7 +60,7 @@
                     {{/if}}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group{{#if afFieldIsInvalid name='staffId'}} has-error{{/if}}">
                     <label class="control-label" for="staffId">Staff</label>
 
@@ -73,9 +78,6 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
-              {{> afQuickField name='status' class='status'}}
-            </div>
         </div>
 
         {{> afArrayField name="salesOrderDetail" id="salesOrderDetail" template="customArrayFieldLaboSalesOrderDetail" subtemplate="customObjectFieldLaboSalesOrderDetail"}}
@@ -91,10 +93,10 @@
 
     {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_laboSalesOrderUpdate" doc=this type="update" afFieldInput-placeholder="schemaLabel"}}
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 {{> afQuickField name='salesOrderDate' class='salesOrderDate'}}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group{{#if afFieldIsInvalid name='customerId'}} has-error{{/if}}" data-required="true">
                     <label class="control-label" for="customerId">Customer</label>
 
@@ -111,7 +113,7 @@
                     {{/if}}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group{{#if afFieldIsInvalid name='staffId'}} has-error{{/if}}">
                     <label class="control-label" for="staffId">Staff ID</label>
 
@@ -128,10 +130,6 @@
                     {{/if}}
                 </div>
             </div>
-
-            <div class="col-md-3">
-              {{> afQuickField name='status' class='status'}}
-            </div>
         </div>
 
         {{> afArrayField name="salesOrderDetail" id="salesOrderDetail" template="customArrayFieldLaboSalesOrderDetail" subtemplate="customObjectFieldLaboSalesOrderDetail"}}
@@ -145,6 +143,43 @@
         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
         <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
     {{/autoForm}}
+</template>
+
+
+<!--dental-saleOrderStatusReady-->
+<template name="dental_saleOrderStatusReadyDate">
+    <div class="row">
+        <div class="col-md-12">
+            {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_saleOrderStatusReadyDate" doc=this type="update" afFieldInput-placeholder="schemaLabel"}}
+                <div class="row">
+                        {{> afQuickField name="status.readyDate"}}
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>
+
+<!--dental-saleOrderStatusCheckOut-->
+<template name="dental_saleOrderStatusCheckOutDate">
+    <div class="row">
+        <div class="col-md-12">
+            {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_saleOrderStatusCheckOutDate" doc=this type="update" afFieldInput-placeholder="schemaLabel"}}
+                <div class="row">
+                        {{> afQuickField name="status.checkOutDate"}}
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            {{/autoForm}}
+        </div>
+    </div>
 </template>
 
 <!--Show-->

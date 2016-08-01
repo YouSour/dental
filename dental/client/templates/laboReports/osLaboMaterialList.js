@@ -1,6 +1,8 @@
 /************ Form *************/
+Dental.ListState = new ReactiveObj();
 
 Template.dental_osLaboMaterialListReport.onRendered(function () {
+    Meteor.subscribe('dental_laboMaterialCategory');
     Meteor.subscribe('dental_laboMaterial');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
@@ -20,4 +22,11 @@ Template.dental_osLaboMaterialListReportGen.helpers({
 
         return call.result();
     }
+});
+
+Template.dental_osLaboMaterialListReport.events({
+  'change .category':function (e) {
+    var category = $(e.currentTarget).val();
+    Dental.ListState.set('categoryVal',category);
+  }
 });

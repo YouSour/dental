@@ -4,6 +4,7 @@
         <div class="row">
             <div class="col-md-6">
                 {{> afQuickField name='branchId'}}
+                {{> afQuickField name='customer'}}
             </div>
             <div class="col-md-6">
                 {{> afQuickField name='date'}}
@@ -44,6 +45,7 @@
                 {{#each header}}
                     <tr>
                         <td class="td-cus-style">{{{col1}}}</td>
+                        <td class="td-cus-style text-right">{{{col2}}}</td>
                     </tr>
                 {{/each}}
             </table>
@@ -61,7 +63,6 @@
                     <th>Customer</th>
                     <th>Address</th>
                     <th>Telephone</th>
-                    <th>Status</th>
                     <th>Description</th>
                 </tr>
                 </thead>
@@ -77,7 +78,6 @@
                         <td>{{customer}}</td>
                         <td>{{address}}</td>
                         <td>{{telephone}}</td>
-                        <td>{{status}}</td>
                         <td>{{description}}</td>
                     </tr>
                 {{/each}}

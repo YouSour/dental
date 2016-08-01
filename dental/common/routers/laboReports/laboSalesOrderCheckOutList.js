@@ -2,9 +2,9 @@ Router.route('dental/laboSalesOrderCheckOutListReport', function () {
     this.render('dental_laboSalesOrderCheckOutListReport');
 }, {
     name: 'dental.laboSalesOrderCheckOutListReport',
-    title: "Labo Sales Order CheckOut List Report",
-    header: {title: 'Labo Sales Order CheckOut Report', sub: '', icon: 'file-text-o'},
-    breadcrumb: {title: 'Labo Sales Order CheckOut Report', parent: 'dental.home'}
+    title: "Labo Sales Order By Status List Report",
+    header: {title: 'Labo Sales Order By Status Report', sub: '', icon: 'file-text-o'},
+    breadcrumb: {title: 'Labo Sales Order By Status Report', parent: 'dental.home'}
 });
 
 Router.route('dental/laboSalesOrderCheckOutListReportGen', function () {

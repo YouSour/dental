@@ -1,6 +1,7 @@
 /************ Form *************/
 
 Template.dental_laboSalesOrderListReport.onRendered(function () {
+    Meteor.subscribe('dental_laboCustomer');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
 });

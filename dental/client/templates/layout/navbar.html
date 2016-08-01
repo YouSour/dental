@@ -36,6 +36,9 @@
 
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Laboratory</li>
+                <li class="{{isActiveRoute name='dental.laboCustomerCompany'}}">
+                    <a href="{{pathFor 'dental.laboCustomerCompany'}}">Customer Company</a>
+                </li>
                 <li class="{{isActiveRoute name='dental.laboCustomer'}}">
                     <a href="{{pathFor 'dental.laboCustomer'}}">Customer</a>
                 </li>
@@ -249,9 +252,6 @@
                 </li>
                 <li class="{{isActiveRoute name='dental.laboDepartment'}}">
                     <a href="{{pathFor 'dental.laboDepartment'}}">Department</a>
-                </li>
-                <li class="{{isActiveRoute name='dental.laboCustomerCompany'}}">
-                    <a href="{{pathFor 'dental.laboCustomerCompany'}}">Customer Company</a>
                 </li>
                 <li class="{{isActiveRoute name='dental.laboSupplier'}}">
                     <a href="{{pathFor 'dental.laboSupplier'}}">Suppiler</a>

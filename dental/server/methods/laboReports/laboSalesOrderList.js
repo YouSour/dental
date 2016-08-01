@@ -19,10 +19,14 @@ Meteor.methods({
 
     /********* Header ********/
 
-    var branch;
+    var branch,customer;
 
     var branchDoc = Cpanel.Collection.Branch.findOne({
       _id: self.branchId
+    });
+
+    var customerDoc = Dental.Collection.LaboCustomer.findOne({
+      _id: self.customer
     });
 
     if (self.branchId != "") {
@@ -31,8 +35,15 @@ Meteor.methods({
       branch = "All";
     }
 
+    if (self.customer != "") {
+      customer = self.customer + " | " + customerDoc.name;
+    } else {
+      customer = "All";
+    }
+
     data.header = [{
-      col1: '<b>' + 'Branch: ' + '</b>' + branch
+      col1: '<b>' + 'Branch: ' + '</b>' + branch,
+      col2: '<b>' + 'Customer: ' + '</b>' + customer,
     }];
 
     /********** Content & Footer **********/
@@ -49,6 +60,7 @@ Meteor.methods({
       $lte: toDate
     };
     if (self.branchId != "") selector.branchId = self.branchId;
+    if (self.customer != "") selector.customerId = self.customer;
 
     // Get register
     var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector);

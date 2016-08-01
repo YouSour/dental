@@ -45,9 +45,9 @@ Meteor.methods({
     var content = [];
     var selector = {};
 
-    selector.status = 'Check-Out';
+    // selector.status = 'Check-Out';
     var dateVal = self.date + ' 23:59:59';
-    selector.salesOrderDate = {
+    selector['status.checkOutDate'] = {
       $lte: dateVal
     };
     if (self.branchId != "") {
