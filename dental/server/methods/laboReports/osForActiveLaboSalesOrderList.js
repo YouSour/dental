@@ -47,11 +47,13 @@ Meteor.methods({
     var selector = {};
 
     var dateVal = self.date + ' 23:59:59';
-    selector.salesOrderDate = {
-      $lte: dateVal
-    };
-    selector.status = {
-      $eq: "Active"
+
+    selector['status.activeDate'] = {
+        $lte: dateVal
+    }
+
+    selector['status.checkOutDate'] = {
+         $exists: false
     }
 
     if (self.branchId != "") {

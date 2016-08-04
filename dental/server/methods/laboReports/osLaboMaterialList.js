@@ -41,6 +41,7 @@ Meteor.methods({
     var selector = {};
     if (self.branchId != "") selector.branchId = self.branchId;
     if (self.material != "") selector._id = self.material;
+    if (self.category != "") selector.materialCategoryId = self.category;
 
     // Get Material
     var getMaterial = Dental.Collection.LaboMaterial.find(selector,{sort:{_id:1}});

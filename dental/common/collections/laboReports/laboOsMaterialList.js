@@ -12,6 +12,17 @@ Dental.Schema.OsLaboMaterialListReport = new SimpleSchema({
         },
         optional: true
     },
+    category: {
+        type: String,
+        label: "Material Category",
+        autoform:{
+          type:"select2",
+          options:function () {
+            return Dental.List.laboMaterialCategory();
+          }
+        },
+        optional:true
+    },
     material: {
         type: String,
         label: "Material",

@@ -44,11 +44,17 @@ Meteor.methods({
       "YYYY-MM-DD HH:mm:ss");
     var toDate = moment(date[1] + " 23:59:59").format(
       "YYYY-MM-DD HH:mm:ss");
-    if (fromDate != null && toDate != null) selector.salesOrderDate = {
+
+      if (fromDate != null && toDate != null && self.status == "Ready") selector['status.readyDate'] = {
+        $gte: fromDate,
+        $lte: toDate
+      };
+
+    if (fromDate != null && toDate != null && self.status == "Check-Out") selector['status.checkOutDate'] = {
       $gte: fromDate,
       $lte: toDate
     };
-    if (fromDate != null && toDate != null) selector.status = "Check-Out";
+
     if (self.branchId != "") selector.branchId = self.branchId;
     // Get Sales Order
     var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector);

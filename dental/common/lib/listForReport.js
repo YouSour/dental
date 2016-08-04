@@ -27,7 +27,7 @@ Dental.ListForReport = {
   laboCustomerList: function() {
     var list = [];
     list.push({
-      label: "(Select One)",
+      label: "All",
       value: ""
     });
 
@@ -289,12 +289,12 @@ Dental.ListForReport = {
   laboStatusOfSaleOrder: function() {
     var list = [];
     list.push({
-      label: "All",
+      label: "(Select One)",
       value: ""
     });
     list.push({
-      label: "Active",
-      value: "Active"
+      label: "Ready",
+      value: "Ready"
     });
     list.push({
       label: "Check-Out",
@@ -344,7 +344,9 @@ Dental.ListForReport = {
       value: ""
     });
     var branchSession = Session.get('currentBranch');
-    var laboMaterialDoc = Dental.Collection.LaboMaterial.find({branchId:branchSession},{sort:{_id:1}});
+    var category = Dental.ListState.get('categoryVal');
+
+    var laboMaterialDoc = Dental.Collection.LaboMaterial.find({branchId:branchSession,materialCategoryId:category},{sort:{_id:1}});
 
     laboMaterialDoc.forEach(function(obj) {
       list.push({
