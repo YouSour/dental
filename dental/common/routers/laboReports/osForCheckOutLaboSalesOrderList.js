@@ -2,9 +2,9 @@ Router.route('dental/osForCheckOutLaboSalesOrderReport', function () {
     this.render('dental_osForCheckOutLaboSalesOrderReport');
 }, {
     name: 'dental.osForCheckOutLaboSalesOrderReport',
-    title: "OS-Check Out Labo Sales Order Report",
-    header: {title: 'OS-Check Out Labo Sales Order Report', sub: '', icon: 'file-text-o'},
-    breadcrumb: {title: 'OS-Check Out Labo Sales Order Report', parent: 'dental.home'}
+    title: "Unpaid Sales Order Report",
+    header: {title: 'Unpaid Sales Order Report', sub: '', icon: 'file-text-o'},
+    breadcrumb: {title: 'Unpaid Sales Order Report', parent: 'dental.home'}
 });
 
 Router.route('dental/osForCheckOutLaboSalesOrderReportGen', function () {
