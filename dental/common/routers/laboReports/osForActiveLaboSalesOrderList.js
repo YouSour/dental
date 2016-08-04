@@ -2,9 +2,9 @@ Router.route('dental/osForActiveLaboSalesOrderReport', function () {
     this.render('dental_osForActiveLaboSalesOrderReport');
 }, {
     name: 'dental.osForActiveLaboSalesOrderReport',
-    title: "OS-Active Labo Sales Order Report",
-    header: {title: 'OS-Active Labo Sales Order Report', sub: '', icon: 'file-text-o'},
-    breadcrumb: {title: 'OS-Active Labo Sales Order Report', parent: 'dental.home'}
+    title: "Active Sales Order Report",
+    header: {title: 'Active Sales Order Report', sub: '', icon: 'file-text-o'},
+    breadcrumb: {title: 'Active Sales Order Report', parent: 'dental.home'}
 });
 
 Router.route('dental/osForActiveLaboSalesOrderReportGen', function () {
