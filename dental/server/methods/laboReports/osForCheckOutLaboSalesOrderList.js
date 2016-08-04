@@ -81,8 +81,12 @@ Meteor.methods({
           "Partial") {
           var paymentDate = 'none';
           var paymentBalance = 0;
+          var paidAmount = 0;
+          var dueAmount = 0;
           if (!_.isUndefined(paymentDoc)) {
             paymentDate = paymentDoc.paymentDate;
+            paidAmount = paymentDoc.paidAmount;
+            dueAmount = paymentDoc.dueAmount;
             paymentBalance = paymentDoc.balance;
           }
 
@@ -100,9 +104,10 @@ Meteor.methods({
             obj.telephone = "None";
           }
 
-          var dueAmount = obj.total - paymentBalance;
+          // var dueAmount = obj.total - paymentBalance;
           obj.totalFm = numeral(obj.total).format('0,0.00');
           obj.totalDueFm = numeral(dueAmount).format('0,0.00');
+          obj.totalPaidFm = numeral(paidAmount).format('0,0.00');
           obj.balanceFm = numeral(paymentBalance).format('0,0.00');
 
           //Grand Total USD
