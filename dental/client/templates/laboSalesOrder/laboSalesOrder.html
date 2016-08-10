@@ -152,7 +152,7 @@
         <div class="col-md-12">
             {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_saleOrderStatusReadyDate" doc=this type="update" afFieldInput-placeholder="schemaLabel"}}
                 <div class="row">
-                        {{> afQuickField name="status.readyDate"}}
+                        {{> afQuickField name="status.readyDate" class="readyDate"}}
                 </div>
 
                 <div class="text-right">
@@ -170,7 +170,7 @@
         <div class="col-md-12">
             {{#autoForm collection=Dental.Collection.LaboSalesOrder id="dental_saleOrderStatusCheckOutDate" doc=this type="update" afFieldInput-placeholder="schemaLabel"}}
                 <div class="row">
-                        {{> afQuickField name="status.checkOutDate"}}
+                        {{> afQuickField name="status.checkOutDate" class="checkOutDate"}}
                 </div>
 
                 <div class="text-right">

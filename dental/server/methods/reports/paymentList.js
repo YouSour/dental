@@ -75,6 +75,14 @@ Meteor.methods({
       $lte: toDate
     };
 
+    if (fromDate != null && toDate != null) selector.dueAmount = {
+      $gte: "0"
+    };
+
+    if (fromDate != null && toDate != null) selector.paidAmount = {
+      $gte: "0"
+    };
+
     // Filter
     if (self.staff != "") selector.staffId = self.staff;
     if (self.branchId != "") selector.branchId = self.branchId;
