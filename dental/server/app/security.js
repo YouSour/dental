@@ -10,6 +10,17 @@ Security.defineMethod("dental_ifSetting", {
 });
 
 /**
+* Labo Setting
+*/
+Security.defineMethod("dental_ifLaboSetting", {
+  fetch: [],
+  transform: null,
+  deny: function(type, arg, userId) {
+    return !Roles.userIsInRole(userId, ['labo-setting'], 'Dental');
+  }
+});
+
+/**
  * Data Insert
  */
 Security.defineMethod("dental_ifDataInsert", {
@@ -17,6 +28,17 @@ Security.defineMethod("dental_ifDataInsert", {
   transform: null,
   deny: function(type, arg, userId) {
     return !Roles.userIsInRole(userId, ['data-insert'], 'Dental');
+  }
+});
+
+/**
+* Labo Insert
+*/
+Security.defineMethod("dental_ifLaboInsert", {
+  fetch: [],
+  transform: null,
+  deny: function(type, arg, userId) {
+    return !Roles.userIsInRole(userId, ['labo-insert'], 'Dental');
   }
 });
 
@@ -32,6 +54,17 @@ Security.defineMethod("dental_ifDataUpdate", {
 });
 
 /**
+ * Labo Update
+ */
+Security.defineMethod("dental_ifLaboUpdate", {
+  fetch: [],
+  transform: null,
+  deny: function(type, arg, userId) {
+    return !Roles.userIsInRole(userId, ['labo-update'], 'Dental');
+  }
+});
+
+/**
  * Data Remove
  */
 Security.defineMethod("dental_ifDataRemove", {
@@ -39,6 +72,17 @@ Security.defineMethod("dental_ifDataRemove", {
   transform: null,
   deny: function(type, arg, userId) {
     return !Roles.userIsInRole(userId, ['data-remove'], 'Dental');
+  }
+});
+
+/**
+* Labo Remove
+*/
+Security.defineMethod("dental_ifLaboRemove", {
+  fetch: [],
+  transform: null,
+  deny: function(type, arg, userId) {
+    return !Roles.userIsInRole(userId, ['labo-remove'], 'Dental');
   }
 });
 
@@ -61,5 +105,16 @@ Security.defineMethod("dental_ifReporter", {
   transform: null,
   deny: function(type, arg, userId) {
     return !Roles.userIsInRole(userId, ['reporter'], 'Dental');
+  }
+});
+
+/**
+ * Labo Reporter
+ */
+Security.defineMethod("dental_ifLaboReporter", {
+  fetch: [],
+  transform: null,
+  deny: function(type, arg, userId) {
+    return !Roles.userIsInRole(userId, ['labo-reporter'], 'Dental');
   }
 });

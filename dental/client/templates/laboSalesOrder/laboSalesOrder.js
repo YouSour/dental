@@ -303,6 +303,17 @@ Template.dental_laboSalesOrderShow.helpers({
     return moment(this.salesOrderDate).format("YYYY-MM-DD");
   }
 });
+
+Template.dental_saleOrderStatusReadyDate.onRendered(function () {
+  datepicker();
+});
+
+Template.dental_saleOrderStatusCheckOutDate.onRendered(function () {
+  datepicker();
+});
+
+
+
 /**
  * Hook
  */
@@ -435,7 +446,11 @@ function calculateTotal(minusValueSalesOrder) {
  */
 var datepicker = function() {
   var salesOrderDate = $('[name="salesOrderDate"]');
+  var readyDate = $('.readyDate');
+  var checkOutDate = $('.checkOutDate');
   DateTimePicker.dateTime(salesOrderDate);
+  DateTimePicker.dateTime(readyDate);
+  DateTimePicker.dateTime(checkOutDate);
 };
 
 /**

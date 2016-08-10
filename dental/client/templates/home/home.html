@@ -8,6 +8,7 @@
         <div class="row">
 
           <div class="col-md-12">
+             {{#if isInRole 'data-insert,data-update,data-remove,data-patient-insert' 'Dental'}}
             <div class="row">
               <a href="{{pathFor 'dental.patient'}}" class="btn btn-success btn-lg-custom" role="button">{{fa "users"}} <br/>Patient</a>
               <a href="{{pathFor 'dental.register'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "file-text-o"}} <br/>Register</a>
@@ -19,7 +20,16 @@
               <a href="{{pathFor 'dental.purchase'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "cart-plus"}} <br/>Purchase</a>
               <a href="{{pathFor 'cpanel.exchange'}}" class="btn btn-danger btn-lg-custom" role="button">{{fa "exchange"}} <br/>Exchange</a>
               <a href="{{pathFor 'dental.calendar'}}" class="btn btn-warning btn-lg-custom" role="button">{{fa "calendar"}} <br/>Calendar</a>
+            </div><br>
+            {{/if}}
+            {{#if isInRole 'labo-insert,labo-update,labo-remove' 'Dental'}}
+            <div class="row">
+              <a href="{{pathFor 'dental.laboCustomerCompany'}}" class="btn btn-success btn-lg-custom" role="button">{{fa "building-o"}} <br/>Customer Company</a>
+              <a href="{{pathFor 'dental.laboCustomer'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "users"}} <br/>Customer</a>
+              <a href="{{pathFor 'dental.laboPurchase'}}" class="btn btn-danger btn-lg-custom" role="button">{{fa "cart-plus"}} <br/>Purchase</a>
+              <a href="{{pathFor 'dental.laboSalesOrder'}}" class="btn btn-warning btn-lg-custom" role="button">{{fa "file-text-o"}} <br/>Sales Order</a>
             </div>
+            {{/if}}
           </div>
 
         </div>

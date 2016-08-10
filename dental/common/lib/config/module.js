@@ -10,12 +10,16 @@ Module.Dental = {
   summary: 'Dental Clinic System is ...',
   roles: [
     'setting',
-    'labo-setting',
     'data-insert',
     'data-update',
     'data-remove',
     'data-patient-insert',
-    'reporter'
+    'reporter',
+    'labo-setting',
+    'labo-insert',
+    'labo-update',
+    'labo-remove',
+    'labo-reporter'
   ],
   dump: {
     setting: [
