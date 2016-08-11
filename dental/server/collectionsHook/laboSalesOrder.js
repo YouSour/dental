@@ -76,7 +76,6 @@ Dental.Collection.LaboSalesOrder.after.insert(function(userId, doc) {
             });
 
             //update avgPrice & balanceQty when insert
-            console.log(closedQty);
             Dental.Collection.LaboMaterial.direct.update({_id: m.material},{$set:{
               avgPrice: avgPrice,
               balanceQty: closedQty

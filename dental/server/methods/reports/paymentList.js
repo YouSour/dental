@@ -47,7 +47,6 @@ Meteor.methods({
       status = "All";
     }
 
-
     data.header = [{
       col1: '<b>' + 'Branch: ' + '</b>' + branch,
       col2: '<b>' + 'Staff: ' + '</b>' + staff,
