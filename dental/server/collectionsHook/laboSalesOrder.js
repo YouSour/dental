@@ -1,6 +1,6 @@
 Dental.Collection.LaboSalesOrder.after.insert(function(userId, doc) {
 
-  if (doc.status == "Check-Out") {
+  if (!_.isUndefined(doc.status.activeDate)) {
     //insert
     Meteor.defer(function() {
       if (!_.isUndefined(doc)) {
@@ -55,7 +55,7 @@ Dental.Collection.LaboSalesOrder.after.insert(function(userId, doc) {
               // closedQty = parseFloat("-" + salesOrderObj.qty);
               closedQty = parseFloat("-" + qtyReduced);
               amount = qtyReduced * m.price;
-              avgPrice = amount / salesOrderObj.qty;
+              avgPrice = amount / qtyReduced;
               totalAmount = parseFloat("-" + amount);
             }
 
@@ -93,7 +93,7 @@ Dental.Collection.LaboSalesOrder.after.insert(function(userId, doc) {
 Dental.Collection.LaboSalesOrder.after.update(function(userId, doc, fieldNames, modifier, options) {
   modifier.$set = modifier.$set || {};
   var previousData = this.previous;
-  if (doc.status == "Check-Out") {
+  if (!_.isUndefined(doc.status.activeDate)) {
 
     Meteor.defer(function() {
       if (!_.isUndefined(doc)) {
@@ -109,6 +109,7 @@ Dental.Collection.LaboSalesOrder.after.update(function(userId, doc, fieldNames, 
             _id: salesOrderObj.itemId
           });
           //loop material on Laboitem
+
           var qtyReduced = 0;
           ItemDoc.materialMap.forEach(function(m) {
             qtyReduced = salesOrderObj.qty * m.qty;
@@ -152,9 +153,9 @@ Dental.Collection.LaboSalesOrder.after.update(function(userId, doc, fieldNames, 
               avgPrice = totalAmount / closedQty;
             } else {
               openingQty = openingQty;
-              closedQty = parseFloat("-" + salesOrderObj.qty);
+              closedQty = parseFloat("-" + qtyReduced);
               amount = qtyReduced * m.price;
-              avgPrice = amount / salesOrderObj.qty;
+              avgPrice = amount / qtyReduced;
               totalAmount = parseFloat("-" + amount);
             }
 
