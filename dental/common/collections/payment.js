@@ -39,7 +39,8 @@ Dental.Schema.Payment = new SimpleSchema({
   dueAmount: {
     type: Number,
     decimal: true,
-    label: 'Due Amount'
+    label: 'Due Amount',
+    min:1
   },
   paidAmount: {
     type: Number,

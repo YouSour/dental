@@ -75,11 +75,7 @@ Meteor.methods({
     };
 
     if (fromDate != null && toDate != null) selector.dueAmount = {
-      $gte: "0"
-    };
-
-    if (fromDate != null && toDate != null) selector.paidAmount = {
-      $gte: "0"
+      $gt: 0
     };
 
     // Filter
@@ -124,12 +120,9 @@ Meteor.methods({
         index += 1;
 
         //Grand Total USD
-        grandTotalDueAmountUsd += Math.round(obj.dueAmount * exchange
-          .rates.USD);
-        grandTotalPaidAmountUsd += Math.round(obj.paidAmount *
-          exchange.rates.USD);
-        grandTotalBalanceUsd += Math.round(obj.balance * exchange.rates
-          .USD);
+        grandTotalDueAmountUsd += obj.dueAmount * exchange.rates.USD;
+        grandTotalPaidAmountUsd += obj.paidAmount * exchange.rates.USD;
+        grandTotalBalanceUsd += obj.balance * exchange.rates.USD;
 
         //Grand Total KHR
         grandTotalDueAmountKhr += Math.round(obj.dueAmount * exchange
