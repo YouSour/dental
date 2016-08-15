@@ -92,16 +92,16 @@ Meteor.methods({
 
         content.push(obj);
 
-        obj.amount = numeral(obj.amount).format('0,0.00');
+        obj.amountFm = numeral(obj.amount).format('0,0.00');
 
         //Grand Total USD
-        grandTotalUsd += Math.round(obj.amount * exchange.rates.USD);
+        grandTotalUsd += obj.amount * exchange.rates.USD;
 
-        //Grand Total KHR
-        grandTotalKhr += Math.round(obj.amount * exchange.rates.KHR);
-
-        //Grand Total THB
-        grandTotalThb += Math.round(obj.amount * exchange.rates.THB);
+        // //Grand Total KHR
+        grandTotalKhr = Math.round(grandTotalUsd * exchange.rates.KHR);
+        
+        // //Grand Total THB
+        grandTotalThb = Math.round(grandTotalUsd * exchange.rates.THB);
 
         index += 1;
       });
