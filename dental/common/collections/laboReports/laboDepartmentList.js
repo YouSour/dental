@@ -20,8 +20,7 @@ Dental.Schema.LaboDepartmentListReport = new SimpleSchema({
             options: function () {
                 return Dental.ListForReport.laboStatusOfSaleOrder();
             }
-        },
-        optional:true
+        }
     },
     exchange: {
         type: String,

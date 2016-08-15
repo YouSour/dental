@@ -1,13 +1,15 @@
 <!--Form-->
-<template name="dental_osLaboMaterialListReport">
-    {{#autoForm schema=Dental.Schema.OsLaboMaterialListReport id="dental_osLaboMaterialListReport" action="osLaboMaterialListReportGen" target="_blank"}}
+<template name="dental_osLaboMaterialStockListReport">
+    {{#autoForm schema=Dental.Schema.OsLaboMaterialStockListReport id="dental_osLaboMaterialStockListReport" action="osLaboMaterialStockListReportGen" target="_blank"}}
         <div class="row">
             <div class="col-md-6">
                 {{> afQuickField name='branchId'}}
                 {{> afQuickField name='category' class='category'}}
+                {{> afQuickField name='material'}}
             </div>
             <div class="col-md-6">
-                {{> afQuickField name='material'}}
+                {{> afQuickField name='exchange'}}
+                {{> afQuickField name='date'}}
             </div>
         </div>
         <button type="submit" class="btn btn-primary">{{fa "file-text"}} Generate</button>
@@ -16,7 +18,7 @@
 </template>
 
 <!--Generate-->
-<template name="dental_osLaboMaterialListReportGen">
+<template name="dental_osLaboMaterialStockListReportGen">
     {{#if data}}
         {{#with data}}
             <!--Title-->
@@ -31,8 +33,8 @@
                       <span class="report-company-name"
                             style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span><br>
                       <span class="report-company-name">{{title.company.enName}}</span><br>
-                      <!-- Date: {{title.date}}<br> -->
-                      <u>OS Laboratory Material Report</u><br>
+                      Date: {{title.date}}<br>
+                      <u>Laboratory Material Stock Report</u><br>
                       {{title.company.khAddress}}, {{title.company.telephone}}
                     </td>
 
@@ -45,6 +47,7 @@
                 {{#each header}}
                     <tr>
                         <td class="td-cus-style">{{{col1}}}</td>
+                        <td class="pull-right">{{{col2}}}</td>
                     </tr>
                 {{/each}}
             </table>
@@ -58,11 +61,11 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Unit</th>
-                    <th>Price</th>
-                    <th>Average Price</th>
-                    <th>Balance Quantity</th>
-                    <th>Material Category</th>
-                    <th>Description</th>
+                    <th>Category</th>
+                    <!-- <th>Price</th> -->
+                    <th>Qty</th>
+                    <th>Avg Price</th>
+                    <th>Amount</th>
                 </tr>
                 </thead>
 
@@ -73,21 +76,33 @@
                         <td>{{_id}}</td>
                         <td>{{name}}</td>
                         <td>{{_unit.name}}</td>
-                        <td>{{price}}</td>
-                        <td>{{avgPriceFm}}</td>
-                        <td>{{balanceQty}}</td>
                         <td>{{_materialCategory.name}}</td>
-                        <td>{{description}}</td>
+                        <!-- <td>{{price}}</td> -->
+                        <td>{{balanceQty}}</td>
+                        <td>{{avgPriceFm}}</td>
+                        <td>{{amount}}</td>
                     </tr>
                 {{/each}}
+                    <tr>
+                        <td colspan='7' style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;"><b>Grand Total USD</b></td>
+                        <td>{{footer.grandTotalAmountUsd}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan='7' style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;"><b>KHR</b></td>
+                        <td>{{footer.grandTotalAmountKhr}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan='7' style="border-left-style: hidden;border-bottom-style: hidden; text-align: right;"><b>THB</b></td>
+                        <td>{{footer.grandTotalAmountThb}}</td>
+                    </tr>
                 </tbody>
             </table>
 
             <!--Footer-->
-            <div class="footer-osmaterial-style">
+            <!-- <div class="footer-osmaterial-style">
             <p class="pull-right"><b>Grand Total Balance Quantity : {{footer.grandTotalBalanceQty}}</b></p>
             <p><b>Grand Total Average Price : {{footer.grandTotalAvgPrice}}</b></p>
-            </div>
+            </div> -->
         {{/with}}
         <!--Sign-->
         {{>signFooter}}

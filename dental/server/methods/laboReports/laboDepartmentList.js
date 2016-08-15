@@ -65,7 +65,18 @@ Meteor.methods({
     };
     if (self.branchId != "") selector.branchId = self.branchId;
     if (self.exchange != "") selectorExchange._id = self.exchange;
-    if (self.status != "") selector.status = self.status;
+
+    if (self.status == "Active") selector['status.activeDate']  = {
+         $exists: true
+    }
+
+    if (self.status == "Ready") selector['status.readyDate']  = {
+         $exists: true
+    }
+
+    if (self.status == "Check-Out") selector['status.checkOutDate']  = {
+         $exists: true
+    }
 
     // Get register
     var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector);
