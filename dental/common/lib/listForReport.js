@@ -293,6 +293,10 @@ Dental.ListForReport = {
       value: ""
     });
     list.push({
+      label: "Active",
+      value: "Active"
+    });
+    list.push({
       label: "Ready",
       value: "Ready"
     });
