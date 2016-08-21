@@ -29,6 +29,10 @@ Template.dental_statusSaleOrderLinkAction.helpers({
 });
 
 Template.dental_laboSalesOrder.events({
+  'click .btn-link': function () {
+      var self = this;
+      checkSalesOrderCheckOut(self);
+  },
   'click .insert': function() {
     alertify.laboSalesOrder(fa("plus", "Laboratory Sales Order"), renderTemplate(Template.dental_laboSalesOrderInsert))
       .maximize();
@@ -175,6 +179,11 @@ Template.dental_laboSalesOrderInsert.events({
     });
 
     if (hasDuplicate(arr)) {
+      var thisObj = $(e.currentTarget);
+      var price = thisObj.parents('div.array-item').find('.price').val('');
+      var qty = thisObj.parents('div.array-item').find('.qty').val('');
+      var qty = thisObj.parents('div.array-item').find('.discount').val('');
+      var qty = thisObj.parents('div.array-item').find('.amount').val('');
       alertify.error("Sorry , Duplicate Item !");
     } else {
       onChangeItem(e);
@@ -301,7 +310,20 @@ Template.dental_laboSalesOrderShow.helpers({
   },
   salesOrderDateFormat: function() {
     return moment(this.salesOrderDate).format("YYYY-MM-DD");
-  }
+  },
+    statusTitleForShow:function () {
+      var status = "Active"
+      if(this.status.readyDate){
+        status = "Ready";
+      }
+      if(this.status.checkOutDate){
+        status = "CheckOut";
+      }
+      if(this.status.closingDate){
+        status = "Closed";
+      }
+      return status;
+    }
 });
 
 Template.dental_saleOrderStatusReadyDate.onRendered(function () {
@@ -530,4 +552,19 @@ function onChangeItem(e) {
 // check array item duplicate
 function hasDuplicate(arr) {
   return (arr.length != _.uniq(arr).length);
+}
+
+//check Sale Order Check Out update & remove hide
+function checkSalesOrderCheckOut(self) {
+    var checkRegisterClosing = Dental.Collection.LaboSalesOrder.findOne({
+        _id: self._id
+    });
+
+    if (_.isUndefined(checkRegisterClosing.status.checkOutDate)) {
+        $('.update').show();
+        $('.remove').show();
+    } else {
+        $('.update').hide();
+        $('.remove').hide();
+    }
 }

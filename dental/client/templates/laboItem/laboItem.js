@@ -107,13 +107,15 @@ Template.dental_laboItemShow.helpers({
        }
      });
 
+     var thisObj = $(e.currentTarget);
      if(hasDuplicate(arr)){
-       var thisObj = $(e.currentTarget);
-       var qty = thisObj.parents('div.array-item').find('.qty').val('');
-       var price = thisObj.parents('div.array-item').find('.price').val('')
+       var qty = thisObj.parents('div.array-item').find('.qty').attr("readonly","true").val('');
+       var price = thisObj.parents('div.array-item').find('.price').attr("readonly","true").val('');
        alertify.error("Sorry , Duplicate Material !");
      }else{
        onChangeMaterial(e);
+       var qty = thisObj.parents('div.array-item').find('.qty').removeAttr("readonly");
+       var price = thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
      }
    },
  });
@@ -131,10 +133,12 @@ Template.dental_laboItemShow.helpers({
        }
      });
 
+     var thisObj = $(e.currentTarget);
      if(hasDuplicate(arr)){
-       var thisObj = $(e.currentTarget);
-       var price = thisObj.parents('div.array-item').find('.price').val('');
+       var price = thisObj.parents('div.array-item').find('.price').attr("readonly","true").val('');
        alertify.error("Sorry , Duplicate Department !");
+     }else{
+       var price = thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
      }
    }
  });

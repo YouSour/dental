@@ -1,6 +1,7 @@
 /************ Form *************/
 
 Template.dental_laboDepartmentListReport.onRendered(function () {
+    Meteor.subscribe('dental_laboDepartment');
     var name = $('[name="date"]');
     DateTimePicker.dateRange(name);
 });

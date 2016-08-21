@@ -12,6 +12,17 @@ Dental.Schema.LaboDepartmentListReport = new SimpleSchema({
         },
         optional: true
     },
+    department: {
+        type: String,
+        label: "Department",
+        autoform: {
+            type: "select2",
+            options: function () {
+                return Dental.ListForReport.laboDepartmentList();
+            }
+        },
+        optional: true
+    },
     status: {
         type: String,
         label: "Status",

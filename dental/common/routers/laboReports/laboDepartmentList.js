@@ -15,7 +15,7 @@ Router.route('dental/laboDepartmentListReportGen', function () {
         // Font size: fontBody: undefined (10px), bg (12px)
         data: {
             pageSize: 'a4',
-            orientation: 'landscape',
+            orientation: 'portrait',
             fontBody: 'bg'
         }
     });
