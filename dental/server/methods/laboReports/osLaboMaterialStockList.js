@@ -79,7 +79,7 @@ Meteor.methods({
               grandTotalAmount += (getAvgStockDoc.closedQtyBalance * getAvgStockDoc.avgPrice) * exchange.rates.USD;
               grandTotalAmountKhr = Math.round(grandTotalAmount * exchange.rates.KHR);
               grandTotalAmountThb = Math.round(grandTotalAmount * exchange.rates.THB);
-              
+
           }else{
               obj.balanceQty = 0;
               obj.avgPriceFm = "None";

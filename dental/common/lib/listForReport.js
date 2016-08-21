@@ -44,6 +44,26 @@ Dental.ListForReport = {
 
     return list;
   },
+  laboDepartmentList: function() {
+    var list = [];
+    list.push({
+      label: "All",
+      value: ""
+    });
+
+    var currentBranch = Session.get('currentBranch');
+    Dental.Collection.LaboDepartment.find({
+        branchId: currentBranch
+      })
+      .forEach(function(obj) {
+        list.push({
+          label: obj._id + " : " + obj.name,
+          value: obj._id
+        });
+      });
+
+    return list;
+  },
   disease: function() {
     var list = [];
     list.push({

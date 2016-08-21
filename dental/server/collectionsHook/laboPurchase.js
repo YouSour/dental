@@ -68,6 +68,11 @@ Dental.Collection.LaboPurchase.after.insert(function(userId, doc) {
           balanceQty: closedQty
         }});
 
+        //update Material Item Price
+        var updatePrice = obj.amount / obj.qty;
+        Dental.Collection.LaboMaterial.direct.update({_id: obj.materialId},{$set:{
+          price: updatePrice
+        }});
       });
     }
     //end if
@@ -179,6 +184,12 @@ Dental.Collection.LaboPurchase.after.update(function(userId, doc, fieldNames, mo
                 Dental.Collection.LaboMaterial.direct.update({_id: dataVar.material},{$set:{
                   avgPrice: dataVar.avgPrice,
                   balanceQty: dataVar.closedQty
+                }});
+
+                //update Material Item Price
+                var updatePrice = obj.amount / obj.qty;
+                Dental.Collection.LaboMaterial.direct.update({_id: obj.materialId},{$set:{
+                  price: updatePrice
                 }});
 
               }

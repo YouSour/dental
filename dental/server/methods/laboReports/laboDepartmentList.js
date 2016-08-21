@@ -19,7 +19,7 @@ Meteor.methods({
 
     /********* Header ********/
 
-    var branch,status;
+    var branch, status;
 
     var branchDoc = Cpanel.Collection.Branch.findOne({
       _id: self.branchId
@@ -54,6 +54,7 @@ Meteor.methods({
 
     var selector = {};
     var selectorExchange = {};
+    var selectorDepartment = {};
     var date = self.date.split(" To ");
     var fromDate = moment(date[0] + " 00:00:00").format(
       "YYYY-MM-DD HH:mm:ss");
@@ -65,17 +66,18 @@ Meteor.methods({
     };
     if (self.branchId != "") selector.branchId = self.branchId;
     if (self.exchange != "") selectorExchange._id = self.exchange;
+    if (self.department != "") selectorDepartment._id = self.department;
 
-    if (self.status == "Active") selector['status.activeDate']  = {
-         $exists: true
+    if (self.status == "Active") selector['status.activeDate'] = {
+      $exists: true
     }
 
-    if (self.status == "Ready") selector['status.readyDate']  = {
-         $exists: true
+    if (self.status == "Ready") selector['status.readyDate'] = {
+      $exists: true
     }
 
-    if (self.status == "Check-Out") selector['status.checkOutDate']  = {
-         $exists: true
+    if (self.status == "Check-Out") selector['status.checkOutDate'] = {
+      $exists: true
     }
 
     // Get register
@@ -83,7 +85,6 @@ Meteor.methods({
     //Get Exchange
     var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
 
-    var index = 1;
     //Grand Total USD
     var grandTotalUsd = 0;
     //Grand Total KHR
@@ -91,52 +92,68 @@ Meteor.methods({
     //Grand Total THB
     var grandTotalThb = 0;
 
-    if (!_.isUndefined(getSalesOrder)) {
-      getSalesOrder.forEach(function(obj) {
-        obj.index = index;
-        obj.customer = obj._customer.name + " (" + obj._customer.gender +
-          ")";
+    Dental.Collection.LaboDepartment.find(selectorDepartment).forEach(function(depObj) {
+      var totalShare = 0;
+      var index = 1;
+      var invoices = [];
+      if (!_.isUndefined(getSalesOrder)) {
+        getSalesOrder.forEach(function(soObj) {
 
-        var department = '';
-        var totalPriceDepartment = 0 ;
-        var departmentExpense = 0 ;
-        obj.salesOrderDetail.forEach(function (i) {
-          var itemDoc = Dental.Collection.LaboItem.findOne({_id : i.itemId});
+          var departmentExpense = 0;
 
-          itemDoc.departmentMap.forEach(function (d) {
-            departmentExpense = (obj.total * d.price) / 100;
-            department += '<tr>' +
-              '<td>' + Dental.Collection.LaboDepartment.findOne(d.department)
-              .name + '</td>' +
+          var itemList = [];
+          var totalDepartmentFee = 0;
+          soObj.salesOrderDetail.forEach(function(sdObj) {
+            var itemDoc = Dental.Collection.LaboItem.findOne({
+              _id: sdObj.itemId
+            });
 
-              '<td>' + d.price + '</td>' +
-              '<td>' + numeral(departmentExpense).format('0,0.00') + '</td>' +
-              '</tr>';
 
-              totalPriceDepartment += departmentExpense;
+            itemDoc.departmentMap.forEach(function(d) {
+
+              if (depObj._id == d.department) {
+                itemList.push({
+                  itemId: itemDoc._id,
+                  itemName: itemDoc.name,
+                  amount: sdObj.amount,
+                  departmentFee: sdObj.amount * (d.price / 100),
+                });
+                totalDepartmentFee += (sdObj.amount * (d.price / 100));
+                totalShare += (sdObj.amount * (d.price / 100));
+
+              }
+
+            });
           });
+          
+          if (totalDepartmentFee > 0) {
 
+            invoices.push({
+              invoice: soObj._id,
+              invoiceDate: soObj.salesOrderDate,
+              customer: soObj._customer.name,
+              total: soObj.total,
+              items: itemList,
+              totalDepartmentFee: numeral(totalDepartmentFee).format('0,0.00'),
+              index: index
+            });
+            index+=1;
+          }
+
+          grandTotalUsd += totalDepartmentFee;
+          grandTotalKhr = Math.round(grandTotalUsd * exchange.rates.KHR);
+          grandTotalThb = Math.round(grandTotalUsd * exchange.rates.THB);
         });
+      }
 
-        obj.departments = department;
-        obj.totalFm = numeral(obj.total).format('0,0.00');
-        obj.departmentExpense = numeral(totalPriceDepartment).format('0,0.00');
-
-
-        //Grand Total USD
-        grandTotalUsd += totalPriceDepartment * exchange.rates.USD;
-
-        //Grand Total KHR
-        grandTotalKhr += Math.round(totalPriceDepartment * exchange.rates.KHR);
-
-        //Grand Total THB
-        grandTotalThb += Math.round(totalPriceDepartment * exchange.rates.THB);
-
-        content.push(obj);
-
-        index += 1;
+      content.push({
+        departmentIdName: depObj._id + " : " + depObj.name,
+        departmentName: depObj.name,
+        invoices: invoices,
+        totalShareUsd : numeral(totalShare).format('0,0.00')
       });
-    }
+
+    }); // end Loop department
 
     data.footer.grandTotalUsd = numeral(grandTotalUsd).format('0,0.00');
     data.footer.grandTotalKhr = numeral(grandTotalKhr).format('0,0.00');
