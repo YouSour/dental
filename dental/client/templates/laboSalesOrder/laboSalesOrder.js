@@ -126,7 +126,7 @@ Template.dental_laboSalesOrder.events({
   'click .salesOrderPaymentAction': function(e, t) {
     Session.set('closePayment', false);
     var data = this;
-    if (this.status.checkOutDate) {
+    if (this.status.checkOutDate || this.status.closingDate) {
       if (e.ctrlKey) {
         salesOrderState(this);
 
@@ -560,7 +560,7 @@ function checkSalesOrderCheckOut(self) {
         _id: self._id
     });
 
-    if (_.isUndefined(checkRegisterClosing.status.checkOutDate)) {
+    if (_.isUndefined(checkRegisterClosing.status.checkOutDate) && _.isUndefined(checkRegisterClosing.status.closingDate)) {
         $('.update').show();
         $('.remove').show();
     } else {
