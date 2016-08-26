@@ -17,16 +17,17 @@ Dental.TabularTable.LaboItem = new Tabular.Table({
             }
             return "None";
           }
-        },
-        {
-          data: "departmentMap", title: "Department Map",
-          render:function (val,type,doc) {
-            if(!_.isUndefined(val)){
-              return JSON.stringify(val).slice(1, JSON.stringify(val).length - 1);
-            }
-            return "None";
-          }
-        },
+        }
+        // ,
+        // {
+        //   data: "departmentMap", title: "Department Map",
+        //   render:function (val,type,doc) {
+        //     if(!_.isUndefined(val)){
+        //       return JSON.stringify(val).slice(1, JSON.stringify(val).length - 1);
+        //     }
+        //     return "None";
+        //   }
+        // }
     ],
     order: [['1', 'desc']],
     autoWidth: false,

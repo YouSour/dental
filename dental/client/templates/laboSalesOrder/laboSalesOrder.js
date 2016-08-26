@@ -8,6 +8,7 @@ Template.dental_laboSalesOrder.onCreated(function() {
   Meteor.subscribe('dental_laboItem');
   Meteor.subscribe('dental_laboAverageStock');
   Meteor.subscribe('dental_laboSalesOrderPayment');
+  Meteor.subscribe('dental_laboDepartment');
 
   createNewAlertify(['laboSalesOrder', 'customerAddon', 'staffAddon', 'salesOrderPaymentAction','statusSaleOrderAction']);
 });
@@ -292,6 +293,29 @@ Template.dental_laboSalesOrderUpdate.events({
 });
 
 /**
+ * DepartmentMap Events
+ */
+Template.customObjectFieldForDepartmentMap.events({
+  'change .department': function(e) {
+    var arr = [];
+    $('.departments .department').each(function() {
+      var department = $(this).val();
+      if(department != ""){
+      arr.push(department);
+      }
+    });
+
+    var thisObj = $(e.currentTarget);
+    if(hasDuplicate(arr)){
+      var price = thisObj.parents('div.array-item').find('.price').attr("readonly","true").val('');
+      alertify.error("Sorry , Duplicate Department !");
+    }else{
+      var price = thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
+    }
+  }
+});
+
+/**
  * Show
  */
 Template.dental_laboSalesOrderShow.helpers({
@@ -307,6 +331,17 @@ Template.dental_laboSalesOrderShow.helpers({
     salesOrderDetail += "</ul>";
 
     return new Spacebars.SafeString(salesOrderDetail);
+  },
+  departmentMapFormat: function () {
+      var departmentMap = "<ul>";
+      var data = this.departmentMap;
+      data.forEach(function (obj) {
+          departmentMap +=
+              "<li>" + 'Department: ' + obj.department + ' | Qty: ' + obj.price +'</li>';
+      });
+      departmentMap += '</ul>';
+
+      return new Spacebars.SafeString(departmentMap);
   },
   salesOrderDateFormat: function() {
     return moment(this.salesOrderDate).format("YYYY-MM-DD");
