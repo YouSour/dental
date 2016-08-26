@@ -63,7 +63,7 @@ Meteor.methods({
     if (self.customer != "") selector.customerId = self.customer;
 
     // Get register
-    var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector);
+    var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector,{sort:{salesOrderDate:1}});
 
     var index = 1;
 

@@ -32,7 +32,8 @@ Meteor.methods({
     }
 
     data.header = [{
-      col1: '<b>' + 'Branch: ' + '</b>' + branch
+      col1: '<b>' + 'Branch: ' + '</b>' + branch,
+      col2: '<b>' + 'Status: ' + '</b>' + self.status
     }];
 
     /********** Content & Footer **********/
@@ -55,9 +56,14 @@ Meteor.methods({
       $lte: toDate
     };
 
+    if (fromDate != null && toDate != null && self.status == "Closed") selector['status.closingDate'] = {
+      $gte: fromDate,
+      $lte: toDate
+    };
+
     if (self.branchId != "") selector.branchId = self.branchId;
     // Get Sales Order
-    var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector);
+    var getSalesOrder = Dental.Collection.LaboSalesOrder.find(selector,{sort:{salesOrderDate:1}});
 
     var index = 1;
 

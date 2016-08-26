@@ -29,7 +29,7 @@ Dental.Schema.LaboDepartmentListReport = new SimpleSchema({
         autoform: {
             type: "select2",
             options: function () {
-                return Dental.ListForReport.laboStatusOfSaleOrder();
+                return Dental.ListForReport.laboStatusOfDepartmentReport();
             }
         }
     },

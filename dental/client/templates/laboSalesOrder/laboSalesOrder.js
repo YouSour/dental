@@ -399,6 +399,9 @@ AutoForm.hooks({
     before: {
       update: function(doc) {
         doc.$set.total = $('.total').val();
+        doc.$set.status = {
+          activeDate: $('.salesOrderDate').val()
+        };
         return doc;
       }
     },

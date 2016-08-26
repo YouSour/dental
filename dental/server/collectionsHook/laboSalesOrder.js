@@ -235,7 +235,6 @@ Dental.Collection.LaboSalesOrder.after.update(function(userId, doc, fieldNames, 
 //remove
 Dental.Collection.LaboSalesOrder.after.remove(function(userId, doc) {
   Meteor.defer(function() {
-
     Dental.Collection.LaboAverageStock.remove({
       saleOrderId: doc._id
     });

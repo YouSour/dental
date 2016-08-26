@@ -48,22 +48,11 @@ Meteor.methods({
     // selector.status = 'Check-Out';
     var dateVal = self.date + ' 23:59:59';
 
-    selector['status.checkOutDate'] = {
+    selector["status.checkOutDate"] = {
       $lte: dateVal
-    };
+    }
+    selector['$or'] =  [{ "status.closingDate": { $exists: false } }, { "status.closingDate": ''}, {"status.closingDate":{ $gt : dateVal} }];
 
-    // selector.$or = [{
-    //   'status.closingDate': {
-    //     $exists: false
-    //   }
-    // }, {
-    //   'status.closingDate': {
-    //     $exists: true
-    //   },
-    //     '[status.closingDate]':{
-    //       $gt : dateVal
-    //     }
-    // }];
 
     if (self.branchId != "") {
       selector.branchId = self.branchId;
