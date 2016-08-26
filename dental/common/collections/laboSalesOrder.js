@@ -93,6 +93,31 @@ Dental.Schema.LaboSalesOrder = new SimpleSchema({
     label: "Amount",
     decimal: true
   },
+  departmentMap: {
+    type: Array,
+    minCount: 0
+  },
+  'departmentMap.$': {
+    type: Object
+  },
+  'departmentMap.$.department': {
+    type: String,
+    autoform: {
+      type: "selectize",
+      options: function() {
+        return Dental.List.laboDepartment();
+      },
+      selectizeOptions: {
+        hideSelected: true
+      }
+    }
+  },
+  'departmentMap.$.price': {
+    type: Number,
+    decimal: true,
+    label: "Price",
+    min:1
+  },
   subTotal: {
     type: Number,
     label: "Sub Total",

@@ -67,12 +67,12 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 {{> afArrayField name="materialMap" id="materialMap" template="customArrayFieldForMaterialMap" subtemplate="customObjectFieldForMaterialMap"}}
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 {{> afArrayField name="departmentMap" id="departmentMap" template="customArrayFieldForDepartmentMap" subtemplate="customObjectFieldForDepartmentMap"}}
-            </div>
+            </div> -->
         </div>
 
         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
@@ -129,12 +129,12 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             {{> afArrayField name="materialMap" id="materialMap" template="customArrayFieldForMaterialMap" subtemplate="customObjectFieldForMaterialMap"}}
         </div>
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             {{> afArrayField name="departmentMap" id="departmentMap" template="customArrayFieldForDepartmentMap" subtemplate="customObjectFieldForDepartmentMap"}}
-        </div>
+        </div> -->
     </div>
 
         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
@@ -159,8 +159,6 @@
         <dd>{{_itemCategories.name}}</dd>
         <dt>Material Map</dt>
         <dd>{{materialMapFormat}}</dd>
-        <dt>Department Map</dt>
-        <dd>{{departmentMapFormat}}</dd>
     </dl>
 </template>
 
@@ -225,7 +223,7 @@
     </div>
 </template>
 
-<!--Custom object field for Department Map item-->
+<!--Custom object field for Material Map item-->
 <template name="customObjectFieldForMaterialMap">
     <div class="col-sm-6">
         {{> afQuickField name=current.material template="bootstrap3" label=false class="input-sm material"}}
@@ -237,7 +235,7 @@
 </template>
 
 <!--Custom array field for Department Map item-->
-<template name="afArrayField_customArrayFieldForDepartmentMap">
+<!-- <template name="afArrayField_customArrayFieldForDepartmentMap">
     <div class="panel panel-default">
         <div class="panel-heading">{{fa "stethoscope"}} {{afFieldLabelText name=this.atts.name}}</div>
         <div class="panel-body">
@@ -275,9 +273,9 @@
             {{/afEachArrayItem}}
 
             {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-                <div class="row">
+                <div class="row"> -->
                     <!--Add more-->
-                    <div class="col-sm-1">
+                    <!-- <div class="col-sm-1">
                         <button type="button" class="btn btn-primary autoform-add-item btn-sm btnAdd"
                                 data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}"
                                 data-autoform-maxCount="{{this.atts.maxCount}}">
@@ -295,14 +293,14 @@
 
         </div>
     </div>
-</template>
+</template> -->
 
 <!--Custom object field for Department Map item-->
-<template name="customObjectFieldForDepartmentMap">
+<!-- <template name="customObjectFieldForDepartmentMap">
     <div class="col-sm-6">
         {{> afQuickField name=current.department template="bootstrap3" label=false class="input-sm department"}}
     </div>
     <div class="col-sm-5">
         {{> afQuickField name=current.price template="bootstrap3" label=false class="input-sm price"}}
     </div>
-</template>
+</template> -->

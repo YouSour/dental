@@ -69,31 +69,6 @@ Dental.Schema.LaboItem = new SimpleSchema({
     label: "Price",
     decimal:true
   },
-  departmentMap: {
-    type: Array,
-    minCount: 0
-  },
-  'departmentMap.$': {
-    type: Object
-  },
-  'departmentMap.$.department': {
-    type: String,
-    autoform: {
-      type: "selectize",
-      options: function() {
-        return Dental.List.laboDepartment();
-      },
-      selectizeOptions: {
-        hideSelected: true
-      }
-    }
-  },
-  'departmentMap.$.price': {
-    type: Number,
-    decimal: true,
-    label: "Price",
-    min:1
-  },
   branchId: {
     type: String
   }

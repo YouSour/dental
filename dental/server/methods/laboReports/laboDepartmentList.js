@@ -109,7 +109,7 @@ Meteor.methods({
             });
 
 
-            itemDoc.departmentMap.forEach(function(d) {
+            soObj.departmentMap.forEach(function(d) {
 
               if (depObj._id == d.department) {
                 itemList.push({
@@ -125,7 +125,7 @@ Meteor.methods({
 
             });
           });
-          
+
           if (totalDepartmentFee > 0) {
 
             invoices.push({

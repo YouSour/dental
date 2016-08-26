@@ -17,6 +17,15 @@ Dental.TabularTable.LaboSalesOrder = new Tabular.Table({
             return JSON.stringify(val).slice(1, JSON.stringify(val).length - 1);
           }
         },
+        {
+          data: "departmentMap", title: "Department Map",
+          render:function (val,type,doc) {
+            if(!_.isUndefined(val)){
+              return JSON.stringify(val).slice(1, JSON.stringify(val).length - 1);
+            }
+            return "None";
+          }
+        },
         {data: "total", title: "Total"},
         {
           data: "_salesOrderPaymentCount",

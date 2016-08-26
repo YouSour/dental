@@ -82,6 +82,8 @@
 
         {{> afArrayField name="salesOrderDetail" id="salesOrderDetail" template="customArrayFieldLaboSalesOrderDetail" subtemplate="customObjectFieldLaboSalesOrderDetail"}}
 
+        {{> afArrayField name="departmentMap" id="departmentMap" template="customArrayFieldForDepartmentMap" subtemplate="customObjectFieldForDepartmentMap"}}
+
         <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
         <button type="submit" class="btn btn-info" id="saveAndPrint">{{fa "floppy-o"}} Save & Print</button>
         <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
@@ -133,6 +135,7 @@
         </div>
 
         {{> afArrayField name="salesOrderDetail" id="salesOrderDetail" template="customArrayFieldLaboSalesOrderDetail" subtemplate="customObjectFieldLaboSalesOrderDetail"}}
+        {{> afArrayField name="departmentMap" id="departmentMap" template="customArrayFieldForDepartmentMap" subtemplate="customObjectFieldForDepartmentMap"}}
 
         <!-- <div class="row">
             <div class="col-md-6 col-md-offset-6">
@@ -195,6 +198,8 @@
         <dd>{{staffId}}</dd>
         <dt>Sales Order Detail</dt>
         <dd>{{salesOrderDetailFormat}}</dd>
+        <dt>Department Map</dt>
+        <dd>{{departmentMapFormat}}</dd>
         <dt>Status</dt>
         <dd>{{statusTitleForShow}}</dd>
         <dt>Total</dt>
@@ -309,4 +314,75 @@
   <div class="col-sm-2">
       {{> afQuickField name=current.amount template="bootstrap3" label=false class="input-sm amount" readonly=true}}
   </div>
+</template>
+
+<!--Custom array field for Department Map item-->
+<template name="afArrayField_customArrayFieldForDepartmentMap">
+    <div class="panel panel-default">
+        <div class="panel-heading">{{fa "stethoscope"}} {{afFieldLabelText name=this.atts.name}}</div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-1">
+                    <p><b>Action</b></p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Department</b></p>
+                </div>
+                <div class="col-md-5">
+                    <p><b>Price (%)</b></p>
+                </div>
+            </div>
+
+            {{#if afFieldIsInvalid name=this.atts.name}}
+                <div class="has-error">
+                    <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+                </div>
+            {{/if}}
+
+            {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+                <div class="row array-item departments">
+                    <div class="col-sm-1">
+                        {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+                            <button type="button" class="btn btn-sm btn-danger autoform-remove-item btnRemove">
+                                <span class="glyphicon glyphicon-minus"></span>
+                            </button>
+                        {{/if}}
+                    </div>
+
+                    {{> UI.dynamic template=../atts.subtemplate}}
+                </div>
+            {{/afEachArrayItem}}
+
+            {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+                <div class="row">
+                    <!--Add more-->
+                   <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary autoform-add-item btn-sm btnAdd"
+                                data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}"
+                                data-autoform-maxCount="{{this.atts.maxCount}}">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-11">
+                        <hr>
+                    </div>
+
+                </div>
+
+            {{/if}}
+
+        </div>
+    </div>
+</template>
+
+<!--Custom object field for Department Map item-->
+<template name="customObjectFieldForDepartmentMap">
+    <div class="col-sm-6">
+        {{> afQuickField name=current.department template="bootstrap3" label=false class="input-sm department"}}
+    </div>
+    <div class="col-sm-5">
+        {{> afQuickField name=current.price template="bootstrap3" label=false class="input-sm price"}}
+    </div>
 </template>

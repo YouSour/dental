@@ -53,18 +53,19 @@ Template.dental_laboItemShow.helpers({
       materialMap += '</ul>';
 
       return new Spacebars.SafeString(materialMap);
-  },
-  departmentMapFormat: function () {
-      var departmentMap = "<ul>";
-      var data = this.departmentMap;
-      data.forEach(function (obj) {
-          departmentMap +=
-              "<li>" + 'Department: ' + obj.department + ' | Qty: ' + obj.price +'</li>';
-      });
-      departmentMap += '</ul>';
-
-      return new Spacebars.SafeString(departmentMap);
-  },
+  }
+  // ,
+  // departmentMapFormat: function () {
+  //     var departmentMap = "<ul>";
+  //     var data = this.departmentMap;
+  //     data.forEach(function (obj) {
+  //         departmentMap +=
+  //             "<li>" + 'Department: ' + obj.department + ' | Qty: ' + obj.price +'</li>';
+  //     });
+  //     departmentMap += '</ul>';
+  //
+  //     return new Spacebars.SafeString(departmentMap);
+  // },
 });
 /**
  * Insert
@@ -123,25 +124,25 @@ Template.dental_laboItemShow.helpers({
  /**
   * DepartmentMap Events
   */
- Template.customObjectFieldForDepartmentMap.events({
-   'change .department': function(e) {
-     var arr = [];
-     $('.departments .department').each(function() {
-       var department = $(this).val();
-       if(department != ""){
-       arr.push(department);
-       }
-     });
-
-     var thisObj = $(e.currentTarget);
-     if(hasDuplicate(arr)){
-       var price = thisObj.parents('div.array-item').find('.price').attr("readonly","true").val('');
-       alertify.error("Sorry , Duplicate Department !");
-     }else{
-       var price = thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
-     }
-   }
- });
+ // Template.customObjectFieldForDepartmentMap.events({
+ //   'change .department': function(e) {
+ //     var arr = [];
+ //     $('.departments .department').each(function() {
+ //       var department = $(this).val();
+ //       if(department != ""){
+ //       arr.push(department);
+ //       }
+ //     });
+ //
+ //     var thisObj = $(e.currentTarget);
+ //     if(hasDuplicate(arr)){
+ //       var price = thisObj.parents('div.array-item').find('.price').attr("readonly","true").val('');
+ //       alertify.error("Sorry , Duplicate Department !");
+ //     }else{
+ //       var price = thisObj.parents('div.array-item').find('.price').removeAttr("readonly");
+ //     }
+ //   }
+ // });
 
  /**
   * onChange material
