@@ -55,7 +55,7 @@ Meteor.methods({
     selector['status.checkOutDate'] = {
          $exists: false
     }
-    
+
     if (self.branchId != "") {
       selector.branchId = self.branchId;
     }

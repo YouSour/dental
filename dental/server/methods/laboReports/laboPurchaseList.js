@@ -78,7 +78,7 @@ Meteor.methods({
     if (self.typeOfPurchase != "") selector.type = self.typeOfPurchase;
     if (self.exchange != "") selectorExchange._id = self.exchange;
     // Get purchase
-    var getLaboPurchase = Dental.Collection.LaboPurchase.find(selector);
+    var getLaboPurchase = Dental.Collection.LaboPurchase.find(selector,{sort:{_id:1}});
     //Get Exchange
     var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
 

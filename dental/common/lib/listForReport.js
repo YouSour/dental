@@ -313,6 +313,27 @@ Dental.ListForReport = {
       value: ""
     });
     list.push({
+      label: "Ready",
+      value: "Ready"
+    });
+    list.push({
+      label: "Check-Out",
+      value: "Check-Out"
+    });
+    list.push({
+      label: "Closed",
+      value: "Closed"
+    });
+
+    return list;
+  },
+  laboStatusOfDepartmentReport: function() {
+    var list = [];
+    list.push({
+      label: "(Select One)",
+      value: ""
+    });
+    list.push({
       label: "Active",
       value: "Active"
     });

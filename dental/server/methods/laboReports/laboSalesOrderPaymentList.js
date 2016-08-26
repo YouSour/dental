@@ -86,7 +86,7 @@ Meteor.methods({
     var exchange = Cpanel.Collection.Exchange.findOne(selectorExchange);
 
     // Get payment
-    var getSalesOrderPayment = Dental.Collection.LaboSalesOrderPayment.find(selector);
+    var getSalesOrderPayment = Dental.Collection.LaboSalesOrderPayment.find(selector,{sort:{paymentDate:1}});
 
     var index = 1;
 
