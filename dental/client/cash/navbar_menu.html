@@ -1,0 +1,59 @@
+<template name="cash_navbar">
+    <!--Data-->
+    {{#if isInRole 'cash-setting,cash-insert,cash-update,cash-remove,cash-report' 'Dental'}}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                Cash <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+
+                <!--Data-->
+                {{#if isInRole 'cash-insert,cash-update,cash-remove' 'Dental'}}
+                    <li class="{{isActiveRoute name='dental.cashTransaction'}}">
+                        <a href="{{pathFor 'dental.cashTransaction'}}">Transaction</a>
+                    </li>
+                {{/if}}
+
+                <!--Report-->
+                {{#if isInRole 'cash-report' 'Dental'}}
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Report</li>
+                    <li class="{{isActiveRoute name='dental.cashTransactionReport'}}">
+                        <a href="{{pathFor 'dental.cashTransactionReport'}}">Transaction</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashInReport'}}">
+                        <a href="{{pathFor 'dental.cashInReport'}}">Cash In</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashOutReport'}}">
+                        <a href="{{pathFor 'dental.cashOutReport'}}">Cash Out</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashBalanceReport'}}">
+                        <a href="{{pathFor 'dental.cashBalanceReport'}}">Cash Balance</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashFlowReport'}}">
+                        <a href="{{pathFor 'dental.cashFlowReport'}}">Cash Flow</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashChartAccountReport'}}">
+                        <a href="{{pathFor 'dental.cashChartAccountReport'}}">Chart Account List</a>
+                    </li>
+                {{/if}}
+
+                <!--Setting-->
+                {{#if isInRole 'cash-setting' 'Dental'}}
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation" class="dropdown-header">Setting</li>
+                    <!--<li class="{{isActiveRoute name='dental.cashCashier'}}">-->
+                    <!--<a href="{{pathFor 'dental.cashCashier'}}">Cashier</a>-->
+                    <!--</li>-->
+                    <li class="{{isActiveRoute name='dental.cashMap'}}">
+                        <a href="{{pathFor 'dental.cashMap'}}">Map</a>
+                    </li>
+                    <li class="{{isActiveRoute name='dental.cashChartAccount'}}">
+                        <a href="{{pathFor 'dental.cashChartAccount'}}">Chart Account</a>
+                    </li>
+                {{/if}}
+
+            </ul>
+        </li>
+    {{/if}}
+</template>

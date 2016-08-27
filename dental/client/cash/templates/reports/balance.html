@@ -1,0 +1,107 @@
+<!--Form-->
+<template name="dental_cashBalanceReport">
+    {{#if Template.subscriptionsReady}}
+        {{#autoForm schema=Dental.Schema.CashInOutReport id="dental_cashBalanceReport" action="cash-balance-reportGen"
+                    target="_blank"}}
+            <div class="row">
+                <div class="col-md-6">
+                    {{> afQuickField name='branchId'}}
+                    {{> afQuickField name='currencyId'}}
+                    <!--{{> afQuickField name='cashierId'}}-->
+                </div>
+                <div class="col-md-6">
+                    {{> afQuickField name='repDate'}}
+                    {{> afQuickField name='exchange'}}
+
+                    <button type="submit" class="btn btn-primary" id="gen">{{fa "file-text"}} Generate</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            </div>
+        {{/autoForm}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
+
+
+<!--Generate-->
+<template name="dental_cashBalanceReportGen">
+    <!--Is ready-->
+    {{#if data}}
+        {{#with data}}
+
+            <!--Title-->
+            {{#with title}}
+                <div class="title">
+                    <div class="title-1x-kh-muol">{{khName}}</div>
+                    <div class="title-1x">{{enName}}</div>
+                    <div><u>Cash Profit & Lost Report</u></div>
+                    <div class="title-2x">{{enAddress}}</div>
+                </div>
+            {{/with}}
+
+            <!--Header-->
+            {{#with header}}
+                <div style="width: 100%">
+                    <div style="width: 50%; float: left">
+                        <div><strong>Branch:</strong> {{branch}}</div>
+                        <div><strong>Currency:</strong> {{currency}}</div>
+                        <!--<div><strong>Cashier:</strong> {{cashier}}</div>-->
+                    </div>
+                    <div style="width: 50%; float: right">
+                        <div><strong>Date:</strong> {{repDate}}</div>
+                        <div><strong>Exchange:</strong> {{exchangeStr}}</div>
+                    </div>
+                </div>
+            {{/with}}
+
+            <!--Content-->
+            <table class="report-content">
+                <thead class="content-header">
+                <tr>
+                    <!--<th>No</th>-->
+                    <!--<th>Currency</th>-->
+                    <th>Chart Account</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+
+                <tbody class="content-body">
+                {{#each content}}
+                    <tr>
+                        <td colspan="2" style="font-weight: bolder">{{_id}}</td>
+                    </tr>
+                    {{#each dataDoc}}
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;{{chartAccountDoc.name}}</td>
+                            <td class="text-right">{{numFormat totalAmount "0,0.00"}}</td>
+                        </tr>
+                    {{/each}}
+                    <tr>
+                        <td class="text-right" style="font-weight: bolder">Sub Total {{_id}}:</td>
+                        <td class="text-right" style="font-weight: bolder">{{numFormat subTotal "0,0.00"}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+
+                <!--Total-->
+                {{#with footer}}
+                    <tfoot class="content-footer">
+                    <!--Net -->
+                    <tr>
+                        <td align="right">Balance As USD:</td>
+                        <td align="right">{{numFormat totalUsd "0,0.00"}}</td>
+                    </tr>
+                    </tfoot>
+                {{/with}}
+            </table>
+
+        {{/with}}
+
+        <!--Sign-->
+        {{> signFooter}}
+
+    {{else}}
+        {{> loading}}
+    {{/if}}
+</template>

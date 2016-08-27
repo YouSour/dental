@@ -36,14 +36,19 @@ aldeed:autoform
 zimme:collection-softremovable
 natestrauser:select2
 zimme:select2-bootstrap3-css
-aldeed:autoform-select2
+#aldeed:autoform-select2
+theara:autoform-select2
 chhib:selectize-bootstrap-3
 comerc:autoform-selectize
 momentjs:moment
+lbee:moment-helpers
+risul:moment-timezone
 rajit:bootstrap3-datepicker
 aldeed:autoform-bs-datepicker
 tsega:bootstrap3-datetimepicker
-aldeed:autoform-bs-datetimepicker
+#aldeed:autoform-bs-datetimepicker
+theara:autoform-bs-datetimepicker
+theara:autoform-bs-daterangepicker
 aldeed:tabular
 mizzao:bootboxjs
 ovcharik:alertifyjs
@@ -55,6 +60,9 @@ reywood:publish-composite
 meteorhacks:subs-manager
 dburles:spacebars-tohtml
 raix:handlebar-helpers
+theara:inputmask
+theara:autoform-inputmask
+theara:jsonview
 
 # Auto-Form upload file
 cfs:standard-packages
@@ -64,7 +72,8 @@ yogiben:autoform-file
 ecwyne:mathjs
 lepozepo:accounting
 numeral:numeral
-bigdsk:inputmask
+theara:numeral-helpers
+#bigdsk:inputmask
 manuelschoebel:wait-on-lib
 anti:fake
 risul:chance

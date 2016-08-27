@@ -1,0 +1,89 @@
+<!--Index-->
+<template name="dental_cashCashier">
+    <p>
+        <button type="button" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+    </p>
+
+    {{> tabular table=Dental.TabularTable.CashCashier selector=selector class="table table-striped table-bordered table-condensed table-hover"}}
+</template>
+
+<!--Action-->
+<template name="dental_cashCashierAction">
+    {{#tabularAction}}
+        <li><a href="#" class="update">{{fa "pencil"}} Update</a></li>
+        <li><a href="#" class="remove">{{fa "remove"}} Remove</a></li>
+        <li><a href="#" class="show">{{fa "eye"}} Show</a></li>
+    {{/tabularAction}}
+</template>
+
+<!--Insert-->
+<template name="dental_cashCashierInsert">
+    {{#autoForm collection=Dental.Collection.CashCashier id="dental_cashCashierInsert" type="insert"}}
+        <div class="row">
+            <div class="col-md-6">
+                {{> afQuickField name="name"}}
+                {{> afQuickField name="gender"}}
+                {{> afQuickField name="dob"}}
+                {{> afQuickField name="address" rows=3}}
+            </div>
+            <div class="col-md-6">
+                {{> afQuickField name="telephone"}}
+                {{> afQuickField name="photo"}}
+
+                <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+            </div>
+        </div>
+    {{/autoForm}}
+</template>
+
+<!--Update-->
+<template name="dental_cashCashierUpdate">
+    {{#if Template.subscriptionsReady}}
+        {{#autoForm collection=Dental.Collection.CashCashier id="dental_cashCashierUpdate" doc=data type="update"}}
+            <div class="row">
+                <div class="col-md-6">
+                    {{> afQuickField name="name"}}
+                    {{> afQuickField name="gender"}}
+                    {{> afQuickField name="dob"}}
+                    {{> afQuickField name="address" rows=3}}
+                </div>
+                <div class="col-md-6">
+                    {{> afQuickField name="telephone"}}
+                    {{> afQuickField name="photo"}}
+
+                    <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            </div>
+        {{/autoForm}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
+
+<!--Show-->
+<template name="dental_cashCashierShow">
+    {{#if Template.subscriptionsReady}}
+        {{#with data}}
+            <dl class="dl-horizontal">
+                <dt>ID</dt>
+                <dd>{{_id}}</dd>
+                <dt>Name</dt>
+                <dd>{{name}}</dd>
+                <dt>Gender</dt>
+                <dd>{{gender}}</dd>
+                <dt>Date of Birth</dt>
+                <dd>{{moFormat dob "DD/MM/YYYY"}}</dd>
+                <dt>Address</dt>
+                <dd>{{address}}</dd>
+                <dt>Telephone</dt>
+                <dd>{{telephone}}</dd>
+                <dt>Photo</dt>
+                <dd>{{lightbox url=photoUrl title=name}}</dd>
+            </dl>
+        {{/with}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
