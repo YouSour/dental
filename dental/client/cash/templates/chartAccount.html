@@ -1,0 +1,74 @@
+<!--Index-->
+<template name="dental_cashChartAccount">
+    <p>
+        <button type="button" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+    </p>
+
+    {{> tabular table=Dental.TabularTable.CashChartAccount selector=selector class="table table-striped table-bordered table-condensed table-hover"}}
+</template>
+
+<!--Action-->
+<template name="dental_cashChartAccountAction">
+    {{#tabularAction}}
+        <li><a href="#" class="update">{{fa "pencil"}} Update</a></li>
+        <li><a href="#" class="remove">{{fa "remove"}} Remove</a></li>
+        <li><a href="#" class="show">{{fa "eye"}} Show</a></li>
+    {{/tabularAction}}
+</template>
+
+<!--Insert-->
+<template name="dental_cashChartAccountInsert">
+    {{#autoForm collection=Dental.Collection.CashChartAccount id="dental_cashChartAccountInsert" type="insert"}}
+        <div class="row">
+            <div class="col-md-12">
+                {{> afQuickField name="cashType"}}
+                {{> afQuickField name="name"}}
+                {{> afQuickField name="memo"}}
+
+                <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+            </div>
+        </div>
+    {{/autoForm}}
+</template>
+
+<!--Update-->
+<template name="dental_cashChartAccountUpdate">
+    {{#if Template.subscriptionsReady}}
+        {{#autoForm collection=Dental.Collection.CashChartAccount id="dental_cashChartAccountUpdate" doc=data
+                    type="update"}}
+            <div class="row">
+                <div class="col-md-12">
+                    {{> afQuickField name="cashType"}}
+                    {{> afQuickField name="name"}}
+                    {{> afQuickField name="memo"}}
+
+                    <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            </div>
+        {{/autoForm}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
+
+<!--Show-->
+<template name="dental_cashChartAccountShow">
+    {{#if Template.subscriptionsReady}}
+        {{#with data}}
+            <dl class="dl-horizontal">
+                <dt>ID</dt>
+                <dd>{{_id}}</dd>
+                <dt>Name</dt>
+                <dd>{{name}}</dd>
+                <dt>Cash Type</dt>
+                <dd>{{cashType}}</dd>
+                <dt>Memo</dt>
+                <dd>{{memo}}</dd>
+            </dl>
+        {{/with}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>

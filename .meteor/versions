@@ -4,8 +4,6 @@ accounts-password@1.1.1
 alanning:roles@1.2.13
 aldeed:autoform@5.5.0
 aldeed:autoform-bs-datepicker@1.1.1
-aldeed:autoform-bs-datetimepicker@1.0.6
-aldeed:autoform-select2@2.0.2
 aldeed:collection2@2.5.0
 aldeed:simple-schema@1.3.3
 aldeed:tabular@1.3.0
@@ -15,7 +13,6 @@ anti:fake@0.4.1
 anti:i18n@0.4.3
 autoupdate@1.2.1
 base64@1.0.3
-bigdsk:inputmask@3.1.63
 binary-heap@1.0.3
 blaze@2.1.2
 blaze-tools@1.0.3
@@ -72,6 +69,7 @@ iron:url@1.0.11
 jquery@1.11.3_2
 json@1.0.3
 launch-screen@1.0.2
+lbee:moment-helpers@1.2.1
 lepozepo:accounting@1.0.0
 less@1.0.14
 livedata@1.0.13
@@ -96,7 +94,7 @@ minimongo@1.0.8
 mizzao:bootboxjs@4.4.0
 mizzao:timesync@0.3.3
 mobile-status-bar@1.0.3
-momentjs:moment@2.10.6
+momentjs:moment@2.11.0
 mongo@1.1.0
 mongo-livedata@1.0.8
 moonco:fixtures@0.1.6
@@ -128,6 +126,7 @@ reload@1.1.3
 retry@1.0.3
 reywood:publish-composite@1.4.2
 risul:chance@1.0.7
+risul:moment-timezone@0.4.1
 routepolicy@1.0.5
 rzymek:fullcalendar@2.3.1
 sacha:spin@2.3.1
@@ -143,6 +142,10 @@ srp@1.0.3
 stylus@1.0.7
 summernote:standalone@0.6.16
 templating@1.1.1
+theara:autoform-bs-daterangepicker@0.2.5
+theara:autoform-bs-datetimepicker@1.0.7
+theara:autoform-inputmask@0.4.8
+theara:autoform-select2@0.0.4
 theara:autoprint@0.0.5
 theara:breadcrumb@0.0.3
 theara:call-async@0.1.8
@@ -150,8 +153,11 @@ theara:collection-cache@0.3.8
 theara:events@0.1.5
 theara:fa-helpers@0.0.3
 theara:id-generator@0.0.6
+theara:inputmask@3.2.6_7
+theara:jsonview@1.2.3
 theara:lightbox-helpers@0.0.6
 theara:moneyjs@0.0.2
+theara:numeral-helpers@0.0.2
 theara:relation-exist@0.0.1
 theara:round-khr@0.0.1
 tmeasday:publish-counts@0.7.3

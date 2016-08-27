@@ -1,0 +1,36 @@
+<!--Index-->
+<template name="dental_cashMap">
+    {{#if Template.subscriptionsReady}}
+        <p>
+            <button type="button" class="btn btn-primary insert">{{fa "plus"}} Add New</button>
+        </p>
+
+        {{> tabular table=Dental.TabularTable.CashMap class="table table-striped table-bordered table-condensed table-hover"}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
+
+<!--Action-->
+<template name="dental_cashMapAction">
+    <button type="button" class="btn btn-default btn-sm update">{{fa "pencil"}} Update</button>
+</template>
+
+<!--Update-->
+<template name="dental_cashMapUpdate">
+    {{#if Template.subscriptionsReady}}
+        {{#autoForm collection=Dental.Collection.CashMap id="dental_cashMapUpdate" doc=data type="update"}}
+            <div class="row">
+                <div class="col-md-12">
+                    {{> afQuickField name="mapType" readonly=true}}
+                    {{> afQuickField name="chartAccountId"}}
+
+                    <button type="submit" class="btn btn-primary">{{fa "floppy-o"}} Save</button>
+                    <button type="reset" class="btn btn-default">{{fa "refresh"}} Reset</button>
+                </div>
+            </div>
+        {{/autoForm}}
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>
