@@ -28,9 +28,9 @@ Dental.CashList = {
     },
     cashType: function (selectOne, getCash) {
         var list = [];
-        if (selectOne) {
-            list.push({label: "(Select One)", value: ""});
-        }
+        // if (selectOne) {
+        //     list.push({label: "(Select One)", value: ""});
+        // }
 
         if (getCash) {
             list.push({label: 'Opening Cash', value: 'Opening'});
