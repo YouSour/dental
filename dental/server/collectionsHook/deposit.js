@@ -1,4 +1,4 @@
-var mapType = mapType;
+var mapType = 'Clinic Deposit Payment';
 
 Dental.Collection.Deposit.after.insert(function (userId, doc) {
     Meteor.defer(function () {

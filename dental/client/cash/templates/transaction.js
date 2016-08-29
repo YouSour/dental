@@ -145,7 +145,6 @@ showTpl.helpers({
     data: function () {
         var currentData = Template.currentData();
         var data = Dental.Collection.CashTransaction.findOne({_id: currentData.transactionId});
-
         return data;
     },
     jsonViewOpts: function () {
