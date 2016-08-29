@@ -277,6 +277,14 @@ width: 150px;
   line-height: 17px;
 }
 
+/*btn-lg-custom-cash*/
+.btn-lg-custom-cash {
+  padding: 15px 16px 13px;
+  width: 367px;
+  font-size: 16px;
+  line-height: 17px;
+}
+
 /*footer-style-labo-osmaterial*/
 .footer-osmaterial-style {
   margin-top: 10px;

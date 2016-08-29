@@ -28,6 +28,14 @@
               <a href="{{pathFor 'dental.laboCustomer'}}" class="btn btn-info btn-lg-custom" role="button">{{fa "users"}} <br/>Customer</a>
               <a href="{{pathFor 'dental.laboPurchase'}}" class="btn btn-danger btn-lg-custom" role="button">{{fa "cart-plus"}} <br/>Purchase</a>
               <a href="{{pathFor 'dental.laboSalesOrder'}}" class="btn btn-warning btn-lg-custom" role="button">{{fa "file-text-o"}} <br/>Sales Order</a>
+            </div><br>
+            {{/if}}
+
+            {{#if isInRole 'cash-insert,cash-update,cash-remove' 'Dental'}}
+            <div class="row">
+              <a href="{{pathFor 'dental.cashTransaction'}}" class="btn btn-success btn-lg-custom-cash" role="button">{{fa "line-chart"}} <br/>Transaction</a>
+              <a href="{{pathFor 'dental.cashMap'}}" class="btn btn-info btn-lg-custom-cash" role="button">{{fa "area-chart"}} <br/>Map Chart Account</a>
+              <a href="{{pathFor 'dental.cashChartAccount'}}" class="btn btn-danger btn-lg-custom-cash" role="button">{{fa "bar-chart"}} <br/>Chart Account</a>
             </div>
             {{/if}}
           </div>
