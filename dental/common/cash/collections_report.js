@@ -5,27 +5,39 @@
 // Transaction
 Dental.Schema.CashTransactionReport = new SimpleSchema({
     branchId: {
-        type: String,
+        type: [String],
         label: 'Branch',
-        optional: true,
         autoform: {
             type: "select2",
+            multiple: true,
             options: function () {
                 return Dental.CashList.branch();
             }
         }
     },
     currencyId: {
-        type: String,
+        type: [String],
         label: "Currency",
-        optional: true,
         autoform: {
             type: "select2",
+            multiple: true,
             options: function () {
-                return Dental.CashList.currencyForReport();
+                return Dental.CashList.currency();
             }
         }
     },
+    // cashierId: {
+    //     type: [String],
+    //     label: "Cashier",
+    //     optional: true,
+    //     autoform: {
+    //         type: "select2",
+    //         multiple: true,
+    //         options: function () {
+    //             return Dental.CashList.cashier();
+    //         }
+    //     }
+    // },
     repDate: {
         type: [Date],
         label: 'Date',
@@ -52,27 +64,39 @@ Dental.Schema.CashTransactionReport = new SimpleSchema({
 // Cash In/Out
 Dental.Schema.CashInOutReport = new SimpleSchema({
     branchId: {
-        type: String,
+        type: [String],
         label: 'Branch',
-        optional: true,
         autoform: {
             type: "select2",
+            multiple: true,
             options: function () {
                 return Dental.CashList.branch();
             }
         }
     },
     currencyId: {
-        type: String,
+        type: [String],
         label: "Currency",
-        optional: true,
         autoform: {
             type: "select2",
+            multiple: true,
             options: function () {
-                return Dental.CashList.currencyForReport();
+                return Dental.CashList.currency();
             }
         }
     },
+    // cashierId: {
+    //     type: [String],
+    //     label: "Cashier",
+    //     optional: true,
+    //     autoform: {
+    //         type: "select2",
+    //         multiple: true,
+    //         options: function () {
+    //             return Dental.CashList.cashier();
+    //         }
+    //     }
+    // },
     repDate: {
         type: [Date],
         label: 'Date',
@@ -99,13 +123,13 @@ Dental.Schema.CashInOutReport = new SimpleSchema({
 // Cash Chart Account
 Dental.Schema.CashChartAccountReport = new SimpleSchema({
     cashType: {
-        type: String,
+        type: [String],
         label: 'Cash type',
-        optional: true,
         autoform: {
             type: "select2",
+            multiple: true,
             options: function () {
-                return Dental.CashList.cashTypeForReport();
+                return Dental.CashList.cashType(false, true);
             }
         }
     }

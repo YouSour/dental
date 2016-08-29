@@ -15,39 +15,17 @@ Dental.CashList = {
 
         return list;
     },
-    currencyForReport: function () {
-        var list = [];
-        list.push({label: "(All)", value: ""});
-
-        Cpanel.Collection.Currency.find()
-            .forEach(function (obj) {
-                list.push({label: obj._id + ' (' + obj.num + ')', value: obj._id})
-            });
-
-        return list;
-    },
     cashType: function (selectOne, getCash) {
         var list = [];
-        // if (selectOne) {
-        //     list.push({label: "(Select One)", value: ""});
-        // }
+        if (selectOne) {
+            list.push({label: "(Select One)", value: ""});
+        }
 
         if (getCash) {
             list.push({label: 'Opening Cash', value: 'Opening'});
             list.push({label: 'Closing Cash', value: 'Closing'});
         }
 
-        list.push({label: 'Cash In', value: 'In'});
-        list.push({label: 'Cash Out', value: 'Out'});
-
-        return list;
-    },
-    cashTypeForReport: function () {
-        var list = [];
-        list.push({label: "(All)", value: ""});
-
-        list.push({label: 'Opening Cash', value: 'Opening'});
-        list.push({label: 'Closing Cash', value: 'Closing'});
         list.push({label: 'Cash In', value: 'In'});
         list.push({label: 'Cash Out', value: 'Out'});
 
@@ -108,8 +86,6 @@ Dental.CashList = {
     },
     branch: function () {
         var list = [];
-        list.push({label: "(All)", value: ""});
-
         Cpanel.Collection.Branch.find()
             .forEach(function (obj) {
                 list.push({label: obj.enName, value: obj._id});

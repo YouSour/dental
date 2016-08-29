@@ -112,7 +112,7 @@ Dental.Schema.CashTransactionAccountType = new SimpleSchema({
         autoform: {
             type: "select",
             options: function () {
-                return Dental.CashList.cashType(true, true);
+                return Dental.CashList.cashType(false, true);
             }
         }
     },
