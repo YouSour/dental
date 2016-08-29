@@ -217,10 +217,10 @@
   {{/if}} -->
 
   <!--labo-->
+  {{#if isInRole 'labo-insert,labo-update,labo-remove' 'Dental'}}
   <li>
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Labo<b class="caret"></b></a>
     <ul class="dropdown-menu multi-level">
-      {{#if isInRole 'labo-insert,labo-update,labo-remove' 'Dental'}}
       <li class="{{isActiveRoute name='cpanel.exchange'}}">
         <a href="{{pathFor 'cpanel.exchange'}}">Exchange</a>
       </li>
@@ -236,7 +236,6 @@
       <li class="{{isActiveRoute name='dental.laboSalesOrder'}}">
         <a href="{{pathFor 'dental.laboSalesOrder'}}">Sales Order</a>
       </li>
-    {{/if}}
 
       <li class="divider"></li>
       {{#if isInRole 'labo-setting' 'Dental'}}
@@ -314,6 +313,7 @@
       {{/if}}
     </ul>
   </li>
+  {{/if}}
 
   <!--Cash-->
   {{> cash_navbar}}
