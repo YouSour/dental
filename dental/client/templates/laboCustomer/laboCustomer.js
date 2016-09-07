@@ -10,17 +10,17 @@ Template.dental_laboCustomer.onRendered(function () {
 
 Template.dental_laboCustomer.events({
     'click .insert': function (e, t) {
-        alertify.laboCustomer(fa("plus", "Laboratory Customer"), renderTemplate(Template.dental_laboCustomerInsert)).maximize();
+        alertify.laboCustomer(fa("plus", "Laboratory Doctor"), renderTemplate(Template.dental_laboCustomerInsert)).maximize();
     },
     'click .update': function (e, t) {
         var data = this;
-        alertify.laboCustomer(fa("pencil", "Laboratory Customer"), renderTemplate(Template.dental_laboCustomerUpdate, data)).maximize();
+        alertify.laboCustomer(fa("pencil", "Laboratory Doctor"), renderTemplate(Template.dental_laboCustomerUpdate, data)).maximize();
     },
     'click .remove': function (e, t) {
         var self = this;
 
         alertify.confirm(
-            fa("remove", "Laboratory Customer"),
+            fa("remove", "Laboratory Doctor"),
             "Are you sure to delete [" + self._id + "] ?",
             function (closeEvent) {
                 Dental.Collection.LaboCustomer.remove(self._id, function (error) {
@@ -35,7 +35,7 @@ Template.dental_laboCustomer.events({
     },
     'click .show': function (e, t) {
         var data = this;
-        alertify.laboCustomer(fa("eye", "Laboratory Customer"), renderTemplate(Template.dental_laboCustomerShow, data));
+        alertify.laboCustomer(fa("eye", "Laboratory Doctor"), renderTemplate(Template.dental_laboCustomerShow, data));
     }
 })
 ;
@@ -45,7 +45,7 @@ Template.dental_laboCustomer.events({
  */
  Template.dental_laboCustomerInsert.events({
      'click .laboCustomerCompanyAddon': function (e, t) {
-         alertify.laboCustomerCompany(fa("plus", "Laboratory Customer Company"),
+         alertify.laboCustomerCompany(fa("plus", "Laboratory Doctor Company"),
              renderTemplate(Template.dental_laboCustomerCompanyInsert));
      }
  });
@@ -55,7 +55,7 @@ Template.dental_laboCustomer.events({
  */
  Template.dental_laboCustomerUpdate.events({
      'click .laboCustomerCompanyAddon': function (e, t) {
-         alertify.laboCustomerCompany(fa("plus", "Laboratory Customer Company"),
+         alertify.laboCustomerCompany(fa("plus", "Laboratory Doctor Company"),
              renderTemplate(Template.dental_laboCustomerCompanyInsert));
      }
  });
