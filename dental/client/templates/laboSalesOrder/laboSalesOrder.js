@@ -3,6 +3,7 @@ Dental.ListState = new ReactiveObj();
  *Index
  */
 Template.dental_laboSalesOrder.onCreated(function() {
+  Meteor.subscribe('dental_laboCustomerCompany');
   Meteor.subscribe('dental_laboCustomer');
   Meteor.subscribe('dental_staff');
   Meteor.subscribe('dental_laboItem');
@@ -212,7 +213,7 @@ Template.dental_laboSalesOrderInsert.events({
     Session.set('printInvoiceLaboSalesOrder', true);
   },
   'click .customerAddon': function() {
-    alertify.customerAddon(fa("plus", "Laboratory Customer"), renderTemplate(Template.dental_laboCustomerInsert));
+    alertify.customerAddon(fa("plus", "Laboratory Doctor"), renderTemplate(Template.dental_laboCustomerInsert));
   },
   'click .staffAddon': function() {
     alertify.customerAddon(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert));
@@ -285,7 +286,7 @@ Template.dental_laboSalesOrderUpdate.events({
     calculateTotal();
   },
   'click .customerAddon': function() {
-    alertify.customerAddon(fa("plus", "Laboratory Customer"), renderTemplate(Template.dental_laboCustomerInsert));
+    alertify.customerAddon(fa("plus", "Laboratory Doctor"), renderTemplate(Template.dental_laboCustomerInsert));
   },
   'click .staffAddon': function() {
     alertify.customerAddon(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert));

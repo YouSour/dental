@@ -5,7 +5,7 @@ Dental.TabularTable.LaboSalesOrder = new Tabular.Table({
         {title: '<i class="fa fa-bars"></i>', tmpl: Meteor.isClient && Template.dental_laboSalesOrderAction},
         {data: "_id", title: "ID"},
         {data: "salesOrderDate", title: "Date"},
-        {data: "_customer.name", title: "Customer"},
+        {data: "_customer.name", title: "Doctor"},
         {data: "_staff.name", title: "Staff"},
         {
           data: "status", title: "Status",

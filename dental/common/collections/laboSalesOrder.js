@@ -14,7 +14,7 @@ Dental.Schema.LaboSalesOrder = new SimpleSchema({
   },
   customerId: {
     type: String,
-    label: "Customer",
+    label: "Doctor",
     autoform: {
       type: "select2",
       options: function() {
