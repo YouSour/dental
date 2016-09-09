@@ -239,6 +239,63 @@ Dental.Collection.LaboSalesOrder.before.insert(function (userId, doc) {
     Dental.ListState.set(id, doc._id);
 });
 
+//Labo Quotation
+Dental.Collection.LaboQuotation.before.insert(function (userId, doc) {
+    var prefix = stateDental.get('dental');
+    var id = doc._id;
+    doc._id = idGenerator.genWithPrefix(Dental.Collection.LaboQuotation, prefix, 9);
+    Dental.ListState.set(id, doc._id);
+
+    // Check null department
+    var departments = [];
+    _.forEach(doc.department, function (val) {
+        if (!_.isNull(val)) {
+            // Find labo deapartment
+            val.departmentDoc = Dental.Collection.LaboDepartment.findOne({_id: val.department});
+            departments.push(val);
+        }
+    });
+    doc.department = departments;
+
+    // Check null item
+    var items = [];
+    _.forEach(doc.department, function (val) {
+        if (!_.isNull(val)) {
+            // Find labo item
+            val.itemDoc = Dental.Collection.LaboItem.findOne({_id: val.item});
+            items.push(val);
+        }
+    });
+    doc.department = items;
+});
+
+Dental.Collection.LaboQuotation.before.update(function (userId, doc, fieldNames, modifier, options) {
+    modifier.$set = modifier.$set || {};
+
+    // Check null department
+    var departments = [];
+    _.forEach(modifier.$set.department, function (val) {
+        if (!_.isNull(val)) {
+            // Find labo deapartment
+            val.departmentDoc = Dental.Collection.LaboDepartment.findOne({_id: val.department});
+            departments.push(val);
+        }
+    });
+
+    modifier.$set.department = departments;
+
+    // Check null item
+    var items = [];
+    _.forEach(modifier.$set.department, function (val) {
+        if (!_.isNull(val)) {
+            // Find labo item
+            val.itemDoc = Dental.Collection.LaboItem.findOne({_id: val.item});
+            items.push(val);
+        }
+    });
+    modifier.$set.department = items;
+});
+
 //payment
 Dental.Collection.LaboSalesOrderPayment.before.insert(function (userId, doc) {
     var prefix = stateDental.get('dental');

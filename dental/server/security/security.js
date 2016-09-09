@@ -380,3 +380,17 @@ Dental.Collection.Quotation.permit(['remove'])
   Dental.Collection.LaboSalesOrderPayment.permit(['remove'])
       .dental_ifLaboRemove()
       .apply();
+/*
+ * LaboQuotation
+ */
+  Dental.Collection.LaboQuotation.permit(['insert'])
+      .dental_ifLaboInsert()
+      .apply();
+
+  Dental.Collection.LaboQuotation.permit(['update'])
+      .dental_ifLaboUpdate()
+      .apply();
+
+  Dental.Collection.LaboQuotation.permit(['remove'])
+      .dental_ifLaboRemove()
+      .apply();

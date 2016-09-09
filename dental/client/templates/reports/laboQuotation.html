@@ -1,0 +1,88 @@
+
+
+<!--Generate-->
+<template name="dental_laboQuotationReportGen">
+  {{#if data}} {{#with data}}
+  <!--Title-->
+  <table class="report-title">
+    <tr>
+      <td>
+        <img src="/hengly/logo.png">
+      </td>
+      <td>
+        <div class="header-style" style="margin-left:40px;">
+          <span class="report-company-name" style="font-family: 'Khmer OS Muol">{{title.company.khName}}</span>
+          <br>
+          <span class="report-company-name">{{title.company.enName}}</span>
+          <br>
+          <u>វិក័យបត្រ សម្រង់ពុម្ពចេញ ចូល​ ប្រចាំថ្ងៃ (Labo Quotation)</u>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <!--Header-->
+  <div style="width: 100%">
+    {{#with header}}
+    <div style="width: 50%; padding-top: 12px; float: left;">
+      <ul class="list-unstyled">
+        <li>
+          <strong>អ្នកទទួលបញ្ញើរ :</strong> {{_staff.name}}</li>
+        <li>
+          <strong>បញ្ញើរមកពីគ្លីនិក:</strong> {{_doctorCompany.name}}</li>
+        <li>
+          <strong>លេខកូដសំគាល់:</strong> {{saleOrderId}}</li>
+      </ul>
+    </div>
+    <div style="width: 50%; padding-top: 12px; float: left;">
+      <ul class="list-unstyled">
+        <li>
+          <strong>ប្រភេទ :</strong> {{type}}</li>
+        <li>
+          <strong>ស្ថានភាព : </strong> {{status}}</li>
+          <li>
+            <strong>ពណ៍នា : </strong> {{des}}</li>
+      </ul>
+    </div>
+    {{/with}}
+  </div>
+
+  <!--Content-->
+  <table class="report-content">
+    <thead class="report-content-header">
+      <tr>
+        <th>ល.រ</th>
+        <th>ឡាបូ</th>
+        <th>បរិយាយ</th>
+        <th>ចំនួន</th>
+      </tr>
+    </thead>
+
+    <tbody class="report-content-body">
+      {{#each content}}
+      <tr class="td-custom">
+        <td class="index-style">{{index}}</td>
+        <td class="items-style">{{departmentName}}</td>
+        <td class="items-style">{{itemName}}</td>
+        <td class="qty-style">{{qty}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <!--Date-->
+  <table width="100%" border="0">
+    {{#with footer}}
+          <tr>
+                <td class="td-custom-style" style="padding-top:12px;"><strong>ពុម្ពចូល :</strong> {{startDate}}</td>
+                <td class="td-custom-style" style="padding-top:12px; text-align:right;"> <strong>ពុម្ពចេញ :</strong> {{deadLine}}</td>
+          </tr>
+      {{/with}}
+  </table>
+
+  <!--Note-->
+  <div style="clear: both; width: 100%; text-align: center; margin-top: 12px">
+    <strong>{{title.company.khAddress}}, {{title.company.telephone}}</strong>
+  </div>
+
+  {{/with}} {{else}} {{> loading}} {{/if}}
+</template>

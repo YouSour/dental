@@ -64,4 +64,3 @@ Meteor.methods({
         );
     }
 });
-
