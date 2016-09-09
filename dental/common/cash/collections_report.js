@@ -11,9 +11,10 @@ Dental.Schema.CashTransactionReport = new SimpleSchema({
             type: "select2",
             multiple: true,
             options: function () {
-                return Dental.CashList.branch();
+                return Dental.CashList.branchRpt();
             }
-        }
+        },
+        defaultValue:"All"
     },
     currencyId: {
         type: [String],
@@ -22,9 +23,10 @@ Dental.Schema.CashTransactionReport = new SimpleSchema({
             type: "select2",
             multiple: true,
             options: function () {
-                return Dental.CashList.currency();
+                return Dental.CashList.currencyRpt();
             }
-        }
+        },
+        defaultValue:"All"
     },
     // cashierId: {
     //     type: [String],
@@ -70,7 +72,7 @@ Dental.Schema.CashInOutReport = new SimpleSchema({
             type: "select2",
             multiple: true,
             options: function () {
-                return Dental.CashList.branch();
+                return Dental.CashList.branchRpt();
             }
         }
     },
@@ -81,7 +83,7 @@ Dental.Schema.CashInOutReport = new SimpleSchema({
             type: "select2",
             multiple: true,
             options: function () {
-                return Dental.CashList.currency();
+                return Dental.CashList.currencyRpt();
             }
         }
     },

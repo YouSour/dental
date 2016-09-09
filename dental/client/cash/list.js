@@ -15,6 +15,17 @@ Dental.CashList = {
 
         return list;
     },
+    currencyRpt: function (selectOne) {
+        var list = [];
+        list.push({label: "All", value: "All"});
+
+        Cpanel.Collection.Currency.find()
+            .forEach(function (obj) {
+                list.push({label: obj._id + ' (' + obj.num + ')', value: obj._id})
+            });
+
+        return list;
+    },
     cashType: function (selectOne, getCash) {
         var list = [];
         if (selectOne) {
@@ -86,6 +97,16 @@ Dental.CashList = {
     },
     branch: function () {
         var list = [];
+        Cpanel.Collection.Branch.find()
+            .forEach(function (obj) {
+                list.push({label: obj.enName, value: obj._id});
+            });
+
+        return list;
+    },
+    branchRpt: function () {
+        var list = [];
+        list.push({label: "All", value: "All"});
         Cpanel.Collection.Branch.find()
             .forEach(function (obj) {
                 list.push({label: obj.enName, value: obj._id});
