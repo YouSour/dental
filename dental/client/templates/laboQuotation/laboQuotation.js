@@ -6,7 +6,7 @@ Template.dental_laboQuotation.onCreated(function () {
     Meteor.subscribe('dental_laboCustomerCompany');
     Meteor.subscribe('dental_laboDepartment');
     Meteor.subscribe('dental_laboItem');
-    createNewAlertify(['quotation', 'patientAddon']);
+    createNewAlertify(['quotation', 'staffAddon','drCompanyAddon']);
 });
 
 Template.dental_laboQuotation.events({
@@ -108,9 +108,11 @@ Template.dental_laboQuotationInsert.helpers({
 
 });
 Template.dental_laboQuotationInsert.events({
-    'click .patientAddon': function (e, t) {
-        alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))
-            .maximize();
+    'click .staffAddon': function (e, t) {
+        alertify.staffAddon(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert));
+    },
+    'click .doctorCompanyAddon': function (e, t) {
+        alertify.drCompanyAddon(fa("plus", "Doctor Company"), renderTemplate(Template.dental_laboCustomerCompanyInsert));
     },
     'click #saveAndPrint': function () {
         Meteor.subscribe('dental_laboQuotation');
@@ -163,102 +165,18 @@ Template.dental_laboQuotationUpdate.helpers({
 });
 
 Template.dental_laboQuotationUpdate.events({
-    'click .patientAddon': function (e, t) {
-        alertify.patientAddon(fa("plus", "Patient"), renderTemplate(Template.dental_patientInsert))
-            .maximize();
-    },
-    'change .item': function (e, t) {
-        var thisObj = $(e.currentTarget);
-        var itemId = $(e.currentTarget).val();
-        var qty, price, discount, amount;
-
-        if (itemId != "") {
-            var itemDoc = Dental.Collection.DiseaseItem.findOne({
-                _id: itemId
-            });
-
-            qty = 1;
-            price = math.round(itemDoc.price, 2);
-            discount = 0;
-            amount = math.round(qty * price, 2);
-
-            // $('.btnAdd').attr('disabled', false);
-        }
-        // else {
-        //     $('.btnAdd').attr('disabled', true);
-        // }
-
-        thisObj.parents('div.array-item').find('.qty').val(qty);
-        thisObj.parents('div.array-item').find('.price').val(price);
-        thisObj.parents('div.array-item').find('.discount').val(discount);
-        thisObj.parents('div.array-item').find('.amount').val(amount);
-
-        // Cal footer
-        calculateTotal();
-    },
-    // 'click .btnAdd': function (e) {
-    //     var orderItemId = $(e.currentTarget).val();
-    //
-    //     if (orderItemId != "") {
-    //         $('.btnAdd').removeAttr('disabled');
-    //     } else {
-    //         $('.btnAdd').attr('disabled', "disabled");
-    //
-    //     }
-    // },
-    'click .btnRemove': function (e, t) {
-        var thisValueQuotation = $(e.currentTarget).closest('.quotation').find('.amount').val();
-        thisValueQuotation = parseFloat(thisValueQuotation);
-        // var enable = true;
-        // $('.amount').each(function () {
-        //     var amount = $(this).val() == "" ? 0 : parseFloat($(this)
-        //         .val());
-        //     if (amount == 0) {
-        //         enable = false;
-        //         return false;
-        //     }
-        //     enable = true;
-        // });
-        //
-        // if (enable) {
-        //     $('.btnAdd').attr('disabled', false);
-        // } else {
-        //     $('.btnAdd').attr('disabled', true);
-        //
-        // }
-
-        // Cal footer
-        calculateTotal(thisValueQuotation);
-    },
-    'keyup .qty,.discount, click .qty,.discount': function (e, t) {
-
-        CalculateTotalAndAmount(e);
-        // Cal footer
-        calculateTotal();
-    },
-    'keyup #subDiscount, click #subDiscount': function (e, t) {
-        // Cal footer
-        calculateTotal();
-    }
+  'click .staffAddon': function (e, t) {
+      alertify.staffAddon(fa("plus", "Staff"), renderTemplate(Template.dental_staffInsert));
+  },
+  'click .doctorCompanyAddon': function (e, t) {
+      alertify.drCompanyAddon(fa("plus", "Doctor Company"), renderTemplate(Template.dental_laboCustomerCompanyInsert));
+  }
 });
 
 /**
  * Show
  */
 Template.dental_laboQuotationShow.helpers({
-    quotationDiseaseFormat: function () {
-        var quotationDisease = "<ul>";
-        var data = this.disease;
-        data.forEach(function (obj) {
-            quotationDisease +=
-                "<li>" + 'Item: ' + obj.item + ' | Qty: ' + obj.qty +
-                ' | Price : ' + obj.price + ' | Dis: ' + obj.discount +
-                ' | Amount: ' + obj.amount + '</li>';
-        });
-        quotationDisease += '</ul>';
-
-        return new Spacebars.SafeString(quotationDisease);
-    },
     quotationDateFormat: function () {
         return moment(this.purchaseDate).format("YYYY-MM-DD");
     }
