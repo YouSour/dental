@@ -665,5 +665,33 @@ Dental.List = {
     });
 
     return list;
+  },
+  laboQuotationType: function() {
+    var list = [];
+
+    list.push({
+      label: 'Redo',
+      value: 'Redo'
+    });
+    list.push({
+      label: 'New do',
+      value: 'New-do'
+    });
+
+    return list;
+  },
+  laboQuotationStatus: function() {
+    var list = [];
+
+    list.push({
+      label: 'Normal',
+      value: 'Normal'
+    });
+    list.push({
+      label: 'Hurry',
+      value: 'Hurry'
+    });
+
+    return list;
   }
 };

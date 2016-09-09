@@ -23,6 +23,9 @@ Meteor.methods({
       getQuotationId: function (quotationId) {
         return Dental.ListState.get(quotationId);
       },
+      getLaboQuotationId: function (laboQuotationId) {
+        return Dental.ListState.get(laboQuotationId);
+      },
       getMaterialCostId: function (materialCostId) {
         return Dental.ListState.get(materialCostId);
       },

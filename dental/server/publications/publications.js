@@ -261,3 +261,10 @@ Meteor.publish('dental_laboSalesOrder', function() {
 Meteor.publish('dental_laboSalesOrderPayment', function() {
   return Dental.Collection.LaboSalesOrderPayment.find();
 });
+
+/*
+ * LaboQuotation
+ */
+Meteor.publish('dental_laboQuotation', function() {
+  return Dental.Collection.LaboQuotation.find();
+});
