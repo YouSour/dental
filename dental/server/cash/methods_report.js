@@ -31,14 +31,13 @@ Meteor.methods({
 
         // Branch
         var branchLbl = 'All';
-        if (params.branchId) {
+        if (params.branchId != branchLbl) {
             var branchDoc = Cpanel.Collection.Branch.findOne({_id: params.branchId});
             branchLbl = branchDoc._id + " : " + branchDoc.enName;
         }
 
         header.branch = branchLbl;
         header.currency = params.currencyId ? params.currencyId : 'All';
-
         data.header = header;
 
         /****** Content *****/
@@ -49,12 +48,8 @@ Meteor.methods({
             $gte: fDate,
             $lte: tDate
         };
-        if (params.branchId) {
-            selector.cpanel_branchId = params.branchId;
-        }
-        if (params.currencyId) {
-            selector.currencyId = params.currencyId;
-        }
+        if (params.branchId != "All") selector.cpanel_branchId = params.branchId;
+        if (params.currencyId != "All") selector.currencyId = params.currencyId;
 
         var index = 1;
         var subTotalKhr = 0, subTotalUsd = 0, subTotalThb = 0;
@@ -139,7 +134,7 @@ Meteor.methods({
 
         // Branch
         var branchLbl = 'All';
-        if (params.branchId) {
+        if (params.branchId != branchLbl) {
             var branchDoc = Cpanel.Collection.Branch.findOne({_id: params.branchId});
             branchLbl = branchDoc._id + " : " + branchDoc.enName;
         }
@@ -157,12 +152,8 @@ Meteor.methods({
             $gte: fDate,
             $lte: tDate
         };
-        if (params.branchId) {
-            selector.cpanel_branchId = params.branchId;
-        }
-        if (params.currencyId) {
-            selector.currencyId = params.currencyId;
-        }
+        if (params.branchId != "All") selector.cpanel_branchId = params.branchId;
+        if (params.currencyId != "All") selector.currencyId = params.currencyId;
 
         var transaction = Dental.Collection.CashTransaction.aggregate([
             {
@@ -250,7 +241,7 @@ Meteor.methods({
 
         // Branch
         var branchLbl = 'All';
-        if (params.branchId) {
+        if (params.branchId != branchLbl) {
             var branchDoc = Cpanel.Collection.Branch.findOne({_id: params.branchId});
             branchLbl = branchDoc._id + " : " + branchDoc.enName;
         }
@@ -268,12 +259,9 @@ Meteor.methods({
             $gte: fDate,
             $lte: tDate
         };
-        if (params.branchId) {
-            selector.cpanel_branchId = params.branchId;
-        }
-        if (params.currencyId) {
-            selector.currencyId = params.currencyId;
-        }
+        if (params.branchId != "All") selector.cpanel_branchId = params.branchId;
+        if (params.currencyId != "All") selector.currencyId = params.currencyId;
+
         selector.cashType = {$in: ["In", "Out"]};
 
         var transaction = Dental.Collection.CashTransaction.aggregate([
@@ -377,7 +365,7 @@ Meteor.methods({
 
         // Branch
         var branchLbl = 'All';
-        if (params.branchId) {
+        if (params.branchId != branchLbl) {
             var branchDoc = Cpanel.Collection.Branch.findOne({_id: params.branchId});
             branchLbl = branchDoc._id + " : " + branchDoc.enName;
         }
@@ -394,12 +382,8 @@ Meteor.methods({
             $gte: fDate,
             $lte: tDate
         };
-        if (params.branchId) {
-            selector.cpanel_branchId = params.branchId;
-        }
-        if (params.currencyId) {
-            selector.currencyId = params.currencyId;
-        }
+        if (params.branchId != "All") selector.cpanel_branchId = params.branchId;
+        if (params.currencyId != "All") selector.currencyId = params.currencyId;
 
         var transaction = Dental.Collection.CashTransaction.aggregate([
             {$unwind: '$items'},
