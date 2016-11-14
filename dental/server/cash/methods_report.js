@@ -386,6 +386,9 @@ Meteor.methods({
         if (params.currencyId != "All") selector.currencyId = params.currencyId;
 
         var transaction = Dental.Collection.CashTransaction.aggregate([
+            {
+                $match: selector
+            },
             {$unwind: '$items'},
             {
                 $group: {
